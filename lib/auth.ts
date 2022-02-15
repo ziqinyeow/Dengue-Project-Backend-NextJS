@@ -1,29 +1,73 @@
-// @ts-nocheck
-// eslint-disable-next-line @next/next/no-server-import-in-page
-import { NextRequest, NextResponse } from "next/server";
-import { jwtVerify } from "jose";
+import { jwtVerify, SignJWT } from "jose";
+import { nanoid } from "nanoid";
 import { TOKEN_SECRET } from "./constant";
-import { JsonResponse } from "./utils";
+import { prisma } from "./prisma";
 
-export const verify = async (req: NextRequestWithUser) => {
+export const generateToken = async (email: string) => {
+  const token = await new SignJWT({
+    email,
+  })
+    .setProtectedHeader({ alg: "HS256" })
+    .setJti(nanoid())
+    .setIssuedAt()
+    // .setExpirationTime('2h')
+    .sign(new TextEncoder().encode(TOKEN_SECRET));
+
+  return token;
+};
+
+export const verifyAPI = async (auth: string | undefined) => {
   try {
-    const auth = req.headers.get("Authorization");
-    if (!auth) {
-      return JsonResponse(401, { error: { message: "Unauthorized" } });
+    const token = auth && auth.split(" ")[1];
+    if (!token) {
+      return null;
     }
-    const token = auth.split(" ")[1];
-    const { payload, protectedHeader } = await jwtVerify(
+    const { payload } = await jwtVerify(
       token,
       new TextEncoder().encode(TOKEN_SECRET)
     );
-    const { id, email } = payload;
-    if (!id || !email) {
-      return JsonResponse(404, { error: { message: "User not found" } });
-    }
-
-    req.user = user;
-    NextResponse.next();
+    return payload;
   } catch (error) {
-    return JsonResponse(404, { error: { message: "User not found" } });
+    return null;
+  }
+};
+
+/**
+ * Get and verify email from JWT Token in the request headers
+ * Only registered email can access their own data
+ * @param auth: req.headers["authorization"]
+ * @returns user details
+ */
+export const verifyUser = async (auth: string | undefined) => {
+  try {
+    const token = auth && auth.split(" ")[1];
+    if (!token) {
+      return null;
+    }
+    const { payload } = await jwtVerify(
+      token,
+      new TextEncoder().encode(TOKEN_SECRET)
+    );
+
+    const { email } = payload;
+
+    const user = await prisma.user.findUnique({
+      where: {
+        // @ts-ignore
+        email,
+      },
+      select: {
+        id: true,
+        email: true,
+        password: false,
+        name: true,
+        status: true,
+        detail: true,
+      },
+    });
+
+    return user || null;
+  } catch (error) {
+    return null;
   }
 };

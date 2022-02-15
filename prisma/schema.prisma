@@ -42,7 +42,7 @@ model Task {
   id          String  @id @default(cuid())
   name        String
   description String? @db.LongText
-  done        Boolean @default(false)
+  priority    Int     @default(0)
 }
 
 model News {
