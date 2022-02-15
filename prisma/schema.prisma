@@ -20,6 +20,7 @@ model User {
   token    String?  @db.Text
   detail   Detail[]
   status   String?
+  answer   Answer[]
 }
 
 model Detail {
@@ -49,4 +50,20 @@ model News {
   id    String  @id @default(cuid())
   title String
   text  String? @db.LongText
+}
+
+model Question {
+  id            String   @id @default(cuid())
+  question      String
+  answer_scheme String
+  answer        Answer[]
+}
+
+model Answer {
+  id          String   @id @default(cuid())
+  answer_date DateTime @default(now())
+  question_id String
+  question    Question @relation(fields: [question_id], references: [id])
+  user_email  String
+  user        User     @relation(fields: [user_email], references: [email])
 }
