@@ -19,6 +19,7 @@
       // "components/*": ["components/*"],
       // "data/*": ["data/*"],
       // "layouts/*": ["layouts/*"],
+      "controllers/*": ["controllers/*"],
       "lib/*": ["lib/*"],
       "public/*": ["public/*"],
       "styles/*": ["styles/*"]
