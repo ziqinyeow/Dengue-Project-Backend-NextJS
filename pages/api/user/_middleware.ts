@@ -7,7 +7,7 @@ export async function middleware(req: NextRequest) {
   try {
     const auth = req.headers.get("Authorization");
     if (!auth || auth.split(" ")[0] !== "Bearer") {
-      return JsonResponse(401, { error: { message: "Unauthorized" } });
+      return JsonResponse(401, { message: "Unauthorized" });
     }
     const token = auth.split(" ")[1];
     const { payload } = await jwtVerify(
@@ -19,6 +19,6 @@ export async function middleware(req: NextRequest) {
 
     NextResponse.next();
   } catch (error) {
-    return JsonResponse(404, { error: { message: "User not found" } });
+    return JsonResponse(404, { message: "User not found" });
   }
 }

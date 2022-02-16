@@ -9,19 +9,40 @@ generator client {
 
 datasource db {
   provider             = "mysql"
-  url                  = env("DATABASE_URL")
+  url                  = "mysql://m3o3tgua6pkm:pscale_pw_T8d0gpn0ndbTEuLxCPQSOvzWEkgt7yzWYpk9ARWCAXI@zx0xiavlyr56.ap-southeast-2.psdb.cloud/dengueapi?sslaccept=strict"
   referentialIntegrity = "prisma"
 }
 
 model User {
   id       String   @id @default(cuid())
-  name     String?
   email    String   @unique
   password String
   token    String?  @db.Text
-  detail   Detail[]
+  fullname String?
+  username String?
+  ic       String   @unique
+  phone_no String?
+  address  String?  @db.LongText
+  postcode String?
   status   String?
+  group    Int?     @default(0) // 0 = normal user, 1 = dengue patient
+  detail   Detail[]
   answer   Answer[]
+}
+
+// to allow unregistered user to be record as a patient
+model Patient {
+  id    String @id @default(cuid())
+  ic    String @unique
+  email String @unique
+}
+
+// diagnose history (KIV)
+model History {
+  id    String    @id @default(cuid())
+  ic    String
+  start DateTime  @default(now())
+  end   DateTime?
 }
 
 model Detail {
@@ -40,6 +61,26 @@ model Detail {
   @@index([user_id])
 }
 
+model Question {
+  id            String   @id @default(cuid())
+  question      String
+  answer_scheme String   @db.Text
+  explanation   String?  @db.LongText
+  answer        Answer[]
+}
+
+model Answer {
+  id          String   @id @default(cuid())
+  answer_date DateTime @default(now())
+  answer      String
+  question_id String
+  question    Question @relation(fields: [question_id], references: [id])
+  user_id     String
+  user        User     @relation(fields: [user_id], references: [id])
+
+  @@index([question_id, user_id])
+}
+
 model Task {
   id          String  @id @default(cuid())
   name        String
@@ -51,20 +92,4 @@ model News {
   id    String  @id @default(cuid())
   title String
   text  String? @db.LongText
-}
-
-model Question {
-  id            String   @id @default(cuid())
-  question      String
-  answer_scheme String
-  answer        Answer[]
-}
-
-model Answer {
-  id          String   @id @default(cuid())
-  answer_date DateTime @default(now())
-  question_id String
-  question    Question @relation(fields: [question_id], references: [id])
-  user_email  String
-  user        User     @relation(fields: [user_email], references: [email])
 }

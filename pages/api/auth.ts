@@ -10,20 +10,36 @@ export default async function handler(
     return res.status(405).json({ message: "Method Not Allowed" });
   }
 
-  const { type, email, password, name } = req.body;
+  const {
+    type,
+    email,
+    password,
+    fullname,
+    username,
+    ic,
+    phone_no,
+    address,
+    postcode,
+  } = req.body;
 
   switch (type) {
     case "signup":
-      const token = await generateToken(email);
+      const token = await generateToken(ic, email);
       try {
         const user = await prisma.user.create({
           data: {
             email,
             password,
-            name: name || "",
             token,
+            fullname,
+            username,
+            ic,
+            phone_no,
+            address,
+            postcode,
           },
         });
+
         return res
           .status(200)
           .json({ verified: true, token: user?.token, message: "ok" });
