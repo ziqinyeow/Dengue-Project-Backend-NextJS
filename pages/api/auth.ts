@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { generateToken } from "lib/auth";
 import { prisma } from "lib/prisma";
+import bcrypt from "bcryptjs";
 
 export default async function handler(
   req: NextApiRequest,
@@ -25,11 +26,13 @@ export default async function handler(
   switch (type) {
     case "signup":
       const token = await generateToken(ic, email);
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(password, salt);
       try {
         const user = await prisma.user.create({
           data: {
             email,
-            password,
+            password: hashedPassword,
             token,
             fullname,
             username,
@@ -54,7 +57,7 @@ export default async function handler(
             email,
           },
         });
-        if (user?.password === password) {
+        if (user && (await bcrypt.compare(password, user.password))) {
           return res.status(200).json({
             verified: true,
             token: user?.token,
