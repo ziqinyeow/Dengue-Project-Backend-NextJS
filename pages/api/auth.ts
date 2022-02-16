@@ -16,7 +16,7 @@ export default async function handler(
     case "signup":
       const token = await generateToken(email);
       try {
-        await prisma.user.create({
+        const user = await prisma.user.create({
           data: {
             email,
             password,
@@ -24,7 +24,9 @@ export default async function handler(
             token,
           },
         });
-        return res.status(200).json({ message: "ok" });
+        return res
+          .status(200)
+          .json({ verified: true, token: user?.token, message: "ok" });
       } catch (e) {
         return res.status(400).json({ message: "User created previously" });
       }
