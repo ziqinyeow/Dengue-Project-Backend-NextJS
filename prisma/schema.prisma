@@ -9,7 +9,7 @@ generator client {
 
 datasource db {
   provider             = "mysql"
-  url                  = "mysql://m3o3tgua6pkm:pscale_pw_T8d0gpn0ndbTEuLxCPQSOvzWEkgt7yzWYpk9ARWCAXI@zx0xiavlyr56.ap-southeast-2.psdb.cloud/dengueapi?sslaccept=strict"
+  url                  = env("DATABASE_URL")
   referentialIntegrity = "prisma"
 }
 
