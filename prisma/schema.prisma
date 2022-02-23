@@ -10,6 +10,7 @@ generator client {
 datasource db {
   provider             = "mysql"
   url                  = env("DATABASE_URL")
+  // url                  = "mysql://127.0.0.1:3309/dengueapi"
   referentialIntegrity = "prisma"
 }
 
@@ -24,7 +25,9 @@ model User {
   phone_no String?
   address  String?  @db.LongText
   postcode String?
+  state    String?
   status   String?
+  fp_token String?
   group    Int?     @default(0) // 0 = normal user, 1 = dengue patient
   detail   Detail[]
   answer   Answer[]
