@@ -69,6 +69,8 @@ model Question {
   question      String
   answer_scheme String   @db.Text
   explanation   String?  @db.LongText
+  url           String?  @db.LongText
+  url_type      String? //image or video
   answer        Answer[]
 }
 

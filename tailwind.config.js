@@ -9,11 +9,20 @@ module.exports = {
   ],
   theme: {
     extend: {
+      screens: {
+        "3xl": "1920px",
+      },
       fontFamily: {
         inter: ["Inter", fontFamily.sans],
         poppins: ["Poppins", fontFamily.serif],
         ibm: ["IBM Plex Sans", fontFamily.serif],
+        poppins: ["Poppins", fontFamily.sans],
       },
+    },
+  },
+  variants: {
+    extend: {
+      borderRadius: ["hover", "group-hover"],
     },
   },
   plugins: [],

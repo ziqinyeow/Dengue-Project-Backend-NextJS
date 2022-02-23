@@ -23,7 +23,7 @@
     background-color: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    background: gray;
+    background: #47a3f3;
     border-radius: 20px;
     border: 6px solid transparent;
     background-clip: content-box;
@@ -72,13 +72,17 @@ html {
 }
 
 .layout {
-  @apply flex flex-col justify-center items-start max-w-3xl md:max-w-4xl px-4 py-8 mx-auto 2xl:max-w-5xl;
+  @apply flex flex-col items-start max-w-3xl md:max-w-5xl px-4 py-8 mx-auto 2xl:max-w-7xl 3xl:max-w-[90rem];
 }
 
 .sticky_card {
   position: sticky;
   z-index: 9;
   top: 100px;
+}
+
+.sidebar {
+  grid-template-columns: 80px auto;
 }
 
 #nprogress {

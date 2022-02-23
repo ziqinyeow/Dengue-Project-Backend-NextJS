@@ -1,4 +1,4 @@
-import { USER, PWD } from "lib/constant";
+import { ADMIN, ADMIN_PWD } from "lib/constant";
 import { NextRequest, NextResponse } from "next/server";
 
 export function middleware(req: NextRequest) {
@@ -8,7 +8,7 @@ export function middleware(req: NextRequest) {
     const auth = basicAuth.split(" ")[1];
     const [user, pwd] = Buffer.from(auth, "base64").toString().split(":");
 
-    if (user === USER && pwd === PWD) {
+    if (user === ADMIN && pwd === ADMIN_PWD) {
       return NextResponse.next();
     }
   }
