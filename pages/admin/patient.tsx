@@ -19,7 +19,7 @@ const Quiz: NextPage = ({
       p?.ic?.toLowerCase().includes(searchValue.toLowerCase())
   );
   return (
-    <Container>
+    <Container title="Admin - Patient">
       <div className="layout">
         <h2 className="mb-8">Patient</h2>
         <div className="relative w-full mb-4 group">

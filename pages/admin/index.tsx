@@ -10,19 +10,19 @@ const Home: NextPage = () => {
   const { data }: any = useSWR("/api/admin/metrics", fetcher);
 
   return (
-    <Container>
+    <Container title="Admin">
       <div className="layout">
         <h2 className="mb-8">Home</h2>
         <div className="grid w-full gap-5 lg:grid-cols-3">
-          <GradientCard>
+          <GradientCard className="p-5">
             <h4 className="mb-2">Total User</h4>
             <h2>{data?.total_user ?? "--"}</h2>
           </GradientCard>
-          <GradientCard>
+          <GradientCard className="p-5">
             <h4 className="mb-2">Total Patient</h4>
             <h2>{data?.total_patient ?? "--"}</h2>
           </GradientCard>
-          <GradientCard>
+          <GradientCard className="p-5">
             <h4 className="mb-2">Total Medical Record</h4>
             <h2>{data?.total_detail ?? "--"}</h2>
           </GradientCard>

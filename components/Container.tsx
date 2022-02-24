@@ -1,11 +1,11 @@
 import Head from "next/head";
 import NavItem from "./NavItem";
 
-const Container: React.FC = (props: any) => {
+const Container = (props: any) => {
   const { children, ...customMeta } = props;
   const meta = {
     title: "Admin",
-    description: `Full stack developer, JavaScript enthusiast, and AI student.`,
+    description: `Dengue API`,
     // image: "https://.io/static/images/banner.png",
     type: "website",
     ...customMeta,
