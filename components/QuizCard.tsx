@@ -138,7 +138,7 @@ const QuizCard = ({ show, setShow }: any) => {
               <input
                 type="text"
                 placeholder="What is the question?"
-                className="w-full px-4 py-2 mb-8 border rounded-md focus:outline-none focus:border-gray-400"
+                className="w-full px-4 py-2 mb-8 bg-white border rounded-md focus:outline-none focus:border-gray-400"
                 name="question"
                 onChange={change}
                 required
@@ -295,7 +295,7 @@ const QuizCard = ({ show, setShow }: any) => {
                 <input
                   type="text"
                   placeholder="True"
-                  className="w-full px-4 py-2 placeholder-gray-300 border rounded-md focus:outline-none focus:border-gray-400"
+                  className="w-full px-4 py-2 placeholder-gray-300 bg-white border rounded-md focus:outline-none focus:border-gray-400"
                   name="A"
                   onChange={change}
                   required
@@ -307,7 +307,7 @@ const QuizCard = ({ show, setShow }: any) => {
                 <input
                   type="text"
                   placeholder="False"
-                  className="w-full px-4 py-2 placeholder-gray-300 border rounded-md focus:outline-none focus:border-gray-400"
+                  className="w-full px-4 py-2 placeholder-gray-300 bg-white border rounded-md focus:outline-none focus:border-gray-400"
                   name="B"
                   onChange={change}
                   autoComplete="off"
@@ -318,7 +318,7 @@ const QuizCard = ({ show, setShow }: any) => {
                 <input
                   type="text"
                   placeholder="Prefer not to say"
-                  className="w-full px-4 py-2 placeholder-gray-300 border rounded-md focus:outline-none focus:border-gray-400"
+                  className="w-full px-4 py-2 placeholder-gray-300 bg-white border rounded-md focus:outline-none focus:border-gray-400"
                   name="C"
                   onChange={change}
                   autoComplete="off"
@@ -329,7 +329,7 @@ const QuizCard = ({ show, setShow }: any) => {
                 <input
                   type="text"
                   placeholder="..."
-                  className="w-full px-4 py-2 placeholder-gray-300 border rounded-md focus:outline-none focus:border-gray-400"
+                  className="w-full px-4 py-2 placeholder-gray-300 bg-white border rounded-md focus:outline-none focus:border-gray-400"
                   name="D"
                   onChange={change}
                   autoComplete="off"
@@ -341,7 +341,7 @@ const QuizCard = ({ show, setShow }: any) => {
                   type="text"
                   pattern="[ABCDabcd]{1}"
                   placeholder="A"
-                  className="w-20 px-4 py-2 placeholder-gray-300 border rounded-md focus:outline-none focus:border-gray-400"
+                  className="w-20 px-4 py-2 placeholder-gray-300 bg-white border rounded-md focus:outline-none focus:border-gray-400"
                   name="answer_scheme"
                   required
                   onChange={(e) => {
@@ -357,7 +357,7 @@ const QuizCard = ({ show, setShow }: any) => {
               <h5 className="mb-2 font-semibold">Explanation</h5>
               <textarea
                 placeholder="What is this about?"
-                className="w-full px-4 py-2 mb-2 border min-h-[100px] rounded-md focus:outline-none focus:border-gray-400"
+                className="w-full px-4 py-2 mb-2 border min-h-[100px] rounded-md focus:outline-none bg-white focus:border-gray-400"
                 name="explanation"
                 onChange={change}
               />
