@@ -61,6 +61,13 @@ export const verifyUser = async (auth: string | undefined) => {
         id: true,
         email: true,
         detail: true,
+        username: true,
+        fullname: true,
+        phone_no: true,
+        group: true,
+        ic: true,
+        address: true,
+        postcode: true,
       },
     });
 

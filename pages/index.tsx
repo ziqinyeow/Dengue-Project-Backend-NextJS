@@ -1,17 +1,12 @@
-import Container from "components/Container";
-import type { NextPage } from "next";
-import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-const Home: NextPage = () => {
+const Index = () => {
   const router = useRouter();
-
   useEffect(() => {
-    router.push("/admin");
-  });
-
-  return <Container></Container>;
+    router.push("/login");
+  }, [router]);
+  return <div></div>;
 };
 
-export default Home;
+export default Index;
