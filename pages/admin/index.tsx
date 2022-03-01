@@ -5,9 +5,19 @@ import { prisma } from "lib/prisma";
 import { User } from "@prisma/client";
 import fetcher from "lib/fetcher";
 import GradientCard from "components/GradientCard";
+import { useEffect } from "react";
+import useData from "contexts/data";
 
 const Home: NextPage = () => {
-  const { data }: any = useSWR("/api/admin/metrics", fetcher);
+  const { data: metrics }: any = useSWR("/api/admin/private/metrics", fetcher);
+  const { data, getData } = useData();
+
+  useEffect(() => {
+    const get = async () => {
+      await getData();
+    };
+    get();
+  });
 
   return (
     <Container title="Admin">
@@ -16,15 +26,15 @@ const Home: NextPage = () => {
         <div className="grid w-full gap-5 lg:grid-cols-3">
           <GradientCard className="p-5">
             <h4 className="mb-2">Total User</h4>
-            <h2>{data?.total_user ?? "--"}</h2>
+            <h2>{metrics?.total_user ?? "--"}</h2>
           </GradientCard>
           <GradientCard className="p-5">
             <h4 className="mb-2">Total Patient</h4>
-            <h2>{data?.total_patient ?? "--"}</h2>
+            <h2>{metrics?.total_patient ?? "--"}</h2>
           </GradientCard>
           <GradientCard className="p-5">
             <h4 className="mb-2">Total Medical Record</h4>
-            <h2>{data?.total_detail ?? "--"}</h2>
+            <h2>{metrics?.total_detail ?? "--"}</h2>
           </GradientCard>
         </div>
       </div>

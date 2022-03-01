@@ -31,6 +31,8 @@ export default async function middleware(req: NextRequest) {
       } catch (error) {
         return NextResponse.next();
       }
+    } else {
+      return NextResponse.next();
     }
   }
 

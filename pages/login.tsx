@@ -2,8 +2,10 @@ import Container from "components/Container";
 import type { NextPage } from "next";
 import { ChangeEvent, FormEvent, useState } from "react";
 import Head from "next/head";
+import { useRouter } from "next/router";
 
 const Home: NextPage = () => {
+  const router = useRouter();
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -19,7 +21,6 @@ const Home: NextPage = () => {
 
   const submit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("form", form);
 
     const fetcher = await fetch("/api/admin/login", {
       method: "POST",
@@ -31,10 +32,9 @@ const Home: NextPage = () => {
         "Content-Type": "application/json",
       },
     });
-    console.log("fetcher", fetcher);
-
-    const data = await fetcher.json();
-    console.log(data);
+    if (fetcher.ok) {
+      router.push("/admin");
+    }
   };
 
   return (

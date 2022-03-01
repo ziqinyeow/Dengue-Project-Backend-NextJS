@@ -22,7 +22,8 @@
       "controllers/*": ["controllers/*"],
       "lib/*": ["lib/*"],
       "public/*": ["public/*"],
-      "styles/*": ["styles/*"]
+      "styles/*": ["styles/*"],
+      "contexts/*": ["contexts/*"]
       // "types/*": ["types/*"]
     }
   },

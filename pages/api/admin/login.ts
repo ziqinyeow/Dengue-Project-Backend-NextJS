@@ -15,17 +15,16 @@ export default async function handler(
 
   try {
     const { email, password } = req.body;
-    console.log(req.body);
 
-    const user = await prisma.admin.findUnique({
+    const admin = await prisma.admin.findUnique({
       where: {
         email,
       },
     });
-    if (user && user.password === password) {
+    if (admin && admin.password === password) {
       const token = await new SignJWT({
         email,
-        password,
+        admin: admin?.type,
       })
         .setProtectedHeader({ alg: "HS256" })
         .setJti(nanoid())
@@ -43,9 +42,11 @@ export default async function handler(
 
       res.setHeader("Set-Cookie", serialised);
 
-      res.status(200).json({ message: "Success!" });
+      return res.status(200).json({ message: "Success!" });
     } else {
-      res.json({ message: "Invalid credentials!" });
+      return res.status(405).json({ message: "Invalid credentials!" });
     }
-  } catch (error) {}
+  } catch (error) {
+    return res.status(405).json({ message: "Invalid credentials!" });
+  }
 }

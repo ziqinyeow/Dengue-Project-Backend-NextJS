@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import NProgress from "nprogress";
 import { useEffect } from "react";
 import { Toaster } from "react-hot-toast";
+import { DataContext } from "contexts/data";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -28,10 +29,10 @@ function MyApp({ Component, pageProps }: AppProps) {
   }, [router]);
 
   return (
-    <div>
+    <DataContext>
       <Toaster />
       <Component {...pageProps} />
-    </div>
+    </DataContext>
   );
 }
 

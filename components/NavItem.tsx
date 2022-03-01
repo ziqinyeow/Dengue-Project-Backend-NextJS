@@ -43,7 +43,7 @@ const NavItem: React.FC<NavItem> = ({ href, children, logo }) => {
       >
         <div>{children}</div>
         {isActive && !logo && (
-          <div className="absolute top-0 w-[70%] h-full transform -rotate-90 -right-[2.35rem]">
+          <div className="absolute top-0 w-[70%] h-full transform -rotate-90 -right-[2.5rem]">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
               <path
                 fill="currentColor"

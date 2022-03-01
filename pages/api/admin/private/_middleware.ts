@@ -1,20 +1,22 @@
+import { jwtVerify } from "jose";
+import { TOKEN_SECRET } from "lib/constant";
 import { NextRequest, NextResponse } from "next/server";
 
-export function middleware(req: NextRequest) {
+export default async function middleware(req: NextRequest) {
   const { cookies } = req;
   const jwt = cookies.token;
-  // const basicAuth = req.headers.get("authorization");
-  // if (basicAuth) {
-  //   const auth = basicAuth.split(" ")[1];
-  //   const [user, pwd] = Buffer.from(auth, "base64").toString().split(":");
-  //   if (user === ADMIN && pwd === ADMIN_PWD) {
-  //     return NextResponse.next();
-  //   }
-  // }
-  // return new Response("Auth required", {
-  //   status: 401,
-  //   headers: {
-  //     "WWW-Authenticate": 'Basic realm="Secure Area"',
-  //   },
-  // });
+
+  try {
+    const { payload } = await jwtVerify(
+      jwt,
+      new TextEncoder().encode(TOKEN_SECRET)
+    );
+    if (payload) {
+      return NextResponse.next();
+    } else {
+      throw new Error();
+    }
+  } catch (error) {
+    return NextResponse.redirect("/login");
+  }
 }
