@@ -117,18 +117,23 @@ export default async function handler(
           text: `Your tac no to reset password: ${id}`,
         };
 
-        transporter.sendMail(mailOptions, function (error, info) {
-          if (error) {
-            detail = error;
+        await new Promise((resolve, reject) => {
+          transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+              detail = error;
 
-            return res
-              .status(400)
-              .json({ error, verified: false, message: "Email not sent" });
-          } else {
-            detail = info;
-            return res.status(200).json({ message: "Check your email" });
-          }
+              return res
+                .status(400)
+                .json({ error, verified: false, message: "Email not sent" });
+            } else {
+              detail = info;
+              return res
+                .status(200)
+                .json({ verified: true, message: "Check your email" });
+            }
+          });
         });
+
         return res.status(200).json({
           detail,
           verified: true,
