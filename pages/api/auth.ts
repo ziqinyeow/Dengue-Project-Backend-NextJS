@@ -4,7 +4,7 @@ import { prisma } from "lib/prisma";
 import bcrypt from "bcryptjs";
 import nodemailer from "nodemailer";
 import { nanoid } from "nanoid";
-import { EMAIL, PASSWORD } from "lib/constant";
+import { DESMOS_EMAIL, DESMOS_PASSWORD } from "lib/constant";
 import otpGenerator from "otp-generator";
 
 export default async function handler(
@@ -102,8 +102,8 @@ export default async function handler(
         let transporter = nodemailer.createTransport({
           service: "gmail",
           auth: {
-            user: EMAIL,
-            pass: PASSWORD,
+            user: DESMOS_EMAIL,
+            pass: DESMOS_PASSWORD,
           },
           tls: {
             rejectUnauthorized: false,
@@ -111,7 +111,7 @@ export default async function handler(
         });
 
         var mailOptions = {
-          from: EMAIL,
+          from: DESMOS_EMAIL,
           to: email,
           subject: "YOUR TAC NO.",
           text: `Your tac no to reset password: ${id}`,
