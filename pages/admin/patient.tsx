@@ -8,12 +8,13 @@ import { useState } from "react";
 import { prisma } from "lib/prisma";
 import { Patient } from "@prisma/client";
 import Link from "next/link";
+import useData from "contexts/data";
 
-const Quiz: NextPage = ({
-  patient,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Quiz: NextPage = () => {
   const [searchValue, setSearchValue] = useState("");
-  const filterData = patient?.filter(
+  const { data } = useData();
+
+  const filterData = data?.patient?.filter(
     (p: Patient) =>
       p?.email?.toLowerCase().includes(searchValue.toLowerCase()) ||
       p?.ic?.toLowerCase().includes(searchValue.toLowerCase())
@@ -25,16 +26,17 @@ const Quiz: NextPage = ({
         <div className="relative w-full mb-4 group">
           <div className="absolute transition duration-500 rounded-md -inset-0.5 bg-gradient-to-r from-blue-500 to-green-400 opacity-20 group-hover:duration-200 group-hover:opacity-100 blur" />
           <input
-            className="relative w-full p-3 bg-white rounded-md focus:outline-none focus:ring focus:ring-primary-100"
+            className="relative w-full p-3 text-sm bg-white rounded-md focus:outline-none focus:ring focus:ring-primary-100"
             type="text"
             placeholder="Search patient..."
             onChange={(e) => setSearchValue(e.target.value)}
           />
         </div>
         <div className="flex justify-end w-full mb-10 text-gray-500">
-          {filterData.length} {filterData.length <= 1 ? "patient" : "patients"}
+          {filterData?.length}{" "}
+          {filterData?.length <= 1 ? "patient" : "patients"}
         </div>
-        {filterData.length === 0 ? (
+        {filterData?.length === 0 ? (
           <div>
             <div>Patient {searchValue} not found.</div>
           </div>
@@ -48,7 +50,7 @@ const Quiz: NextPage = ({
             </div>
           </div>
         )}
-        {filterData.map((d: Patient, i: number) => (
+        {filterData?.map((d: Patient, i: number) => (
           <Link key={d?.id} href={`/admin/user/${d?.id}`}>
             <a className="relative w-full mb-4 group">
               <div className="absolute transition duration-500 rounded-md -inset-0.5 bg-gradient-to-r from-blue-500 to-green-200 opacity-20 group-hover:duration-200 group-hover:opacity-100 blur" />
@@ -67,10 +69,10 @@ const Quiz: NextPage = ({
 
 export default Quiz;
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  const patient: Patient[] = await prisma.patient.findMany();
+// export const getServerSideProps: GetServerSideProps = async () => {
+//   const patient: Patient[] = await prisma.patient.findMany();
 
-  return {
-    props: { patient },
-  };
-};
+//   return {
+//     props: { patient },
+//   };
+// };

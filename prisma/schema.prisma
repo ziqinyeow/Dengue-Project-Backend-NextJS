@@ -22,29 +22,48 @@ model Admin {
 }
 
 model User {
-  id       String   @id @default(cuid())
-  email    String   @unique
+  id       String    @id @default(cuid())
+  email    String    @unique
   password String
-  token    String?  @db.Text
+  token    String?   @db.Text
   fullname String?
   username String?
-  ic       String   @unique
+  ic       String    @unique
   phone_no String?
-  address  String?  @db.LongText
+  address  String?   @db.LongText
   postcode String?
   state    String?
   status   String?
   fp_token String?
-  group    Int?     @default(0) // 0 = normal user, 1 = dengue patient
+  group    Int?      @default(0) // 0 = normal user, 1 = dengue patient
   detail   Detail[]
   answer   Answer[]
+  symptom  Symptom[]
+
+  patient    Patient? @relation(fields: [patient_id], references: [id], onDelete: SetNull)
+  patient_id String?
 }
 
 // to allow unregistered user to be record as a patient
 model Patient {
-  id    String @id @default(cuid())
-  ic    String @unique
-  email String @unique
+  id     String    @id @default(cuid())
+  ic     String    @unique
+  email  String    @unique
+  status String? // active, completed monitoring, admitted
+  start  DateTime  @default(now())
+  end    DateTime? @updatedAt
+  user   User?
+}
+
+model Symptom {
+  id        String   @id @default(cuid())
+  response  String? // 7 questions -> 1 1 2 4 -> question 1: selection 1, question 2: selection 4
+  status    String?
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [user_id], references: [id])
+  user_id   String
+
+  @@index([user_id])
 }
 
 // diagnose history (KIV)

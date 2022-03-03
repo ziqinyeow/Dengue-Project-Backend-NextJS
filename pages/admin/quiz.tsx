@@ -29,7 +29,7 @@ const Quiz: NextPage = ({
           <div className="relative w-full group">
             <div className="absolute transition duration-500 rounded-md -inset-0.5 bg-gradient-to-r from-blue-500 to-green-400 opacity-20 group-hover:duration-200 group-hover:opacity-100 blur" />
             <input
-              className="relative w-full p-3 bg-white rounded-md focus:outline-none focus:ring focus:ring-primary-100"
+              className="relative w-full p-3 text-sm bg-white rounded-md focus:outline-none focus:ring focus:ring-primary-100"
               type="text"
               placeholder="Search question..."
               onChange={(e) => setSearchValue(e.target.value)}
@@ -37,7 +37,7 @@ const Quiz: NextPage = ({
           </div>
           <GradientCard>
             <button
-              className="p-4"
+              className="p-3"
               onClick={() => setCreateQuizCardVisible(1)}
               title="Create Quiz"
             >

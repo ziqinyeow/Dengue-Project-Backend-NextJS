@@ -39,22 +39,28 @@ export default async function handler(
         state: true,
       },
     });
+    const patient = await prisma.patient.findMany({});
     const detail = await prisma.detail.findMany({});
     if (admin.type === "admin") {
       return res
         .status(200)
-        .json({ user, detail, type: "admin", message: "ok" });
+        .json({ user, patient, detail, type: "admin", message: "ok" });
     }
-    const admins = await prisma.admin.findMany({
-      select: {
-        id: true,
-        email: true,
-        type: true,
-      },
+    // const admins = await prisma.admin.findMany({
+    //   select: {
+    //     id: true,
+    //     email: true,
+    //     type: true,
+    //   },
+    // });
+    return res.status(200).json({
+      // admin: admins,
+      user,
+      patient,
+      detail,
+      type: "superuser",
+      message: "ok",
     });
-    return res
-      .status(200)
-      .json({ admin: admins, user, detail, type: "superuser", message: "ok" });
   } catch (error) {
     return res.status(400).json({ message: "Invalid" });
   }

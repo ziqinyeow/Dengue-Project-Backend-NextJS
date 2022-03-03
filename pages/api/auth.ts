@@ -5,6 +5,7 @@ import bcrypt from "bcryptjs";
 import nodemailer from "nodemailer";
 import { nanoid } from "nanoid";
 import { EMAIL, PASSWORD } from "lib/constant";
+import otpGenerator from "otp-generator";
 
 export default async function handler(
   req: NextApiRequest,
@@ -78,7 +79,11 @@ export default async function handler(
       }
 
     case "req_tac":
-      const id = nanoid();
+      const id = otpGenerator.generate(6, {
+        lowerCaseAlphabets: false,
+        upperCaseAlphabets: false,
+        specialChars: false,
+      });
       try {
         const user = await prisma.user.update({
           where: {
@@ -89,9 +94,11 @@ export default async function handler(
           },
         });
         if (!user) {
-          return res.status(404).json({ message: "User not found" });
+          return res
+            .status(404)
+            .json({ verified: false, message: "User not found" });
         }
-        var transporter = nodemailer.createTransport({
+        let transporter = nodemailer.createTransport({
           service: "gmail",
           auth: {
             user: EMAIL,
@@ -106,40 +113,81 @@ export default async function handler(
           from: EMAIL,
           to: email,
           subject: "YOUR TAC NO.",
-          text: id,
+          text: `Your tac no to reset password: ${id}`,
         };
 
         transporter.sendMail(mailOptions, function (error, info) {
           if (error) {
-            console.log(error);
-            return res.status(400).json({ message: "Email not sent" });
+            return res
+              .status(400)
+              .json({ verified: false, message: "Email not sent" });
           } else {
-            console.log("Email sent: " + info.response);
             return res.status(200).json({ message: "Check your email" });
           }
         });
       } catch (error) {
-        console.log(error);
-
-        return res.status(400).json({ message: "Email not sent" });
+        return res
+          .status(400)
+          .json({ verified: false, message: "Email not sent" });
       }
-      return res.status(400).json({ message: "Email not sent" });
+      return res
+        .status(200)
+        .json({ verified: true, message: "Check your email" });
 
-    case "res_tac":
+    case "ver_tac":
       try {
         const { code } = req.body;
+        if (!code && code == "") {
+          return res.status(400).json({ verified: false, message: "No OTP" });
+        }
         const user = await prisma.user.findUnique({
           where: {
             email,
           },
         });
         if (!user) {
-          return res.status(404).json({ message: "User not found" });
+          return res
+            .status(404)
+            .json({ verified: false, message: "User not found" });
         }
         if (!user.fp_token) {
           return res
             .status(404)
             .json({ message: "Please request the TAC again" });
+        }
+        if (user.fp_token === code) {
+          return res.status(200).json({ verified: true, message: "ok" });
+        } else {
+          return res
+            .status(400)
+            .json({ verified: false, message: "Invalid OTP" });
+        }
+      } catch (error) {
+        return res
+          .status(404)
+          .json({ verified: false, message: "Error carrying out this task" });
+      }
+
+    case "res_tac":
+      try {
+        const { code } = req.body;
+        if (!code && code == "") {
+          return res.status(400).json({ verified: false, message: "No OTP" });
+        }
+        const user = await prisma.user.findUnique({
+          where: {
+            email,
+          },
+        });
+        if (!user) {
+          return res
+            .status(404)
+            .json({ verified: false, message: "User not found" });
+        }
+        if (!user.fp_token) {
+          return res
+            .status(404)
+            .json({ verified: false, message: "Please request the TAC again" });
         }
         if (user.fp_token === code) {
           const salt = await bcrypt.genSalt(10);
@@ -150,14 +198,17 @@ export default async function handler(
             },
             data: {
               password: hashedPassword,
+              fp_token: "",
             },
           });
-          return res.status(200).json({ message: "Password updated" });
+          return res
+            .status(200)
+            .json({ verified: true, message: "Password updated" });
         }
       } catch (error) {
         return res
           .status(404)
-          .json({ message: "Error carrying out this task" });
+          .json({ verified: false, message: "Error carrying out this task" });
       }
 
     default:

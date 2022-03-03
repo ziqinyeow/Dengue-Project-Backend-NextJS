@@ -14,8 +14,8 @@ module.exports = {
       },
       fontFamily: {
         inter: ["Inter", fontFamily.sans],
-        poppins: ["Poppins", fontFamily.serif],
         ibm: ["IBM Plex Sans", fontFamily.serif],
+        roboto: ["Roboto", fontFamily.serif],
         poppins: ["Poppins", fontFamily.sans],
       },
     },

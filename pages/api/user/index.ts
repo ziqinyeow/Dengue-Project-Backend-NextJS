@@ -10,6 +10,8 @@ export default async function handler(
   switch (method) {
     case "GET":
       return await User.getAllData(req, res);
+    case "PUT":
+      return await User.updateData(req, res);
     default:
       return res.status(405).json({ message: "Method Not Allowed" });
   }

@@ -53,32 +53,8 @@ html {
   @apply flex items-center justify-between w-full max-w-3xl px-4 py-1 mx-auto my-0 md:max-w-4xl 2xl:max-w-5xl;
 }
 
-.sticky_nav {
-  position: sticky;
-  z-index: 10;
-  top: 0;
-}
-
-.backdrop {
-  backdrop-filter: saturate(180%) blur(20px);
-  transition: background-color 0.1 ease-in-out;
-}
-
-@supports not (backdrop-filter: none) {
-  .backdrop {
-    backdrop-filter: none;
-    @apply bg-opacity-100;
-  }
-}
-
 .layout {
   @apply flex flex-col items-start max-w-3xl md:max-w-5xl px-4 py-8 mx-auto 2xl:max-w-7xl 3xl:max-w-[90rem];
-}
-
-.sticky_card {
-  position: sticky;
-  z-index: 9;
-  top: 100px;
 }
 
 .sidebar {

@@ -5,19 +5,11 @@ import { prisma } from "lib/prisma";
 import { User } from "@prisma/client";
 import fetcher from "lib/fetcher";
 import GradientCard from "components/GradientCard";
-import { useEffect } from "react";
 import useData from "contexts/data";
 
 const Home: NextPage = () => {
   const { data: metrics }: any = useSWR("/api/admin/private/metrics", fetcher);
-  const { data, getData } = useData();
-
-  useEffect(() => {
-    const get = async () => {
-      await getData();
-    };
-    get();
-  });
+  const { data } = useData();
 
   return (
     <Container title="Admin">
@@ -44,10 +36,10 @@ const Home: NextPage = () => {
 
 export default Home;
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  const question: User[] = await prisma.user.findMany();
+// export const getServerSideProps: GetServerSideProps = async () => {
+//   const question: User[] = await prisma.user.findMany();
 
-  return {
-    props: { question },
-  };
-};
+//   return {
+//     props: { question },
+//   };
+// };
