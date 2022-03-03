@@ -129,15 +129,11 @@ export default async function handler(
             return res.status(200).json({ message: "Check your email" });
           }
         });
-        return res
-          .status(200)
-          .json({
-            detail,
-            DESMOS_EMAIL,
-            DESMOS_PASSWORD,
-            verified: true,
-            message: "Check your email",
-          });
+        return res.status(200).json({
+          detail,
+          verified: true,
+          message: "Check your email",
+        });
       } catch (error) {
         return res
           .status(400)
