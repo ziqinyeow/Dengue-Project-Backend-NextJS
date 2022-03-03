@@ -84,6 +84,7 @@ export default async function handler(
         upperCaseAlphabets: false,
         specialChars: false,
       });
+      let info = null;
       try {
         const user = await prisma.user.update({
           where: {
@@ -118,10 +119,16 @@ export default async function handler(
 
         transporter.sendMail(mailOptions, function (error, info) {
           if (error) {
+            console.log(error);
+            // @ts-ignore
+            info = error.message;
+
             return res
               .status(400)
               .json({ error, verified: false, message: "Email not sent" });
           } else {
+            info = info;
+            console.log(info);
             return res.status(200).json({ message: "Check your email" });
           }
         });
@@ -132,7 +139,7 @@ export default async function handler(
       }
       return res
         .status(200)
-        .json({ verified: true, message: "Check your email" });
+        .json({ info, verified: true, message: "Check your email" });
 
     case "ver_tac":
       try {
