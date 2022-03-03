@@ -120,7 +120,7 @@ export default async function handler(
           if (error) {
             return res
               .status(400)
-              .json({ verified: false, message: "Email not sent" });
+              .json({ error, verified: false, message: "Email not sent" });
           } else {
             return res.status(200).json({ message: "Check your email" });
           }
@@ -128,7 +128,7 @@ export default async function handler(
       } catch (error) {
         return res
           .status(400)
-          .json({ verified: false, message: "Email not sent" });
+          .json({ error, verified: false, message: "Email not sent" });
       }
       return res
         .status(200)
