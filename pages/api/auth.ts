@@ -119,7 +119,6 @@ export default async function handler(
 
         transporter.sendMail(mailOptions, function (error, info) {
           if (error) {
-            console.log(error);
             detail = error;
 
             return res
@@ -127,13 +126,18 @@ export default async function handler(
               .json({ error, verified: false, message: "Email not sent" });
           } else {
             detail = info;
-            console.log(info);
             return res.status(200).json({ message: "Check your email" });
           }
         });
         return res
           .status(200)
-          .json({ detail, verified: true, message: "Check your email" });
+          .json({
+            detail,
+            DESMOS_EMAIL,
+            DESMOS_PASSWORD,
+            verified: true,
+            message: "Check your email",
+          });
       } catch (error) {
         return res
           .status(400)
