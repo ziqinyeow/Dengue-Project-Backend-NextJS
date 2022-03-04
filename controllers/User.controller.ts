@@ -3,6 +3,7 @@ import { prisma } from "lib/prisma";
 import { verifyUser } from "lib/auth";
 import { TOKEN_SECRET } from "lib/constant";
 import { jwtVerify } from "jose";
+import bcrypt from "bcryptjs";
 
 export const getAllData = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -19,6 +20,58 @@ export const getAllData = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 };
 
+export const resetPassword = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {
+  try {
+    const { old_pwd, new_pwd } = req.body;
+    const auth = req.headers.authorization;
+    const token = auth && auth.split(" ")[1];
+    if (!token) {
+      return null;
+    }
+    const { payload } = await jwtVerify(
+      token,
+      new TextEncoder().encode(TOKEN_SECRET)
+    );
+
+    const { email } = payload;
+
+    if (!email) {
+      throw new Error("");
+    }
+
+    const user = await prisma.user.findUnique({
+      where: {
+        // @ts-ignore
+        email,
+      },
+    });
+
+    if (user && (await bcrypt.compare(old_pwd, user.password))) {
+      const u = await prisma.user.update({
+        where: {
+          // @ts-ignore
+          email,
+        },
+        data: {
+          password: new_pwd,
+        },
+      });
+      if (u) {
+        return res.status(200).json({ message: "ok" });
+      } else {
+        throw new Error("");
+      }
+    } else {
+      return res.status(400).json({ message: "Invalid credentials" });
+    }
+  } catch (error) {
+    return res.status(400).json({ message: "error updating" });
+  }
+};
+
 export const updateData = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const auth = req.headers.authorization;
@@ -32,7 +85,6 @@ export const updateData = async (req: NextApiRequest, res: NextApiResponse) => {
     );
 
     const { email } = payload;
-    console.log();
 
     if (!email) {
       throw new Error("");
