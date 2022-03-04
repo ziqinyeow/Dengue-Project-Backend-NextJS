@@ -26,6 +26,9 @@ export const resetPassword = async (
 ) => {
   try {
     const { old_pwd, new_pwd } = req.body;
+    if (!old_pwd || !new_pwd || old_pwd === new_pwd) {
+      return res.status(400).json({ message: "Invalid credential" });
+    }
     const auth = req.headers.authorization;
     const token = auth && auth.split(" ")[1];
     if (!token) {
