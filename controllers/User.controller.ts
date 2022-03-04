@@ -94,13 +94,12 @@ export const updateData = async (req: NextApiRequest, res: NextApiResponse) => {
     if (!email) {
       throw new Error("");
     }
-
     const user = await prisma.user.update({
       where: {
         // @ts-ignore
         email,
       },
-      data: { ...JSON.parse(req.body) },
+      data: { ...req.body },
     });
     if (user) {
       return res.status(200).json({ message: "ok" });
