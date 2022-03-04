@@ -53,13 +53,15 @@ export const resetPassword = async (
     });
 
     if (user && (await bcrypt.compare(old_pwd, user.password))) {
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(new_pwd, salt);
       const u = await prisma.user.update({
         where: {
           // @ts-ignore
           email,
         },
         data: {
-          password: new_pwd,
+          password: hashedPassword,
         },
       });
       if (u) {
