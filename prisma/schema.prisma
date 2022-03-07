@@ -41,20 +41,19 @@ model User {
   answer   Answer[]
   symptom  Symptom[]
   history  History[]
-
-  patient    Patient? @relation(fields: [patient_id], references: [id], onDelete: SetNull)
-  patient_id String?
+  patient  Patient?
 }
 
 // to allow unregistered user to be record as a patient
 model Patient {
-  id     String    @id @default(cuid())
-  ic     String    @unique
-  email  String    @unique
-  status String? // active, completed monitoring, admitted
-  start  DateTime  @default(now())
-  end    DateTime? @updatedAt
-  user   User?
+  id      String    @id @default(cuid())
+  ic      String    @unique
+  email   String    @unique
+  status  String? // active, completed monitoring, admitted
+  start   DateTime  @default(now())
+  end     DateTime? @updatedAt
+  user    User?     @relation(fields: [user_id], references: [id], onDelete: SetNull)
+  user_id String
 }
 
 model Symptom {

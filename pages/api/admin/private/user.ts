@@ -33,15 +33,6 @@ export default async function handler(
               email,
             },
           });
-          //   var date = new Date();
-          //   var now_utc = Date.UTC(
-          //     date.getUTCFullYear(),
-          //     date.getUTCMonth(),
-          //     date.getUTCDate(),
-          //     date.getUTCHours() + 8,
-          //     date.getUTCMinutes(),
-          //     date.getUTCSeconds()
-          //   );
           const history = await prisma.history.create({
             data: {
               ic: patient?.ic,
@@ -59,7 +50,7 @@ export default async function handler(
         }
         // switch from user to patient
         else if (user.group === "patient") {
-          await prisma.patient.create({
+          const patient = await prisma.patient.create({
             data: {
               email,
               ic,
@@ -70,6 +61,7 @@ export default async function handler(
               },
             },
           });
+          console.log(patient);
         }
         return res.status(200).json({ message: "Success updated" });
       } catch (error) {

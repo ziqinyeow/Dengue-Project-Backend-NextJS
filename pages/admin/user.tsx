@@ -16,6 +16,7 @@ import CreateAdminCard from "components/CreateAdminCard";
 import toast from "react-hot-toast";
 import { CSVLink } from "react-csv";
 import UpdateUserCard from "components/UpdateUserCard";
+import Link from "next/link";
 
 const User: NextPage = () => {
   const router = useRouter();
@@ -32,7 +33,6 @@ const User: NextPage = () => {
   });
 
   const headers = [
-    { label: "id", key: "id" },
     { label: "email", key: "email" },
     { label: "username", key: "username" },
     { label: "fullname", key: "fullname" },
@@ -63,7 +63,7 @@ const User: NextPage = () => {
       <div className="layout">
         <h2 className="mb-5">User</h2>
         <h5 className="mb-8 text-sm text-gray-500">
-          All admin is able to view this page.
+          All admins are able to view this page.
         </h5>
         <div className="flex items-center w-full gap-5 mb-10">
           <div className="relative w-full group">
@@ -114,18 +114,20 @@ const User: NextPage = () => {
             />
             <div className="flex items-center justify-between w-full gap-3 py-1 mb-5">
               <div className="flex items-center w-full gap-3 px-2">
-                <input
-                  className="w-5 h-5 transition duration-200 bg-white border border-gray-300 rounded-sm outline-none cursor-pointer checked:bg-blue-600 checked:border-blue-600 focus:outline-none"
-                  type="checkbox"
-                  onChange={(e) => {
-                    if (e.target.checked) {
-                      setSelect(filterData);
-                    } else {
-                      setSelect([]);
-                    }
-                  }}
-                  checked={filterData?.length === select?.length}
-                />
+                {data?.user && (
+                  <input
+                    className="w-5 h-5 transition duration-200 bg-white border border-gray-300 rounded-sm outline-none cursor-pointer checked:bg-blue-600 checked:border-blue-600 focus:outline-none"
+                    type="checkbox"
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setSelect(filterData);
+                      } else {
+                        setSelect([]);
+                      }
+                    }}
+                    checked={filterData?.length === select?.length}
+                  />
+                )}
                 <div
                   onClick={() => {
                     router.reload();
@@ -281,18 +283,22 @@ const User: NextPage = () => {
                       {d?.group === "user" ? "user" : "patient"}
                     </div>
                     <div className="cursor-pointer">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        className="text-gray-300 hover:text-gray-400"
-                      >
-                        <path
-                          fill="currentColor"
-                          d="M19.071 4.929c-3.899-3.898-10.243-3.898-14.143 0-3.898 3.899-3.898 10.244 0 14.143 3.899 3.898 10.243 3.898 14.143 0 3.899-3.9 3.899-10.244 0-14.143zm-3.536 10.607-2.828-2.829-3.535 3.536-1.414-1.414 3.535-3.536-2.828-2.829h7.07v7.072z"
-                        ></path>
-                      </svg>
+                      <Link href={`/admin/user/${d?.id}`}>
+                        <a target="_blank" rel="noopener noreferrer">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            className="text-gray-300 hover:text-gray-400"
+                          >
+                            <path
+                              fill="currentColor"
+                              d="M19.071 4.929c-3.899-3.898-10.243-3.898-14.143 0-3.898 3.899-3.898 10.244 0 14.143 3.899 3.898 10.243 3.898 14.143 0 3.899-3.9 3.899-10.244 0-14.143zm-3.536 10.607-2.828-2.829-3.535 3.536-1.414-1.414 3.535-3.536-2.828-2.829h7.07v7.072z"
+                            ></path>
+                          </svg>
+                        </a>
+                      </Link>
                     </div>
                   </div>
                 </div>

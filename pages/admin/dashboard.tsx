@@ -41,7 +41,6 @@ const Superuser: NextPage = ({
   });
 
   const headers = [
-    { label: "id", key: "id" },
     { label: "email", key: "email" },
     { label: "type", key: "type" },
   ];
