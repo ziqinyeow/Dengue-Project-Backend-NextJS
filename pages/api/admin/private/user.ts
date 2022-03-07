@@ -23,8 +23,6 @@ export default async function handler(
             group,
           },
         });
-        console.log(user);
-
         if (!user) {
           throw new Error("");
         }
@@ -33,6 +31,29 @@ export default async function handler(
           const patient = await prisma.patient.delete({
             where: {
               email,
+            },
+          });
+          //   var date = new Date();
+          //   var now_utc = Date.UTC(
+          //     date.getUTCFullYear(),
+          //     date.getUTCMonth(),
+          //     date.getUTCDate(),
+          //     date.getUTCHours() + 8,
+          //     date.getUTCMinutes(),
+          //     date.getUTCSeconds()
+          //   );
+          const history = await prisma.history.create({
+            data: {
+              ic: patient?.ic,
+              email: patient?.email,
+              start: patient?.start,
+              end: new Date(),
+              status: patient?.status ?? "",
+              user: {
+                connect: {
+                  email: patient?.email,
+                },
+              },
             },
           });
         }
@@ -52,6 +73,8 @@ export default async function handler(
         }
         return res.status(200).json({ message: "Success updated" });
       } catch (error) {
+        console.log(error);
+
         return res.status(400).json({ message: "error" });
       }
 

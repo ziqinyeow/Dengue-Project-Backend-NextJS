@@ -34,7 +34,14 @@ const User: NextPage = () => {
   const headers = [
     { label: "id", key: "id" },
     { label: "email", key: "email" },
-    { label: "type", key: "type" },
+    { label: "username", key: "username" },
+    { label: "fullname", key: "fullname" },
+    { label: "ic", key: "ic" },
+    { label: "group", key: "group" },
+    { label: "phone_no", key: "phone_no" },
+    { label: "address", key: "address" },
+    { label: "postcode", key: "postcode" },
+    { label: "state", key: "state" },
   ];
 
   const csv_report = {
@@ -158,7 +165,7 @@ const User: NextPage = () => {
                   <div>
                     <button
                       onClick={() => {}}
-                      disabled={select.length === 0}
+                      disabled={select?.length === 0}
                       className="flex items-center gap-2 px-3 py-1 text-sm border rounded-md disabled:text-gray-400 hover:bg-gray-200 hover:text-gray-700 disabled:bg-gray-50"
                     >
                       <svg
@@ -180,7 +187,7 @@ const User: NextPage = () => {
                   <CSVLink {...csv_report}>
                     <button
                       onClick={() => {}}
-                      disabled={select.length === 0}
+                      disabled={select?.length === 0}
                       className="flex items-center gap-2 px-3 py-1 text-sm border rounded-md disabled:text-gray-400 hover:bg-gray-200 hover:text-gray-700 disabled:bg-gray-50"
                     >
                       <svg

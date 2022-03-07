@@ -222,6 +222,9 @@ export default async function handler(
           .json({ verified: false, message: "Error carrying out this task" });
       }
 
+    case "test":
+      return res.status(200).json({ date: new Date() });
+
     default:
       return res.status(405).json({ message: "Type not allowed" });
   }
