@@ -1,5 +1,4 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
-import { nanoid } from "nanoid";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 // import { storage } from "../lib/firebase/config";
