@@ -170,14 +170,13 @@ const Container = (props: any) => {
               onClick={async () => {
                 try {
                   const fetcher = await fetch("/api/admin/logout");
-
                   if (fetcher.ok) {
                     removeData();
                     router.push("/login");
                   }
                 } catch (error) {
                   removeData();
-                  router.push("/login");
+                  router.push("login");
                 }
               }}
             >
