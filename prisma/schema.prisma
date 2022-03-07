@@ -33,9 +33,10 @@ model User {
   address  String?   @db.LongText
   postcode String?
   state    String?
+  gender   String?
   status   String?
   fp_token String?
-  group    Int?      @default(0) // 0 = normal user, 1 = dengue patient
+  group    String?   @default("user") //  user, patient
   detail   Detail[]
   answer   Answer[]
   symptom  Symptom[]
