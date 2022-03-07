@@ -38,6 +38,9 @@ export default async function handler(
         postcode: true,
         state: true,
       },
+      orderBy: {
+        group: "asc",
+      },
     });
     const patient = await prisma.patient.findMany({});
     const detail = await prisma.detail.findMany({});

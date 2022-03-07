@@ -40,6 +40,7 @@ model User {
   detail   Detail[]
   answer   Answer[]
   symptom  Symptom[]
+  history  History[]
 
   patient    Patient? @relation(fields: [patient_id], references: [id], onDelete: SetNull)
   patient_id String?
@@ -69,10 +70,14 @@ model Symptom {
 
 // diagnose history (KIV)
 model History {
-  id    String    @id @default(cuid())
-  ic    String
-  start DateTime  @default(now())
-  end   DateTime?
+  id      String    @id @default(cuid())
+  ic      String
+  email   String
+  status  String? // active, completed monitoring, admitted
+  start   DateTime  @default(now())
+  end     DateTime? @updatedAt
+  user    User?     @relation(fields: [user_id], references: [id])
+  user_id String
 }
 
 model Detail {

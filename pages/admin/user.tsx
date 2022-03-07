@@ -27,13 +27,8 @@ const User: NextPage = () => {
   const [updateUserData, setUpdateUserData] = useState({
     id: "",
     email: "",
-    type: 0,
-  });
-  const [deleteAdminCardVisible, setDeleteAdminCardVisible] = useState(0);
-  const [deleteAdminData, setDeleteAdminData] = useState({
-    id: "",
-    email: "",
     type: "",
+    ic: "",
   });
 
   const headers = [
@@ -43,7 +38,7 @@ const User: NextPage = () => {
   ];
 
   const csv_report = {
-    filename: "admin.csv",
+    filename: "user.csv",
     headers: headers,
     data: select,
   };
@@ -52,6 +47,7 @@ const User: NextPage = () => {
     (d: User) =>
       d?.email?.toLowerCase().includes(searchValue.toLowerCase()) ||
       d?.state?.toLowerCase().includes(searchValue.toLowerCase()) ||
+      d?.group?.toLowerCase().includes(searchValue.toLowerCase()) ||
       d?.fullname?.toLowerCase().includes(searchValue.toLowerCase())
   );
 
@@ -107,6 +103,7 @@ const User: NextPage = () => {
               show={updateUserCardVisible}
               setShow={setUpdateUserCardVisible}
               data={updateUserData}
+              setData={setUpdateUserData}
             />
             <div className="flex items-center justify-between w-full gap-3 py-1 mb-5">
               <div className="flex items-center w-full gap-3 px-2">
@@ -262,18 +259,19 @@ const User: NextPage = () => {
                         setUpdateUserData({
                           id: d?.id,
                           email: d?.email,
-                          type: Number(d?.group),
+                          type: String(d?.group),
+                          ic: d?.ic,
                         });
 
                         setUpdateUserCardVisible(1);
                       }}
                       className={`text-xs cursor-pointer mx-2 py-1 px-4 ${
-                        d?.group === 0
+                        d?.group === "user"
                           ? "bg-green-200 hover:bg-green-300"
                           : "bg-red-200 hover:bg-red-300"
                       } rounded-md`}
                     >
-                      {d?.group === 0 ? "user" : "patient"}
+                      {d?.group === "user" ? "user" : "patient"}
                     </div>
                     <div className="cursor-pointer">
                       <svg

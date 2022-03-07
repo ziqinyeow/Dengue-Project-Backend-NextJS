@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 // import { storage } from "../lib/firebase/config";
 // import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
-const UpdateUserCard = ({ show, setShow, data }: any) => {
+const UpdateUserCard = ({ show, setShow, data, setData }: any) => {
   const router = useRouter();
 
   const [form, setForm] = useState({
@@ -13,7 +13,7 @@ const UpdateUserCard = ({ show, setShow, data }: any) => {
     password: "",
   });
 
-  const [userType, setUserType] = useState(0);
+  const [userType, setUserType] = useState("user");
 
   const [uploading, setUploading] = useState(false);
 
@@ -34,11 +34,13 @@ const UpdateUserCard = ({ show, setShow, data }: any) => {
       setShow(0);
     }
     try {
-      const fetcher = await fetch("/api/admin/private/superuser", {
+      const fetcher = await fetch("/api/admin/private/user", {
         method: "PUT",
         body: JSON.stringify({
           id: data?.id,
           group: userType,
+          email: data?.email,
+          ic: data?.ic,
         }),
         headers: {
           "Content-Type": "application/json",
@@ -69,6 +71,7 @@ const UpdateUserCard = ({ show, setShow, data }: any) => {
               disabled={uploading}
               type="button"
               onClick={() => {
+                setData({});
                 setShow(0);
               }}
               className="absolute p-1 text-black transition-all duration-300 rounded-md top-2 right-2 hover:bg-gray-100"
@@ -120,17 +123,17 @@ const UpdateUserCard = ({ show, setShow, data }: any) => {
               />
               <div className="grid w-full grid-cols-2 gap-5 mb-8">
                 <div
-                  onClick={() => setUserType(0)}
+                  onClick={() => setUserType("user")}
                   className={`flex items-center justify-center py-2 border cursor-pointer rounded-md ${
-                    userType === 0 && "border-gray-500"
+                    userType === "user" && "border-gray-500"
                   }`}
                 >
                   User
                 </div>
                 <div
-                  onClick={() => setUserType(1)}
+                  onClick={() => setUserType("patient")}
                   className={`flex items-center justify-center py-2 border cursor-pointer rounded-md ${
-                    userType === 1 && "border-gray-500"
+                    userType === "patient" && "border-gray-500"
                   }`}
                 >
                   Patient
@@ -150,6 +153,7 @@ const UpdateUserCard = ({ show, setShow, data }: any) => {
                   disabled={uploading}
                   className="px-5 py-2 font-medium text-red-500 transition-all duration-150 bg-white border-2 border-red-500 rounded-md disabled:bg-opacity-10 disabled:border-0 disabled:hover:bg-black disabled:hover:bg-opacity-10 disabled:bg-black disabled:text-white disabled:hover:text-white hover:bg-red-500 hover:text-white"
                   onClick={() => {
+                    setData({});
                     setShow(0);
                   }}
                 >
