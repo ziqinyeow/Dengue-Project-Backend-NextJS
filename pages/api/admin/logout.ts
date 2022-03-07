@@ -20,8 +20,12 @@ export default async function handler(
       path: "/",
     });
 
-    res.setHeader("Set-Cookie", serialised);
+    return res
+      .setHeader("Set-Cookie", serialised)
+      .status(200)
+      .json({ message: "Successfuly logged out!" });
 
-    res.status(200).json({ message: "Successfuly logged out!" });
+    // return res;
+    // return res.redirect("/login");
   }
 }
