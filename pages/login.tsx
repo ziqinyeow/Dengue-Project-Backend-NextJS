@@ -1,11 +1,13 @@
 import Container from "components/Container";
 import type { NextPage } from "next";
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import useData from "contexts/data";
 
 const Home: NextPage = () => {
   const router = useRouter();
+  const { removeData } = useData();
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -36,6 +38,10 @@ const Home: NextPage = () => {
       router.push("/admin");
     }
   };
+
+  useEffect(() => {
+    removeData();
+  });
 
   return (
     <div className="h-[100vh] w-[100vw] flex items-center justify-center">

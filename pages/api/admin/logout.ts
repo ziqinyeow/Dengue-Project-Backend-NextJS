@@ -23,9 +23,6 @@ export default async function handler(
     return res
       .setHeader("Set-Cookie", serialised)
       .status(200)
-      .json({ message: "Successfuly logged out!" });
-
-    // return res;
-    // return res.redirect("/login");
+      .redirect("/login");
   }
 }
