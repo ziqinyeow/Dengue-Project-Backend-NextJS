@@ -20,8 +20,8 @@ export default async function handler(
       path: "/",
     });
 
-    return res.setHeader("Set-Cookie", serialised).redirect("/login");
+    res.setHeader("Set-Cookie", serialised);
 
-    // return res.status(200).redirect("/login").json({ message: "ok" });
+    return res.status(200).json({ message: "ok" });
   }
 }

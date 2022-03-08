@@ -174,6 +174,8 @@ const Container = (props: any) => {
                   console.log(fetcher);
 
                   if (fetcher.ok) {
+                    console.log("ok");
+
                     router.push("/login");
                   }
                 } catch (error) {
