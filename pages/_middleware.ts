@@ -49,7 +49,7 @@ export default async function middleware(req: NextRequest) {
       if (payload) {
         return NextResponse.next();
       } else {
-        throw new Error();
+        return NextResponse.redirect("/login");
       }
     } catch (error) {
       return NextResponse.redirect("/login");

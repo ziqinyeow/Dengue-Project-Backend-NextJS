@@ -176,10 +176,12 @@ const Container = (props: any) => {
                   if (fetcher.ok) {
                     console.log("ok");
 
-                    router.push("/login");
+                    const route = await router.replace("/login");
+                    console.log(route);
                   }
                 } catch (error) {
-                  router.push("login");
+                  const route = await router.replace("/login");
+                  console.log(route);
                 }
               }}
             >
