@@ -60,7 +60,7 @@ export const verifyUser = async (auth: string | undefined) => {
       select: {
         id: true,
         email: true,
-        detail: true,
+        // detail: true,
         username: true,
         fullname: true,
         phone_no: true,

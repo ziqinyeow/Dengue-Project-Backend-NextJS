@@ -22,26 +22,27 @@ model Admin {
 }
 
 model User {
-  id       String    @id @default(cuid())
-  email    String    @unique
-  password String
-  token    String?   @db.Text
-  fullname String?
-  username String?
-  ic       String    @unique
-  phone_no String?
-  address  String?   @db.LongText
-  postcode String?
-  state    String?
-  gender   String?
-  status   String?
-  fp_token String?
-  group    String?   @default("user") //  user, patient
-  detail   Detail[]
-  answer   Answer[]
-  symptom  Symptom[]
-  history  History[]
-  patient  Patient?
+  id            String          @id @default(cuid())
+  email         String          @unique
+  password      String
+  token         String?         @db.Text
+  fullname      String?
+  username      String?
+  ic            String          @unique
+  phone_no      String?
+  address       String?         @db.LongText
+  postcode      String?
+  state         String?
+  gender        String?
+  status        String?
+  fp_token      String?
+  group         String?         @default("user") //  user, patient
+  vital_sign    Vital_sign[]
+  blood_profile Blood_profile[]
+  answer        Answer[]
+  symptom       Symptom[]
+  history       History[]
+  patient       Patient?
 }
 
 // to allow unregistered user to be record as a patient
@@ -81,18 +82,29 @@ model History {
   @@index([user_id])
 }
 
-model Detail {
-  id             String   @id @default(cuid())
-  createdAt      DateTime @default(now())
-  temperature    Decimal?
-  blood_pressure Decimal?
-  pulse_rate     Decimal?
-  hemoglobin     Decimal?
-  hematocrit     Decimal?
-  white_cell     Decimal?
-  platelet       Decimal?
-  user           User?    @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  user_id        String?
+model Vital_sign {
+  id                String   @id @default(cuid())
+  createdAt         DateTime @default(now())
+  temperature       Decimal?
+  blood_pressure    Decimal?
+  pulse_rate        Decimal?
+  respiratory_rate  Decimal?
+  oxygen_saturation Decimal?
+  user              User?    @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id           String?
+
+  @@index([user_id])
+}
+
+model Blood_profile {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+  haemoglobin Decimal?
+  haematocrit Decimal?
+  white_cell  Decimal?
+  platelet    Decimal?
+  user        User?    @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id     String?
 
   @@index([user_id])
 }

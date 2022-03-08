@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { verifyUser } from "lib/auth";
+import { verifyAPI } from "lib/auth";
 import { Detail } from "controllers";
 
 export default async function handler(
@@ -8,19 +8,20 @@ export default async function handler(
 ) {
   const method = req.method;
   const auth = req.headers["authorization"];
-  const user = await verifyUser(auth);
+  const user = await verifyAPI(auth);
 
-  if (!user) {
+  if (!user || !user?.email) {
     return res.status(401).json({ message: "User not found" });
   }
 
   switch (method) {
-    case "GET":
-      // @ts-ignore
-      return res.status(200).json({ data: user?.detail });
+    // case "GET":
+    //   // @ts-ignore
+    //   return res.status(200).json({ data: user?.detail });
 
     case "POST":
-      return await Detail.create(req, res, user?.email);
+      // @ts-ignore
+      return await Detail.create(req, res, user.email);
 
     case "PUT":
       return await Detail.update(req, res);

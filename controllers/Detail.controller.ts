@@ -11,34 +11,58 @@ export const create = async (
   }
   try {
     const {
+      type, // vital_sign || blood_profile
       temperature,
       blood_pressure,
       pulse_rate,
-      hemoglobin,
-      hematocrit,
+      respiratory_rate,
+      oxygen_saturation,
+      haemoglobin,
+      haematocrit,
       white_cell,
       platelet,
     } = req.body;
 
-    const data = await prisma.detail.create({
-      data: {
-        temperature,
-        blood_pressure,
-        pulse_rate,
-        hemoglobin,
-        hematocrit,
-        white_cell,
-        platelet,
-        user: {
-          connect: {
-            email,
+    if (!type) {
+      throw new Error("");
+    }
+
+    if (type === "vital_sign") {
+      const data = await prisma.vital_sign.create({
+        data: {
+          temperature,
+          blood_pressure,
+          pulse_rate,
+          respiratory_rate,
+          oxygen_saturation,
+          user: {
+            connect: {
+              email,
+            },
           },
         },
-      },
-    });
-    return res.status(200).json({ data, message: "ok" });
+      });
+      return res.status(200).json({ data, message: "ok" });
+    } else if (type === "blood_profile") {
+      const data = await prisma.blood_profile.create({
+        data: {
+          haemoglobin,
+          haematocrit,
+          white_cell,
+          platelet,
+          user: {
+            connect: {
+              email,
+            },
+          },
+        },
+      });
+      return res.status(200).json({ data, message: "ok" });
+    } else {
+      return res.status(405).json({ message: "Invalid type" });
+    }
   } catch (error) {
-    return res.status(400).json({ messsage: "Unable to create user detail" });
+    return res.status(400).json({ message: "Unable to create user detail" });
   }
 };
 
@@ -46,29 +70,51 @@ export const update = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const {
       id,
+      type,
       temperature,
       blood_pressure,
       pulse_rate,
-      hemoglobin,
-      hematocrit,
+      respiratory_rate,
+      oxygen_saturation,
+      haemoglobin,
+      haematocrit,
       white_cell,
       platelet,
     } = req.body;
-    const data = await prisma.detail.update({
-      where: {
-        id,
-      },
-      data: {
-        temperature,
-        blood_pressure,
-        pulse_rate,
-        hemoglobin,
-        hematocrit,
-        white_cell,
-        platelet,
-      },
-    });
-    res.status(200).json({ data, message: "ok" });
+    if (!type) {
+      throw new Error("");
+    }
+
+    if (type === "vital_sign") {
+      const data = await prisma.vital_sign.update({
+        where: {
+          id,
+        },
+        data: {
+          temperature,
+          blood_pressure,
+          pulse_rate,
+          respiratory_rate,
+          oxygen_saturation,
+        },
+      });
+      return res.status(200).json({ data, message: "ok" });
+    } else if (type === "blood_profile") {
+      const data = await prisma.blood_profile.update({
+        where: {
+          id,
+        },
+        data: {
+          haemoglobin,
+          haematocrit,
+          white_cell,
+          platelet,
+        },
+      });
+      return res.status(200).json({ data, message: "ok" });
+    } else {
+      return res.status(405).json({ message: "Invalid type" });
+    }
   } catch (e) {
     res.status(400).json({ message: "Unable to update user detail data" });
   }
