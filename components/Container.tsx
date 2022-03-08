@@ -171,17 +171,14 @@ const Container = (props: any) => {
                 try {
                   removeData();
                   const fetcher = await fetch("/api/admin/logout");
-                  console.log(fetcher);
 
                   if (fetcher.ok) {
-                    console.log("ok");
-
-                    const route = await router.replace("/login");
-                    console.log(route);
+                    router.reload();
+                    router.replace("/login");
                   }
                 } catch (error) {
-                  const route = await router.replace("/login");
-                  console.log(route);
+                  router.reload();
+                  router.replace("/login");
                 }
               }}
             >
