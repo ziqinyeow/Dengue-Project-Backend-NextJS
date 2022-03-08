@@ -1,6 +1,50 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "lib/prisma";
 
+export const get = async (
+  req: NextApiRequest,
+  res: NextApiResponse,
+  email: string | null
+) => {
+  if (!email) {
+    return res.status(404).json({ message: "User Not Found" });
+  }
+  try {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate());
+    tomorrow.setHours(24, 0, 0, 0);
+
+    const vital_sign = await prisma.vital_sign.findMany({
+      where: {
+        createdAt: {
+          gte: today,
+          lt: tomorrow,
+        },
+      },
+    });
+
+    const blood_profile = await prisma.blood_profile.findMany({
+      where: {
+        createdAt: {
+          gte: today,
+          lt: tomorrow,
+        },
+      },
+    });
+
+    return res
+      .status(200)
+      .json({
+        vital_sign: vital_sign.length,
+        blood_profile: blood_profile.length,
+        message: "ok",
+      });
+  } catch (error) {
+    return res.status(400).json({ message: "error getting the data" });
+  }
+};
 export const create = async (
   req: NextApiRequest,
   res: NextApiResponse,

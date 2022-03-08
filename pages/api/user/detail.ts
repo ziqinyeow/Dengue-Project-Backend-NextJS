@@ -15,9 +15,9 @@ export default async function handler(
   }
 
   switch (method) {
-    // case "GET":
-    //   // @ts-ignore
-    //   return res.status(200).json({ data: user?.detail });
+    case "GET":
+      // @ts-ignore
+      return await Detail.get(req, res, user.email);
 
     case "POST":
       // @ts-ignore
