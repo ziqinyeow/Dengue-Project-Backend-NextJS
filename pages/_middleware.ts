@@ -9,8 +9,7 @@ export default async function middleware(req: NextRequest) {
   if (
     url.includes("/api/user") ||
     url.includes("/api/auth") ||
-    url.includes("/api/admin/login") ||
-    url.includes("/api/admin/logout")
+    url.includes("/api")
   ) {
     return NextResponse.next();
   }
