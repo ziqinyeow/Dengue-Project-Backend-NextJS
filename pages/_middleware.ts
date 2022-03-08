@@ -6,7 +6,12 @@ export default async function middleware(req: NextRequest) {
   const url = req.url;
 
   // give access to mobile
-  if (url.includes("/api/user") || url.includes("/api/auth")) {
+  if (
+    url.includes("/api/user") ||
+    url.includes("/api/auth") ||
+    url.includes("/api/admin/login") ||
+    url.includes("/api/admin/logout")
+  ) {
     return NextResponse.next();
   }
 

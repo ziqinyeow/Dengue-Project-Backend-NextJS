@@ -173,11 +173,9 @@ const Container = (props: any) => {
                   const fetcher = await fetch("/api/admin/logout");
 
                   if (fetcher.ok) {
-                    router.reload();
                     router.replace("/login");
                   }
                 } catch (error) {
-                  router.reload();
                   router.replace("/login");
                 }
               }}
