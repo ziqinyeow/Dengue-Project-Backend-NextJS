@@ -23,11 +23,30 @@ export const create = async (
       platelet,
     } = req.body;
 
-    if (!type) {
+    if (!type || !(type === "vital_sign" || type === "blood_profile")) {
       throw new Error("");
     }
 
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate());
+    tomorrow.setHours(24, 0, 0, 0);
+
     if (type === "vital_sign") {
+      const vital_sign = await prisma.vital_sign.findMany({
+        where: {
+          createdAt: {
+            gte: today,
+            lt: tomorrow,
+          },
+        },
+      });
+      if (vital_sign.length >= 1) {
+        return res
+          .status(200)
+          .json({ message: "You already filled the vital sign" });
+      }
       const data = await prisma.vital_sign.create({
         data: {
           temperature,
@@ -44,6 +63,19 @@ export const create = async (
       });
       return res.status(200).json({ data, message: "ok" });
     } else if (type === "blood_profile") {
+      const blood_profile = await prisma.blood_profile.findMany({
+        where: {
+          createdAt: {
+            gte: today,
+            lt: tomorrow,
+          },
+        },
+      });
+      if (blood_profile.length >= 1) {
+        return res
+          .status(200)
+          .json({ message: "You already filled the vital sign" });
+      }
       const data = await prisma.blood_profile.create({
         data: {
           haemoglobin,
