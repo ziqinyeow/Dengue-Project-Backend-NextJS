@@ -28,7 +28,7 @@ export default async function handler(
       select: {
         id: true,
         email: true,
-        detail: true,
+        // detail: true,
         username: true,
         fullname: true,
         phone_no: true,
@@ -43,11 +43,11 @@ export default async function handler(
       },
     });
     const patient = await prisma.patient.findMany({});
-    const detail = await prisma.detail.findMany({});
+    // const detail = await prisma.detail.findMany({});
     if (admin.type === "admin") {
       return res
         .status(200)
-        .json({ user, patient, detail, type: "admin", message: "ok" });
+        .json({ user, patient, type: "admin", message: "ok" });
     }
     // const admins = await prisma.admin.findMany({
     //   select: {
@@ -60,7 +60,6 @@ export default async function handler(
       // admin: admins,
       user,
       patient,
-      detail,
       type: "superuser",
       message: "ok",
     });

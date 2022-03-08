@@ -16,12 +16,10 @@ export default async function handler(
         const patient = await prisma.patient.findMany();
         const total_patient = patient.length;
 
-        const detail = await prisma.detail.findMany();
-        const total_detail = detail.length;
+        // const detail = await prisma.detail.findMany();
+        // const total_detail = detail.length;
 
-        return res
-          .status(200)
-          .json({ total_user, total_patient, total_detail });
+        return res.status(200).json({ total_user, total_patient });
       } catch (error) {
         return res.status(400).json({ message: "Unable to get data" });
       }
