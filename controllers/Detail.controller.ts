@@ -84,6 +84,9 @@ export const create = async (
     if (type === "vital_sign") {
       const vital_sign = await prisma.vital_sign.findMany({
         where: {
+          user: {
+            email,
+          },
           createdAt: {
             gte: today,
             lt: tomorrow,
@@ -113,6 +116,9 @@ export const create = async (
     } else if (type === "blood_profile") {
       const blood_profile = await prisma.blood_profile.findMany({
         where: {
+          user: {
+            email,
+          },
           createdAt: {
             gte: today,
             lt: tomorrow,
