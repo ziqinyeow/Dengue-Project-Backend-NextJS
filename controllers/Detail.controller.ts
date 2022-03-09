@@ -16,7 +16,7 @@ export const get = async (
     tomorrow.setDate(tomorrow.getDate());
     tomorrow.setHours(24, 0, 0, 0);
 
-    const vital_sign = await prisma.vital_sign.findMany({
+    const vital_sign_filled = await prisma.vital_sign.findMany({
       where: {
         user: {
           email,
@@ -24,6 +24,26 @@ export const get = async (
         createdAt: {
           gte: today,
           lt: tomorrow,
+        },
+      },
+    });
+
+    const blood_profile_filled = await prisma.blood_profile.findMany({
+      where: {
+        user: {
+          email,
+        },
+        createdAt: {
+          gte: today,
+          lt: tomorrow,
+        },
+      },
+    });
+
+    const vital_sign = await prisma.vital_sign.findMany({
+      where: {
+        user: {
+          email,
         },
       },
     });
@@ -33,16 +53,14 @@ export const get = async (
         user: {
           email,
         },
-        createdAt: {
-          gte: today,
-          lt: tomorrow,
-        },
       },
     });
 
     return res.status(200).json({
-      vital_sign: vital_sign.length,
-      blood_profile: blood_profile.length,
+      vital_sign_filled: vital_sign_filled.length,
+      blood_profile_filled: blood_profile_filled.length,
+      vital_sign,
+      blood_profile,
       message: "ok",
     });
   } catch (error) {
