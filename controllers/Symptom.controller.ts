@@ -21,6 +21,9 @@ export const get = async (
     tomorrow.setHours(24, 0, 0, 0);
     const symptom = await prisma.symptom.findMany({
       where: {
+        user: {
+          email,
+        },
         createdAt: {
           gte: today,
           lt: tomorrow,

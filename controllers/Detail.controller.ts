@@ -18,6 +18,9 @@ export const get = async (
 
     const vital_sign = await prisma.vital_sign.findMany({
       where: {
+        user: {
+          email,
+        },
         createdAt: {
           gte: today,
           lt: tomorrow,
@@ -27,6 +30,9 @@ export const get = async (
 
     const blood_profile = await prisma.blood_profile.findMany({
       where: {
+        user: {
+          email,
+        },
         createdAt: {
           gte: today,
           lt: tomorrow,
@@ -34,13 +40,11 @@ export const get = async (
       },
     });
 
-    return res
-      .status(200)
-      .json({
-        vital_sign: vital_sign.length,
-        blood_profile: blood_profile.length,
-        message: "ok",
-      });
+    return res.status(200).json({
+      vital_sign: vital_sign.length,
+      blood_profile: blood_profile.length,
+      message: "ok",
+    });
   } catch (error) {
     return res.status(400).json({ message: "error getting the data" });
   }
