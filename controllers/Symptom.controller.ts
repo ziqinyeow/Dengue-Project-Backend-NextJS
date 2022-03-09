@@ -7,13 +7,13 @@ export const get = async (
   email: string
 ) => {
   try {
-    // const data = await prisma.symptom.findMany({
-    //   where: {
-    //     user: {
-    //       email,
-    //     },
-    //   },
-    // });
+    const data = await prisma.symptom.findMany({
+      where: {
+        user: {
+          email,
+        },
+      },
+    });
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const tomorrow = new Date();
@@ -31,7 +31,7 @@ export const get = async (
       },
     });
     const number = symptom?.length ?? 0;
-    return res.status(200).json({ number, message: "ok" });
+    return res.status(200).json({ data, number, message: "ok" });
   } catch (error) {
     return res.status(400).json({ messsage: "Unable to get task" });
   }
