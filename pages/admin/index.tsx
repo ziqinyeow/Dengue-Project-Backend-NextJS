@@ -10,6 +10,7 @@ import useData from "contexts/data";
 const Home: NextPage = () => {
   const { data: metrics }: any = useSWR("/api/admin/private/metrics", fetcher);
   const { data } = useData();
+  console.log(data);
 
   return (
     <Container title="Admin">

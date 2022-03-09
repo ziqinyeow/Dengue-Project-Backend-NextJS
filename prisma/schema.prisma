@@ -54,7 +54,7 @@ model Patient {
   start   DateTime  @default(now())
   end     DateTime? @updatedAt
   user    User?     @relation(fields: [user_id], references: [id], onDelete: SetNull)
-  user_id String
+  user_id String?
 }
 
 model Symptom {

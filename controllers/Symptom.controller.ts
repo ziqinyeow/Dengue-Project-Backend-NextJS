@@ -46,10 +46,28 @@ export const create = async (
     const { response } = req.body;
 
     // perform logic
+    const arr = response.split(" ");
+    // let risk_type = "";
+    let indexes = 0;
+    indexes += arr[1] === 1 ? 1 : 1; // fever
+    indexes += arr[3] <= 3 || arr[3] >= 1 ? 1 : 2; // vomitting
+    indexes += arr[5] <= 3 || arr[5] >= 1 ? 1 : 2; // diarrhoea
+    indexes += arr[7] === 1 ? 2 : 1; // stomach pain
+    indexes += arr[9] === 1 ? 2 : 1; // bleeding
+    indexes += arr[11] === 1 ? 2 : 1; // difficulty breathing
+    indexes += arr[13] === 1 ? 2 : 1; // fainting
+    indexes += arr[15] === 1 ? 2 : 1; // tired
+    indexes += arr[17] === 1 ? 2 : 1; // drowsy
+    indexes += arr[19] === 1 ? 2 : 1; // reduced urine
+    indexes += arr[21] === 1 ? 1 : 2; // reduced drinking
+
+    const risk_value = indexes;
+    const risk_status = risk_value > 11 ? "dangerous" : "normal";
 
     const data = await prisma.symptom.create({
       data: {
         response,
+        status: risk_status,
         user: {
           connect: {
             email,
@@ -58,7 +76,9 @@ export const create = async (
       },
     });
 
-    return res.status(200).json({ data, message: "ok" });
+    return res
+      .status(200)
+      .json({ risk_value, risk_status, data, message: "ok" });
   } catch (error) {
     return res.status(400).json({ messsage: "Unable to create task" });
   }

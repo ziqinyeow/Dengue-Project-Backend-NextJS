@@ -104,21 +104,18 @@ const Container = (props: any) => {
               <NavItem href="/admin/patient">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
                   width="24"
                   height="24"
-                  viewBox="0 0 24 24"
                 >
+                  <path fill="none" d="M0 0h24v24H0z" />
                   <path
                     fill="currentColor"
-                    d="M12 10c1.151 0 2-.848 2-2s-.849-2-2-2c-1.15 0-2 .848-2 2s.85 2 2 2zm0 1c-2.209 0-4 1.612-4 3.6v.386h8V14.6c0-1.988-1.791-3.6-4-3.6z"
-                  ></path>
-                  <path
-                    fill="currentColor"
-                    d="M19 2H5c-1.103 0-2 .897-2 2v13c0 1.103.897 2 2 2h4l3 3 3-3h4c1.103 0 2-.897 2-2V4c0-1.103-.897-2-2-2zm-5 15-2 2-2-2H5V4h14l.002 13H14z"
-                  ></path>
+                    d="M12.414 5H21a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h7.414l2 2zM4 5v14h16V7h-8.414l-2-2H4zm4 13a4 4 0 1 1 8 0H8zm4-5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"
+                  />
                 </svg>
               </NavItem>
-              <NavItem href="/admin/quiz">
+              {/* <NavItem href="/admin/quiz">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
@@ -130,7 +127,7 @@ const Container = (props: any) => {
                     d="M19 10H5c-1.103 0-2 .897-2 2v8c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-8c0-1.103-.897-2-2-2zM5 20v-8h14l.002 8H5zM5 6h14v2H5zm2-4h10v2H7z"
                   ></path>
                 </svg>
-              </NavItem>
+              </NavItem> */}
             </div>
           </div>
           <div className="space-y-3">
@@ -180,7 +177,7 @@ const Container = (props: any) => {
                 }
               }}
             >
-              <NavItem href="/" logo={true}>
+              <NavItem href="/login" logo={true}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"

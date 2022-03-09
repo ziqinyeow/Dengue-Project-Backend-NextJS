@@ -5,14 +5,10 @@ import type {
   NextPage,
 } from "next";
 import { useState } from "react";
-import { prisma } from "lib/prisma";
 import { User } from "@prisma/client";
 import GradientCard from "components/GradientCard";
 import useData from "contexts/data";
 import { useRouter } from "next/router";
-import { TOKEN_SECRET } from "lib/constant";
-import { jwtVerify } from "jose";
-import CreateAdminCard from "components/CreateAdminCard";
 import toast from "react-hot-toast";
 import { CSVLink } from "react-csv";
 import UpdateUserCard from "components/UpdateUserCard";

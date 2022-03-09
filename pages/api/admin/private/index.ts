@@ -37,12 +37,17 @@ export default async function handler(
         address: true,
         postcode: true,
         state: true,
+        symptom: true,
       },
       orderBy: {
         group: "asc",
       },
     });
-    const patient = await prisma.patient.findMany({});
+    const patient = await prisma.patient.findMany({
+      include: {
+        user: true,
+      },
+    });
     // const detail = await prisma.detail.findMany({});
     if (admin.type === "admin") {
       return res
