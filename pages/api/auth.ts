@@ -39,25 +39,49 @@ export default async function handler(
             ic,
           },
         });
-        const user = await prisma.user.create({
-          data: {
-            email,
-            password: hashedPassword,
-            token,
-            fullname,
-            username,
-            ic,
-            phone_no,
-            address,
-            postcode,
-            state,
-            group: patient ? "patient" : "user",
-          },
-        });
-
-        return res
-          .status(200)
-          .json({ verified: true, token: user?.token, message: "ok" });
+        if (patient) {
+          const user = await prisma.user.create({
+            data: {
+              email,
+              password: hashedPassword,
+              token,
+              fullname,
+              username,
+              ic,
+              phone_no,
+              address,
+              postcode,
+              state,
+              group: "patient",
+              patient: {
+                connect: {
+                  ic,
+                },
+              },
+            },
+          });
+          return res
+            .status(200)
+            .json({ verified: true, token: user?.token, message: "ok" });
+        } else {
+          const user = await prisma.user.create({
+            data: {
+              email,
+              password: hashedPassword,
+              token,
+              fullname,
+              username,
+              ic,
+              phone_no,
+              address,
+              postcode,
+              state,
+            },
+          });
+          return res
+            .status(200)
+            .json({ verified: true, token: user?.token, message: "ok" });
+        }
       } catch (e) {
         return res.status(400).json({ message: "User created previously" });
       }

@@ -47,6 +47,9 @@ export default async function handler(
       include: {
         user: true,
       },
+      orderBy: {
+        user_id: "desc",
+      },
     });
     // const detail = await prisma.detail.findMany({});
     if (admin.type === "admin") {
@@ -63,6 +66,7 @@ export default async function handler(
     // });
     return res.status(200).json({
       // admin: admins,
+      admin,
       user,
       patient,
       type: "superuser",

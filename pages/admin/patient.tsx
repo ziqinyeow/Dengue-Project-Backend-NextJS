@@ -19,7 +19,8 @@ const User: NextPage = () => {
   const router = useRouter();
   const { data } = useData();
   const [searchValue, setSearchValue] = useState("");
-  const [select, setSelect] = useState<User[]>([]);
+  const [select, setSelect] = useState<User[] | any[]>([]);
+  const [selectData, setSelectData] = useState<User[] | any[]>([]);
   const [createPatientCardVisible, setCreatePatientCardVisible] = useState(0);
   const [updatePatientCardVisible, setUpdatePatientCardVisible] = useState(0);
   const [updatePatientData, setUpdatePatientData] = useState({
@@ -44,7 +45,7 @@ const User: NextPage = () => {
   const csv_report = {
     filename: "patient.csv",
     headers: headers,
-    data: select,
+    data: selectData,
   };
 
   const filterData = data?.patient?.filter(
@@ -117,8 +118,15 @@ const User: NextPage = () => {
                     onChange={(e) => {
                       if (e.target.checked) {
                         setSelect(filterData);
+                        setSelectData(
+                          filterData
+                            // @ts-ignore
+                            ?.map((d) => d?.user)
+                            .filter((d) => d != undefined)
+                        );
                       } else {
                         setSelect([]);
+                        setSelectData([]);
                       }
                     }}
                     checked={filterData?.length === select?.length}
@@ -227,8 +235,17 @@ const User: NextPage = () => {
                               ...d,
                             },
                           ]);
+                          setSelectData([
+                            ...select,
+                            {
+                              ...d?.user,
+                            },
+                          ]);
                         } else {
                           setSelect(select.filter((s) => s?.id !== d?.id));
+                          setSelectData(
+                            selectData.filter((s) => s?.id !== d?.user?.id)
+                          );
                         }
                       }}
                       checked={
@@ -285,10 +302,10 @@ const User: NextPage = () => {
                       disabled={!d?.user}
                       onClick={() => {
                         setUpdatePatientData({
-                          id: d?.id,
-                          email: d?.email,
+                          id: d?.user.id,
+                          email: d?.user.email,
                           type: String(d?.user.group),
-                          ic: d?.ic,
+                          ic: d?.user.ic,
                         });
                         setUpdatePatientCardVisible(1);
                       }}
