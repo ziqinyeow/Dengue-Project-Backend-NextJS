@@ -82,7 +82,7 @@ const CreatePatientCard = ({ show, setShow }: any) => {
             >
               <h5 className="mb-2 font-semibold">Email</h5>
               <input
-                type="email"
+                // type="email"
                 placeholder="tim@apple.com"
                 className="w-full px-4 py-2 mb-8 bg-white border rounded-md focus:outline-none focus:border-gray-400"
                 name="email"

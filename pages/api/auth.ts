@@ -34,6 +34,11 @@ export default async function handler(
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(password, salt);
       try {
+        const patient = await prisma.patient.findUnique({
+          where: {
+            ic,
+          },
+        });
         const user = await prisma.user.create({
           data: {
             email,
@@ -46,6 +51,7 @@ export default async function handler(
             address,
             postcode,
             state,
+            group: patient ? "patient" : "user",
           },
         });
 
