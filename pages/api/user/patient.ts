@@ -44,7 +44,6 @@ export default async function handler(
           },
         });
         return res.status(200).json({
-          patient,
           symptom:
             symptom[symptom?.length - 1].status === "dangerous"
               ? true
