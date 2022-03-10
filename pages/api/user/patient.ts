@@ -25,6 +25,7 @@ export default async function handler(
         if (!patient) {
           return res.status(404).json({ message: "Patient not found" });
         }
+
         const start = new Date(patient?.start);
         const today = new Date();
         const difference = start.getTime() - today.getTime();
@@ -45,16 +46,14 @@ export default async function handler(
         });
         return res.status(200).json({
           symptom:
-            symptom[symptom?.length - 1].status === "dangerous"
+            symptom[symptom?.length - 1]?.status === "dangerous"
               ? true
               : false ?? null,
           day,
           message: "ok",
         });
       } catch (error) {
-        return res
-          .status(404)
-          .json({ verified: false, message: "Is not a patient" });
+        return res.status(404).json({ message: "error", error });
       }
 
     default:
