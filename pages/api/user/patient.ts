@@ -19,26 +19,31 @@ export default async function handler(
         const patient = await prisma.patient.findUnique({
           where: {
             // @ts-ignore
-            ic: payload.ic,
+            ic: payload?.ic,
           },
         });
-        if (patient) {
-          //   await prisma.user.update({
-          //     where: {
-          //       // @ts-ignore
-          //       email: payload.email,
-          //     },
-          //     data: {
-          //       group: 1,
-          //     },
-          //   });
-          return res
-            .status(200)
-            .json({ verified: true, message: "Is a patient" });
+        if (!patient) {
+          return res.status(404).json({ message: "Patient not found" });
         }
-        return res
-          .status(404)
-          .json({ verified: false, message: "Is not a patient" });
+        const start = new Date(patient?.start);
+        const today = new Date();
+        const difference = start.getTime() - today.getTime();
+        const day = Math.ceil(difference / (1000 * 3600 * 24)) + 1;
+        const symptom = await prisma.symptom.findMany({
+          where: {
+            user: {
+              // @ts-ignore
+              ic: payload?.ic,
+            },
+            createdAt: {
+              gte: patient?.start,
+            },
+          },
+          orderBy: {
+            createdAt: "asc",
+          },
+        });
+        return res.status(200).json({ patient, symptom, day, message: "ok" });
       } catch (error) {
         return res
           .status(404)
