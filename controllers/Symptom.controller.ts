@@ -47,11 +47,12 @@ export const create = async (
 
     // perform logic
     const arr = response.split(" ");
+    // 1 1 2 1 3 1 4 2 5 2 6 2 7 2 8 2 9 2 10 2 11 1
     // let risk_type = "";
     let indexes = 0;
-    indexes += arr[1] === 1 ? 1 : 1; // fever
-    indexes += arr[3] <= 3 || arr[3] >= 1 ? 1 : 2; // vomitting
-    indexes += arr[5] <= 3 || arr[5] >= 1 ? 1 : 2; // diarrhoea
+    indexes += 1; // fever
+    indexes += arr[3] <= 3 && arr[3] >= 1 ? 1 : 2; // vomitting
+    indexes += arr[5] <= 3 && arr[5] >= 1 ? 1 : 2; // diarrhoea
     indexes += arr[7] === 1 ? 2 : 1; // stomach pain
     indexes += arr[9] === 1 ? 2 : 1; // bleeding
     indexes += arr[11] === 1 ? 2 : 1; // difficulty breathing

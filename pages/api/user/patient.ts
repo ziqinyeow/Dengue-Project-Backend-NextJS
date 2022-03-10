@@ -43,7 +43,15 @@ export default async function handler(
             createdAt: "asc",
           },
         });
-        return res.status(200).json({ patient, symptom, day, message: "ok" });
+        return res.status(200).json({
+          patient,
+          symptom:
+            symptom[symptom?.length - 1].status === "dangerous"
+              ? true
+              : false ?? null,
+          day,
+          message: "ok",
+        });
       } catch (error) {
         return res
           .status(404)
