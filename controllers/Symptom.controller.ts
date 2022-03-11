@@ -51,16 +51,16 @@ export const create = async (
     // let risk_type = "";
     let indexes = 0;
     indexes += 1; // fever 1
-    indexes += arr[3] <= 3 && arr[3] >= 1 ? 1 : 2; // vomitting 2
-    indexes += arr[5] <= 3 && arr[5] >= 1 ? 1 : 2; // diarrhoea 3
-    indexes += arr[7] === 1 ? 2 : 1; // stomach pain 4
-    indexes += arr[9] === 1 ? 2 : 1; // bleeding 5
-    indexes += arr[11] === 1 ? 2 : 1; // difficulty breathing 6
-    indexes += arr[13] === 1 ? 2 : 1; // fainting 7
-    indexes += arr[15] === 1 ? 2 : 1; // tired 8
-    indexes += arr[17] === 1 ? 2 : 1; // drowsy 9
-    indexes += arr[19] === 1 ? 2 : 1; // reduced urine 10
-    indexes += arr[21] === 2 ? 2 : 1; // reduced drinking 11
+    indexes += Number(arr[3]) <= 3 && Number(arr[3]) >= 1 ? 1 : 2; // vomitting 2
+    indexes += Number(arr[5]) <= 3 && Number(arr[5]) >= 1 ? 1 : 2; // diarrhoea 3
+    indexes += arr[7] === "1" ? 2 : 1; // stomach pain 4
+    indexes += arr[9] === "1" ? 2 : 1; // bleeding 5
+    indexes += arr[11] === "1" ? 2 : 1; // difficulty breathing 6
+    indexes += arr[13] === "1" ? 2 : 1; // fainting 7
+    indexes += arr[15] === "1" ? 2 : 1; // tired 8
+    indexes += arr[17] === "1" ? 2 : 1; // drowsy 9
+    indexes += arr[19] === "1" ? 2 : 1; // reduced urine 10
+    indexes += arr[21] === "2" ? 2 : 1; // reduced drinking 11
 
     const risk_value = indexes;
     const risk_status = risk_value > 11 ? "dangerous" : "normal";
