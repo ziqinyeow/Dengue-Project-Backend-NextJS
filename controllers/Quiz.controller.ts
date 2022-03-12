@@ -4,7 +4,23 @@ import { verifyAPI } from "lib/auth";
 
 export const get = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const data = await prisma.question.findMany();
+    const auth = req.headers.authorization;
+    // @ts-ignore
+    const { email } = await verifyAPI(auth);
+    if (!email) {
+      throw new Error();
+    }
+    const data = await prisma.answer.findMany({
+      where: {
+        user: {
+          email,
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+      take: 1,
+    });
     return res.status(200).json({ data, message: "ok" });
   } catch (error) {
     return res.status(400).json({ messsage: "Unable to get news" });
@@ -13,7 +29,7 @@ export const get = async (req: NextApiRequest, res: NextApiResponse) => {
 
 export const answer = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const { answer, question_id } = req.body;
+    const { answer } = req.body;
     const auth = req.headers.authorization;
     // @ts-ignore
     const { email } = await verifyAPI(auth);
@@ -28,44 +44,23 @@ export const answer = async (req: NextApiRequest, res: NextApiResponse) => {
             email,
           },
         },
-        question: {
-          connect: {
-            id: question_id,
-          },
-        },
       },
     });
+    return res.status(200).json({ data, message: "ok" });
   } catch (error) {
     return res.status(400).json({ message: "Unable to answer question" });
   }
 };
 
-export const create = async (req: NextApiRequest, res: NextApiResponse) => {
-  try {
-    const { title, text } = req.body;
-
-    const data = await prisma.news.create({
-      data: {
-        title,
-        text,
-      },
-    });
-    return res.status(200).json({ data, message: "ok" });
-  } catch (error) {
-    return res.status(400).json({ messsage: "Unable to create news" });
-  }
-};
-
 export const update = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const { id, title, text } = req.body;
-    const data = await prisma.news.update({
+    const { id, answer } = req.body;
+    const data = await prisma.answer.update({
       where: {
         id,
       },
       data: {
-        title,
-        text,
+        answer,
       },
     });
     res.status(200).json({ data, message: "ok" });
