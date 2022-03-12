@@ -23,7 +23,7 @@ export const get = async (req: NextApiRequest, res: NextApiResponse) => {
     });
     return res.status(200).json({ data, message: "ok" });
   } catch (error) {
-    return res.status(400).json({ messsage: "Unable to get news" });
+    return res.status(400).json({ data: false, message: "No answer yet" });
   }
 };
 
