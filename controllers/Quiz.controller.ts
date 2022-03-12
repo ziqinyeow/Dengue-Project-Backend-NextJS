@@ -21,9 +21,10 @@ export const get = async (req: NextApiRequest, res: NextApiResponse) => {
       },
       take: 1,
     });
-    return res.status(200).json({ data, message: "ok" });
+    const completed = data[0]?.answer?.length === 41;
+    return res.status(200).json({ data, completed, message: "ok" });
   } catch (error) {
-    return res.status(400).json({ data: false, message: "No answer yet" });
+    return res.status(400).json({ first_time: true, message: "No answer yet" });
   }
 };
 
