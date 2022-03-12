@@ -6,21 +6,18 @@ import type {
 } from "next";
 import { useState } from "react";
 import { prisma } from "lib/prisma";
-import { Question } from "@prisma/client";
 import GradientCard from "components/GradientCard";
 import QuizCard from "components/QuizCard";
 
-const Quiz: NextPage = ({
-  question,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Quiz: NextPage = () => {
   const [searchValue, setSearchValue] = useState("");
   const [createQuizCardVisible, setCreateQuizCardVisible] = useState(0);
-  const filterData = question?.filter(
-    (q: Question) =>
-      q?.question?.toLowerCase().includes(searchValue.toLowerCase()) ||
-      q?.answer_scheme?.toLowerCase().includes(searchValue.toLowerCase()) ||
-      q?.explanation?.toLowerCase().includes(searchValue.toLowerCase())
-  );
+  // const filterData = question?.filter(
+  //   (q) =>
+  //     q?.question?.toLowerCase().includes(searchValue.toLowerCase()) ||
+  //     q?.answer_scheme?.toLowerCase().includes(searchValue.toLowerCase()) ||
+  //     q?.explanation?.toLowerCase().includes(searchValue.toLowerCase())
+  // );
   return (
     <Container title="Admin - Quiz">
       <div className="layout">
@@ -63,7 +60,7 @@ const Quiz: NextPage = ({
           show={createQuizCardVisible}
           setShow={setCreateQuizCardVisible}
         />
-        <div className="flex justify-end w-full mb-10 text-gray-500">
+        {/* <div className="flex justify-end w-full mb-10 text-gray-500">
           {filterData.length}{" "}
           {filterData.length <= 1 ? "question" : "questions"}
         </div>
@@ -83,7 +80,7 @@ const Quiz: NextPage = ({
               <h4 className="col-span-2 font-bold">Bond Return</h4>
             </div>
           </div>
-        )}
+        )} */}
       </div>
     </Container>
   );
@@ -91,10 +88,10 @@ const Quiz: NextPage = ({
 
 export default Quiz;
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  const question: Question[] = await prisma.question.findMany();
+// export const getServerSideProps: GetServerSideProps = async () => {
+//   const question: Question[] = await prisma.question.findMany();
 
-  return {
-    props: { question },
-  };
-};
+//   return {
+//     props: { question },
+//   };
+// };
