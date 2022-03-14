@@ -4,7 +4,6 @@ import useData from "contexts/data";
 
 const Settings: NextPage = () => {
   const { data } = useData();
-  console.log(data);
 
   return (
     <Container title="Settings">
