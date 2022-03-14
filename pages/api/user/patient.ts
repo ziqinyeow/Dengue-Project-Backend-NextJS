@@ -1,6 +1,7 @@
 import { verifyAPI } from "lib/auth";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "lib/prisma";
+import dayjs from "dayjs";
 
 export default async function handler(
   req: NextApiRequest,
@@ -26,9 +27,13 @@ export default async function handler(
           return res.status(404).json({ message: "Patient not found" });
         }
 
+        // const dbNow = (): Date => dayjs().add(8, "hour").toDate();
+        // const today = new Date(dbNow().setUTCHours(0, 0, 0, 0));
+        // const tomorrow = new Date(dbNow().setUTCHours(24, 0, 0, 0));
         const start = new Date(patient?.start);
         const today = new Date();
-        const difference = start.getTime() - today.getTime();
+
+        const difference = today.getTime() - start.getTime();
         const day = Math.ceil(difference / (1000 * 3600 * 24)) + 1;
         const symptom = await prisma.symptom.findMany({
           where: {
@@ -41,14 +46,12 @@ export default async function handler(
             },
           },
           orderBy: {
-            createdAt: "asc",
+            createdAt: "desc",
           },
+          take: 1,
         });
         return res.status(200).json({
-          symptom:
-            symptom[symptom?.length - 1]?.status === "dangerous"
-              ? true
-              : false ?? null,
+          symptom: symptom[0]?.status === "dangerous" ? true : false ?? null,
           day,
           message: "ok",
         });

@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "lib/prisma";
 import { verifyAPI } from "lib/auth";
+import dayjs from "dayjs";
 
 export const get = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -37,9 +38,11 @@ export const answer = async (req: NextApiRequest, res: NextApiResponse) => {
     if (!email) {
       throw new Error();
     }
+    const dbNow = (): Date => dayjs().add(8, "hour").toDate();
     const data = await prisma.answer.create({
       data: {
         answer,
+        createdAt: new Date(dbNow()),
         user: {
           connect: {
             email,

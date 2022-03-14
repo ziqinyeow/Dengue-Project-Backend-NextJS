@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "lib/prisma";
+import dayjs from "dayjs";
 
 export const get = async (
   req: NextApiRequest,
@@ -10,11 +11,9 @@ export const get = async (
     return res.status(404).json({ message: "User Not Found" });
   }
   try {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate());
-    tomorrow.setHours(24, 0, 0, 0);
+    const dbNow = (): Date => dayjs().add(8, "hour").toDate();
+    const today = new Date(dbNow().setUTCHours(0, 0, 0, 0));
+    const tomorrow = new Date(dbNow().setUTCHours(24, 0, 0, 0));
 
     const vital_sign_filled = await prisma.vital_sign.findMany({
       where: {
@@ -93,11 +92,14 @@ export const create = async (
       throw new Error("");
     }
 
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate());
-    tomorrow.setHours(24, 0, 0, 0);
+    const dbNow = (): Date => dayjs().add(8, "hour").toDate();
+    const today = new Date(dbNow().setUTCHours(0, 0, 0, 0));
+    const tomorrow = new Date(dbNow().setUTCHours(24, 0, 0, 0));
+    // const today = new Date();
+    // today.setHours(0, 0, 0, 0);
+    // const tomorrow = new Date();
+    // tomorrow.setDate(tomorrow.getDate());
+    // tomorrow.setHours(24, 0, 0, 0);
 
     if (type === "vital_sign") {
       const vital_sign = await prisma.vital_sign.findMany({
@@ -123,6 +125,7 @@ export const create = async (
           pulse_rate,
           respiratory_rate,
           oxygen_saturation,
+          createdAt: new Date(dbNow()),
           user: {
             connect: {
               email,
@@ -154,6 +157,7 @@ export const create = async (
           haematocrit,
           white_cell,
           platelet,
+          createdAt: new Date(dbNow()),
           user: {
             connect: {
               email,

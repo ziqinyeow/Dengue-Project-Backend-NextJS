@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "lib/prisma";
+import dayjs from "dayjs";
 
 export const get = async (
   _req: NextApiRequest,
@@ -14,11 +15,14 @@ export const get = async (
     //     },
     //   },
     // });
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate());
-    tomorrow.setHours(24, 0, 0, 0);
+    // const today = new Date();
+    // today.setHours(0, 0, 0, 0);
+    // const tomorrow = new Date();
+    // tomorrow.setDate(tomorrow.getDate());
+    // tomorrow.setHours(24, 0, 0, 0);
+    const dbNow = (): Date => dayjs().add(8, "hour").toDate();
+    const today = new Date(dbNow().setUTCHours(0, 0, 0, 0));
+    const tomorrow = new Date(dbNow().setUTCHours(24, 0, 0, 0));
     const symptom = await prisma.symptom.findMany({
       where: {
         user: {
@@ -44,6 +48,7 @@ export const create = async (
 ) => {
   try {
     const { response } = req.body;
+    const dbNow = (): Date => dayjs().add(8, "hour").toDate();
 
     // perform logic
     const arr = response.split(" ");
@@ -69,6 +74,7 @@ export const create = async (
       data: {
         response,
         status: risk_status,
+        createdAt: new Date(dbNow()),
         user: {
           connect: {
             email,
