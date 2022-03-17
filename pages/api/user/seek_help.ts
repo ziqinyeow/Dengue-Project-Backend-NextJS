@@ -21,7 +21,7 @@ export default async function handler(
         const seek_help = await prisma.seek_help_form.create({
           data: {
             i,
-            ii,
+            ii: new Date(ii),
             iii,
             user: {
               connect: {
