@@ -18,7 +18,6 @@ import CreatePatientCard from "components/CreatePatientCard";
 const User: NextPage = () => {
   const router = useRouter();
   const { data } = useData();
-  console.log(data);
 
   const [searchValue, setSearchValue] = useState("");
   const [select, setSelect] = useState<User[] | any[]>([]);

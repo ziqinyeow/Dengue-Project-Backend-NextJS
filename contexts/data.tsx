@@ -4,9 +4,8 @@ import { createContext, useContext, useState } from "react";
 type Data = {
   user: [];
   patient: [];
-  detail: [];
   type: "";
-  admin: [];
+  admin: {};
   message: "";
 };
 
@@ -14,9 +13,8 @@ const initial_state = {
   data: {
     user: [],
     patient: [],
-    detail: [],
     type: "",
-    admin: [],
+    admin: {},
     message: "",
   },
   isData: () => false,
@@ -35,7 +33,7 @@ export function DataContext(props: any) {
   const [data, setData] = useState<Data>();
 
   const isData = () => {
-    if (data?.user?.length !== 0 && data?.type) {
+    if (data?.type && (data?.type === "admin" || data?.type === "superuser")) {
       return true;
     } else {
       return false;
@@ -58,12 +56,11 @@ export function DataContext(props: any) {
 
   // logout
   const removeData = () => {
+    // @ts-ignore
     setData({
-      user: [],
-      patient: [],
-      detail: [],
+      ...data,
       type: "",
-      admin: [],
+      admin: {},
       message: "",
     });
   };

@@ -9,6 +9,7 @@ const Container = (props: any) => {
   const router = useRouter();
   const { data, isData, getData, removeData } = useData();
   const { children, ...customMeta } = props;
+  // console.log(data);
 
   const meta = {
     title: "Admin",

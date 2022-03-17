@@ -50,7 +50,13 @@ export default async function handler(
         // @ts-ignore
         email: payload?.email,
       },
+      select: {
+        email: true,
+        type: true,
+      },
     });
+    console.log(admin);
+
     if (!admin) {
       throw new Error("");
     }
@@ -87,21 +93,12 @@ export default async function handler(
       p.diff = diff;
       return p;
     });
-    // const detail = await prisma.detail.findMany({});
     if (admin.type === "admin") {
       return res
         .status(200)
-        .json({ user, patient, type: "admin", message: "ok" });
+        .json({ admin, user, patient, type: "admin", message: "ok" });
     }
-    // const admins = await prisma.admin.findMany({
-    //   select: {
-    //     id: true,
-    //     email: true,
-    //     type: true,
-    //   },
-    // });
     return res.status(200).json({
-      // admin: admins,
       admin,
       user,
       patient,
