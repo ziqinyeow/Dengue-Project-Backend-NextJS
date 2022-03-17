@@ -204,6 +204,58 @@ const User: NextPage = () => {
                     </button>
                   </CSVLink>
                 )}
+                <div>
+                  <button
+                    disabled={select?.length === 0}
+                    className="disabled:text-gray-400 hover:bg-gray-200 hover:text-gray-700 disabled:bg-gray-50"
+                  >
+                    {select?.length === 0 ? (
+                      <div className="flex items-center gap-2 px-3 py-1 text-sm border rounded-md">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          width="18"
+                          height="18"
+                        >
+                          <path fill="none" d="M0 0h24v24H0z" />
+                          <path
+                            fill="currentColor"
+                            d="M22 20.007a1 1 0 0 1-.992.993H2.992A.993.993 0 0 1 2 20.007V19h18V7.3l-8 7.2-10-9V4a1 1 0 0 1 1-1h18a1 1 0 0 1 1 1v16.007zM4.434 5L12 11.81 19.566 5H4.434zM0 15h8v2H0v-2zm0-5h5v2H0v-2z"
+                          />
+                        </svg>
+                        <div>mail</div>
+                      </div>
+                    ) : (
+                      <a
+                        href={`https://mail.google.com/mail/?view=cm&fs=1&to=${
+                          // @ts-ignore
+                          select?.reduce(
+                            (p: string, c: { email: string }) =>
+                              p + c?.email + ", ",
+                            ""
+                          )
+                        }`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 px-3 py-1 text-sm border rounded-md"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          width="18"
+                          height="18"
+                        >
+                          <path fill="none" d="M0 0h24v24H0z" />
+                          <path
+                            fill="currentColor"
+                            d="M22 20.007a1 1 0 0 1-.992.993H2.992A.993.993 0 0 1 2 20.007V19h18V7.3l-8 7.2-10-9V4a1 1 0 0 1 1-1h18a1 1 0 0 1 1 1v16.007zM4.434 5L12 11.81 19.566 5H4.434zM0 15h8v2H0v-2zm0-5h5v2H0v-2z"
+                          />
+                        </svg>
+                        <div>mail</div>
+                      </a>
+                    )}
+                  </button>
+                </div>
               </div>
             </div>
             <div className="w-full">

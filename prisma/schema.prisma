@@ -22,27 +22,28 @@ model Admin {
 }
 
 model User {
-  id            String          @id @default(cuid())
-  email         String          @unique
-  password      String
-  token         String?         @db.Text
-  fullname      String?
-  username      String?
-  ic            String          @unique
-  phone_no      String?
-  address       String?         @db.LongText
-  postcode      String?
-  state         String?
-  gender        String?
-  status        String?
-  fp_token      String?
-  group         String?         @default("user") //  user, patient
-  vital_sign    Vital_sign[]
-  blood_profile Blood_profile[]
-  answer        Answer[]
-  symptom       Symptom[]
-  history       History[]
-  patient       Patient?
+  id             String           @id @default(cuid())
+  email          String           @unique
+  password       String
+  token          String?          @db.Text
+  fullname       String?
+  username       String?
+  ic             String           @unique
+  phone_no       String?
+  address        String?          @db.LongText
+  postcode       String?
+  state          String?
+  gender         String?
+  status         String?
+  fp_token       String?
+  group          String?          @default("user") //  user, patient
+  vital_sign     Vital_sign[]
+  blood_profile  Blood_profile[]
+  answer         Answer[]
+  symptom        Symptom[]
+  history        History[]
+  patient        Patient?
+  seek_help_form Seek_help_form[]
 }
 
 // to allow unregistered user to be record as a patient
@@ -116,6 +117,18 @@ model Answer {
   answer    String   @db.LongText
   user_id   String
   user      User     @relation(fields: [user_id], references: [id])
+
+  @@index([user_id])
+}
+
+model Seek_help_form {
+  id        String    @id @default(cuid())
+  createdAt DateTime  @default(now())
+  i         String?   @db.LongText
+  ii        DateTime?
+  iii       String?
+  user      User      @relation(fields: [user_id], references: [id])
+  user_id   String
 
   @@index([user_id])
 }

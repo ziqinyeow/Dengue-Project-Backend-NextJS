@@ -9,6 +9,7 @@ const Container = (props: any) => {
   const router = useRouter();
   const { data, isData, getData, removeData } = useData();
   const { children, ...customMeta } = props;
+
   const meta = {
     title: "Admin",
     description: `Dengue API`,

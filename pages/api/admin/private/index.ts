@@ -3,6 +3,36 @@ import { prisma } from "lib/prisma";
 import { TOKEN_SECRET } from "lib/constant";
 import { jwtVerify } from "jose";
 
+function time_diff(dateFuture: Date) {
+  const now = new Date();
+  // @ts-ignore
+  let diffInMilliSeconds = Math.abs(dateFuture - now) / 1000;
+
+  // calculate days
+  const days = Math.floor(diffInMilliSeconds / 86400);
+  diffInMilliSeconds -= days * 86400;
+  // console.log("calculated days", days);
+
+  // calculate hours
+  const hours = Math.floor(diffInMilliSeconds / 3600) % 24;
+  diffInMilliSeconds -= hours * 3600;
+  // console.log("calculated hours", hours);
+
+  // calculate minutes
+  const minutes = Math.floor(diffInMilliSeconds / 60) % 60;
+  diffInMilliSeconds -= minutes * 60;
+  // console.log("minutes", minutes);
+
+  let difference = "";
+  if (days > 0) {
+    difference += `${days} `;
+  }
+
+  difference += `${hours} ${minutes}`;
+
+  return difference;
+}
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -48,8 +78,14 @@ export default async function handler(
         user: true,
       },
       orderBy: {
-        user_id: "desc",
+        start: "asc",
       },
+    });
+    patient.map((p) => {
+      const diff = time_diff(p?.start);
+      // @ts-ignore
+      p.diff = diff;
+      return p;
     });
     // const detail = await prisma.detail.findMany({});
     if (admin.type === "admin") {

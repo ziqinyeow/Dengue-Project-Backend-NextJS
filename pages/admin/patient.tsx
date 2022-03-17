@@ -18,6 +18,8 @@ import CreatePatientCard from "components/CreatePatientCard";
 const User: NextPage = () => {
   const router = useRouter();
   const { data } = useData();
+  console.log(data);
+
   const [searchValue, setSearchValue] = useState("");
   const [select, setSelect] = useState<User[] | any[]>([]);
   const [selectData, setSelectData] = useState<User[] | any[]>([]);
@@ -163,14 +165,11 @@ const User: NextPage = () => {
               </div>
               <div className="flex items-center flex-shrink-0 gap-3">
                 {select?.length !== 0 && (
-                  <div className="text-sm ">
-                    Export ({select?.length}) selected
-                  </div>
+                  <div className="text-sm ">({select?.length}) selected</div>
                 )}
                 {select?.length === 0 ? (
                   <div>
                     <button
-                      onClick={() => {}}
                       disabled={select?.length === 0}
                       className="flex items-center gap-2 px-3 py-1 text-sm border rounded-md disabled:text-gray-400 hover:bg-gray-200 hover:text-gray-700 disabled:bg-gray-50"
                     >
@@ -192,7 +191,6 @@ const User: NextPage = () => {
                 ) : (
                   <CSVLink {...csv_report}>
                     <button
-                      onClick={() => {}}
                       disabled={select?.length === 0}
                       className="flex items-center gap-2 px-3 py-1 text-sm border rounded-md disabled:text-gray-400 hover:bg-gray-200 hover:text-gray-700 disabled:bg-gray-50"
                     >
@@ -212,6 +210,58 @@ const User: NextPage = () => {
                     </button>
                   </CSVLink>
                 )}
+                <div>
+                  <button
+                    disabled={select?.length === 0}
+                    className="disabled:text-gray-400 hover:bg-gray-200 hover:text-gray-700 disabled:bg-gray-50"
+                  >
+                    {select?.length === 0 ? (
+                      <div className="flex items-center gap-2 px-3 py-1 text-sm border rounded-md">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          width="18"
+                          height="18"
+                        >
+                          <path fill="none" d="M0 0h24v24H0z" />
+                          <path
+                            fill="currentColor"
+                            d="M22 20.007a1 1 0 0 1-.992.993H2.992A.993.993 0 0 1 2 20.007V19h18V7.3l-8 7.2-10-9V4a1 1 0 0 1 1-1h18a1 1 0 0 1 1 1v16.007zM4.434 5L12 11.81 19.566 5H4.434zM0 15h8v2H0v-2zm0-5h5v2H0v-2z"
+                          />
+                        </svg>
+                        <div>mail</div>
+                      </div>
+                    ) : (
+                      <a
+                        href={`https://mail.google.com/mail/?view=cm&fs=1&to=${
+                          // @ts-ignore
+                          select?.reduce(
+                            (p: string, c: { email: string }) =>
+                              p + c?.email + ", ",
+                            ""
+                          )
+                        }`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 px-3 py-1 text-sm border rounded-md"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          width="18"
+                          height="18"
+                        >
+                          <path fill="none" d="M0 0h24v24H0z" />
+                          <path
+                            fill="currentColor"
+                            d="M22 20.007a1 1 0 0 1-.992.993H2.992A.993.993 0 0 1 2 20.007V19h18V7.3l-8 7.2-10-9V4a1 1 0 0 1 1-1h18a1 1 0 0 1 1 1v16.007zM4.434 5L12 11.81 19.566 5H4.434zM0 15h8v2H0v-2zm0-5h5v2H0v-2z"
+                          />
+                        </svg>
+                        <div>mail</div>
+                      </a>
+                    )}
+                  </button>
+                </div>
               </div>
             </div>
             <div className="w-full">
@@ -277,21 +327,18 @@ const User: NextPage = () => {
                   </div>
                   <div className="flex items-center gap-3">
                     <div
+                      className={`text-xs mx-1 py-1 px-4 whitespace-nowrap ${
+                        d?.user && d?.user_id ? "bg-green-200" : "bg-gray-200"
+                      } rounded-md`}
+                    >
+                      {d?.diff?.split(" ")[0]} day {d?.diff?.split(" ")[1]} hour
+                    </div>
+                    <div
                       title={
                         d?.user && d?.user_id
                           ? "This patient already registered the account"
                           : "This patient hasn't register the account"
                       }
-                      // onClick={() => {
-                      //   setUpdateUserData({
-                      //     id: d?.id,
-                      //     email: d?.email,
-                      //     type: String(d?.group),
-                      //     ic: d?.ic,
-                      //   });
-
-                      //   setUpdateUserCardVisible(1);
-                      // }}
                       className={`text-xs mx-1 py-1 px-4 ${
                         d?.user && d?.user_id ? "bg-green-200" : "bg-gray-200"
                       } rounded-md`}

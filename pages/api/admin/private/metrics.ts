@@ -10,11 +10,11 @@ export default async function handler(
   switch (method) {
     case "GET":
       try {
-        const user = await prisma.user.findMany();
-        const total_user = user.length;
+        const user = await prisma.user.count();
+        const total_user = user;
 
-        const patient = await prisma.patient.findMany();
-        const total_patient = patient.length;
+        const patient = await prisma.patient.count();
+        const total_patient = patient;
 
         // const detail = await prisma.detail.findMany();
         // const total_detail = detail.length;
