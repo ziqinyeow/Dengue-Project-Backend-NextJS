@@ -10,7 +10,7 @@ export default async function handler(
   const auth = req.headers["authorization"];
   const user = await verifyAPI(auth);
 
-  if (!user || !user?.email) {
+  if (!user || !user?.email || !user?.ic) {
     return res.status(401).json({ message: "User not found" });
   }
 
@@ -31,7 +31,29 @@ export default async function handler(
             },
           },
         });
-        return res.status(200).json({ form: seek_help, message: "ok" });
+        const symptom = await prisma.symptom.findMany({
+          where: {
+            user: {
+              // @ts-ignore
+              ic: user?.ic,
+            },
+          },
+          orderBy: {
+            createdAt: "desc",
+          },
+          take: 1,
+        });
+        const update = await prisma.symptom.update({
+          where: {
+            id: symptom[0]?.id,
+          },
+          data: {
+            status: "normal",
+          },
+        });
+        return res
+          .status(200)
+          .json({ form: seek_help, symptom: update, message: "ok" });
       } catch (error) {
         return res.status(404).json({ message: "error" });
       }
