@@ -56,6 +56,8 @@ const User: NextPage = () => {
       d?.status?.toLowerCase().includes(searchValue.toLowerCase())
   );
 
+  console.log(data);
+
   return (
     <Container title="Admin - Patient">
       <div className="layout">
@@ -315,13 +317,13 @@ const User: NextPage = () => {
                       >
                         ic: {d?.ic}
                       </div>
-                      {d?.user?.state && (
+                      {/* {d?.user?.state && (
                         <div
                           className={`text-xs mx-2 py-1 px-4 whitespace-nowrap bg-lime-100 rounded-md`}
                         >
                           {d?.user?.state.toUpperCase()}
                         </div>
-                      )}
+                      )} */}
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
@@ -330,7 +332,13 @@ const User: NextPage = () => {
                         d?.user && d?.user_id ? "bg-green-200" : "bg-gray-200"
                       } rounded-md`}
                     >
-                      {d?.diff?.split(" ")[0]} day {d?.diff?.split(" ")[1]} hour
+                      {d?.diff?.split(" ").length == 2
+                        ? `${d?.diff?.split(" ")[0]} hour ${
+                            d?.diff?.split(" ")[1]
+                          } min`
+                        : `${d?.diff?.split(" ")[0]} day ${
+                            d?.diff?.split(" ")[1]
+                          } hour`}
                     </div>
                     <div
                       title={
