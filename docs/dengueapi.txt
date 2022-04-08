@@ -181,11 +181,11 @@ module 1
         "createdAt": "2022-03-21T12:49:00.261Z",
         "updatedAt": "2022-03-21T04:49:00.264Z",
         "module": 1,
-        "answer": "abcdabcdabcdac",
+        "answer": "01 2 03 123",
         "user_id": "cl0axvrvj000009lgsuhsswr8"
     },
     "module": "1",
-    "total_completed": 14,
+    "total_completed": 4,
     "completed": false,
     "message": "ok"
 }
@@ -202,10 +202,11 @@ submit quiz answer for each module
 https://dengueapi.vercel.app/api/user/quiz?module=1
 method: POST (module in url can be 1-7)
 body: 
-answer: "abc" // can submit if not complete
+answer: "01 2 03 123" // can submit if not complete
+// question 1: user answer selection index 0 and selection index 1
 
 update previous not completed quiz answer
 https://dengueapi.vercel.app/api/user/quiz?module=1
 method: PUT (module in url can be 1-7)
 body:
-answer: "abcdab" // submit answer with previous completed answer (GET first)
+answer: "01 2 03 123 23 1" // submit answer with previous completed answer (GET first)
