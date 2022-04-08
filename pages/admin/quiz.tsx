@@ -5,7 +5,6 @@ import type {
   NextPage,
 } from "next";
 import { useState } from "react";
-import { prisma } from "lib/prisma";
 import GradientCard from "components/GradientCard";
 import QuizCard from "components/QuizCard";
 

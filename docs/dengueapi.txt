@@ -1,0 +1,211 @@
+All headers:
+"Content-Type": "application/json"
+
+signup
+https://dengueapi.vercel.app/api/auth
+method: POST
+body:
+type: "signup"
+email: ""
+password: ""
+ic: ""
+fullname: ""?
+username: ""?
+phone_no: ""?
+address: ""?
+postcode: ""?
+state: ""?
+
+login
+https://dengueapi.vercel.app/api/auth
+method: POST
+body:
+type: "login"
+email: ""
+password: ""
+
+the following 3 request is to reset password
+
+request OTP tag no
+https://dengueapi.vercel.app/api/auth
+method: POST
+body:
+type: "req_tag"
+email: ""
+
+verify OTP tag no
+https://dengueapi.vercel.app/api/auth
+method: POST
+body:
+type: "ver_tag"
+email: ""
+code: "" // otp code from email
+
+change password
+https://dengueapi.vercel.app/api/auth
+method: POST
+body:
+type: "res_tag"
+email: ""
+code: ""
+password: "" // new password
+
+
+the signup and login request above will return token
+all the following request later
+make sure to include headers
+"Authorization": "Bearer <token>"
+
+get all data
+https://dengueapi.vercel.app/api/user
+method: GET
+
+update user profile data
+https://dengueapi.vercel.app/api/user
+method: PUT
+body:
+fullname: ""?
+username: ""?
+phone_no: ""?
+address: ""?
+postcode: ""?
+state: ""?
+
+reset password
+https://dengueapi.vercel.app/api/user
+method: POST
+body:
+old_pwd: ""
+new_pwd: ""
+
+get all detail and number of vital sign and blood profile filled today
+https://dengueapi.vercel.app/api/user/detail
+method: GET
+
+create vital sign
+https://dengueapi.vercel.app/api/user/detail
+method: POST
+body: - all type optional decimal
+"type": "vital_sign"
+temperature:
+blood_pressure:
+pulse_rate: 
+respiratory_rate: 
+oxygen_saturation: 
+
+create blood profile
+https://dengueapi.vercel.app/api/user/detail
+method: POST
+body: - all type optional decimal
+"type": "vital_sign"
+haemoglobin:
+haematocrit:
+white_cell:
+platelet:
+
+update medical detail
+https://dengueapi.vercel.app/api/user/detail
+method: PUT
+body:
+id: "medical detail id"
+"temperature": 12432.423
+"blood_pressure": 12432.423
+"pulse_rate": 12432.423
+"hemoglobin": 12432.423
+"hematocrit": 12432.423
+"white_cell": 12432.423
+"platelet": 12432.423
+
+
+get user last answer id and answer
+https://dengueapi.vercel.app/api/user/quiz
+method: GET
+
+create new answers
+https://dengueapi.vercel.app/api/user/quiz
+method: POST
+body: 
+answer:"1234234"
+
+update answers of quiz
+https://dengueapi.vercel.app/api/user/quiz
+method: PUT
+body: 
+id: "" // answer id (can get from GET)
+answer:"1234234"
+
+
+get number of symptom fill today
+https://dengueapi.vercel.app/api/user/symptom
+method: GET
+
+fill the symptom form
+https://dengueapi.vercel.app/api/user/symptom
+method: POST
+body:
+response: ""
+
+how to fill response? 
+ex: 
+question 1 -> user select first selection
+response: "1 1"
+question 2 -> user select second selection
+response: "1 1 2 2"
+
+response: "<question no> <selection no>" 
+
+
+get day of becoming patient and symptom detail
+https://dengueapi.vercel.app/api/user/patient
+method: GET
+
+create seek help form
+https://dengueapi.vercel.app/api/user/seek_help
+method: POST
+body:
+i: "a"
+ii: "c other answer"
+iii: ""
+
+
+
+get quiz module detail
+https://dengueapi.vercel.app/api/user/quiz?module=1
+method: GET (module in url can be 1-7)
+this will return the last quiz submitted
+if completed = false means the user havent complete
+module 1
+{
+    "data": {
+        "id": "cl108a6hz0064s07k280j109q",
+        "createdAt": "2022-03-21T12:49:00.261Z",
+        "updatedAt": "2022-03-21T04:49:00.264Z",
+        "module": 1,
+        "answer": "abcdabcdabcdac",
+        "user_id": "cl0axvrvj000009lgsuhsswr8"
+    },
+    "module": "1",
+    "total_completed": 14,
+    "completed": false,
+    "message": "ok"
+}
+
+if user havent submit before it will return
+{
+    "data": [],
+    "module": "2",
+    "completed": false,
+    "message": "ok"
+}
+
+submit quiz answer for each module
+https://dengueapi.vercel.app/api/user/quiz?module=1
+method: POST (module in url can be 1-7)
+body: 
+answer: "abc" // can submit if not complete
+
+update previous not completed quiz answer
+https://dengueapi.vercel.app/api/user/quiz?module=1
+method: PUT (module in url can be 1-7)
+body:
+answer: "abcdab" // submit answer with previous completed answer (GET first)

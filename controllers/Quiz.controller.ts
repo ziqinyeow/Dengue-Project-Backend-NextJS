@@ -28,12 +28,13 @@ export const get = async (req: NextApiRequest, res: NextApiResponse) => {
     });
 
     const completed = data[0]?.module
-      ? data[0]?.answer?.length === module_question[data[0]?.module - 1]
+      ? data[0]?.answer?.split(" ").length ===
+        module_question[data[0]?.module - 1]
       : false;
     return res.status(200).json({
       data: data[0] ?? data,
       module,
-      total_completed: data[0]?.answer?.length,
+      total_completed: data[0]?.answer?.split(" ").length,
       completed,
       message: "ok",
     });
