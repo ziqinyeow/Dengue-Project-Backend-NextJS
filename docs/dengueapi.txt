@@ -206,6 +206,7 @@ https://dengueapi.vercel.app/api/user/quiz?module=1
 method: POST (module in url can be 1-7)
 body: 
 answer: "01 2 03 123" // can submit if not complete
+no_correct: 1
 // question 1: user answer selection index 0 and selection index 1
 
 update previous not completed quiz answer
