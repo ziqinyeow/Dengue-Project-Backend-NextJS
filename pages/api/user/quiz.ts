@@ -10,6 +10,8 @@ export default async function handler(
   switch (method) {
     case "GET":
       return await Quiz.get(req, res);
+    case "PATCH":
+      return await Quiz.getScore(req, res);
     case "POST":
       return await Quiz.answer(req, res);
     case "PUT":

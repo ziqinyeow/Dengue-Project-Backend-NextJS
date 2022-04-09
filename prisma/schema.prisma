@@ -55,7 +55,7 @@ model Patient {
   start   DateTime  @default(now())
   end     DateTime? @updatedAt
   user    User?     @relation(fields: [user_id], references: [id], onDelete: SetNull)
-  user_id String?
+  user_id String?   @unique
 }
 
 model Symptom {
@@ -111,13 +111,14 @@ model Blood_profile {
 }
 
 model Answer {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  module    Int?
-  answer    String?  @db.LongText
-  user_id   String
-  user      User     @relation(fields: [user_id], references: [id])
+  id         String   @id @default(cuid())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  module     Int?
+  answer     String?  @db.LongText
+  no_correct Int?     @default(0)
+  user_id    String
+  user       User     @relation(fields: [user_id], references: [id])
 
   @@index([user_id])
 }
