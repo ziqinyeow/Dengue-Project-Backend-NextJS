@@ -168,6 +168,9 @@ ii: "c other answer"
 iii: ""
 
 
+get quiz module score for all module
+https://dengueapi.vercel.app/api/user/quiz
+method: PATCH (module in url can be 1-7)
 
 get quiz module detail
 https://dengueapi.vercel.app/api/user/quiz?module=1
