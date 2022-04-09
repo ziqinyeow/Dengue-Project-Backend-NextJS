@@ -51,6 +51,18 @@ export default async function handler(
             status: "normal",
           },
         });
+
+        if (iii === "I am admitted to ward") {
+          await prisma.patient.update({
+            where: {
+              // @ts-ignore
+              email: user?.email,
+            },
+            data: {
+              status: "admitted",
+            },
+          });
+        }
         return res
           .status(200)
           .json({ form: seek_help, symptom: update, message: "ok" });

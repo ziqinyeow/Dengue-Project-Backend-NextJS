@@ -39,7 +39,7 @@ export default async function handler(
               email: patient?.email,
               start: patient?.start,
               end: new Date(),
-              status: patient?.status ?? "",
+              status: "completed monitoring",
               user: {
                 connect: {
                   email: patient?.email,

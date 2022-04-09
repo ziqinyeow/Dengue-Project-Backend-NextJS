@@ -369,7 +369,9 @@ const User: NextPage = () => {
                     </button>
                     {d?.user ? (
                       <Link href={`/admin/user/${d?.user?.id}`} passHref>
-                        <a target="_blank" rel="noopener noreferrer">
+                        <a
+                        // target="_blank" rel="noopener noreferrer"
+                        >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="24"

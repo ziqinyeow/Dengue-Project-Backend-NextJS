@@ -55,7 +55,6 @@ export default async function handler(
         type: true,
       },
     });
-    console.log(admin);
 
     if (!admin) {
       throw new Error("");

@@ -35,11 +35,12 @@ ChartJS.register(
 
 const User: NextPage = ({
   user,
+  patient,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
   const [more, setMore] = useState(false);
-  console.log(user);
+  console.log(user, patient);
 
   const latest_symptom = user?.symptom[user?.symptom?.length - 1];
 
@@ -278,40 +279,102 @@ const User: NextPage = ({
             </div>
           </div>
         </div>
-        <h4 className="mb-3 font-bold">Symptom History</h4>
-        <div className="grid w-full grid-cols-3 border-2 rounded-t-sm">
+        <h4 className="mb-3 font-bold">Current Symptom</h4>
+        <div className="grid w-full grid-cols-3 bg-gray-100 border-2 rounded-t-sm">
           <div className="px-3 py-2">
             <h5 className="text-sm font-medium">Created</h5>
           </div>
           <div className="px-3 py-2">
-            <h5 className="text-sm font-medium">Response</h5>
+            <h5 className="text-sm font-medium">Status</h5>
+          </div>
+          <div className="px-3 py-2">
+            <h5 className="text-sm font-medium">Day</h5>
+          </div>
+        </div>
+        {user?.symptom
+          .filter((s: any) => new Date(s.createdAt) > new Date(patient.start))
+          ?.sort(
+            (a: any, b: any) =>
+              Number(new Date(b.createdAt)) - Number(new Date(a.createdAt))
+          )
+          .map((s: any, i: any) => (
+            <div
+              key={s?.id}
+              className={`grid w-full grid-cols-3 border-b-2 border-x-2`}
+            >
+              <div className="px-3 py-2">
+                <h5 className="text-sm">
+                  {new Date(s?.createdAt).toUTCString().slice(0, -4)}
+                </h5>
+              </div>
+              <div className="px-3 py-2">
+                <h5 className="text-sm">
+                  {s?.status === "" || s?.status == null ? "--" : s?.status}
+                </h5>
+              </div>
+              <div className="px-3 py-2">
+                <h5 className="text-sm">
+                  {Math.round(
+                    (new Date(s.createdAt).getTime() -
+                      new Date(patient.start).getTime()) /
+                      (1000 * 3600 * 24)
+                  )}
+                </h5>
+              </div>
+            </div>
+          ))}
+        {user?.symptom?.filter(
+          (s: any) => new Date(s.createdAt) > new Date(patient.start)
+        ).length === 0 && (
+          <div className={`grid w-full grid-cols-3 border-b-2 border-x-2`}>
+            <div className="px-3 py-2">
+              <h5 className="text-sm">No current symptom yet</h5>
+            </div>
+          </div>
+        )}
+        <h4 className="mt-10 mb-3 font-bold">Symptom History</h4>
+        <div className="grid w-full grid-cols-2 bg-gray-100 border-2 rounded-t-sm">
+          <div className="px-3 py-2">
+            <h5 className="text-sm font-medium">Created</h5>
           </div>
           <div className="px-3 py-2">
             <h5 className="text-sm font-medium">Status</h5>
           </div>
         </div>
-        {user?.symptom?.reverse().map((s: any, i: any) => (
-          <div
-            key={s?.id}
-            className={`grid w-full grid-cols-3 border-b-2 border-x-2`}
-          >
-            <div className="px-3 py-2">
-              <h5 className="text-sm">
-                {new Date(s?.createdAt).toUTCString().slice(0, -4)}
-              </h5>
+        {user?.symptom
+          .filter((s: any) => new Date(s.createdAt) < new Date(patient.start))
+          ?.sort(
+            (a: any, b: any) =>
+              Number(new Date(b.createdAt)) - Number(new Date(a.createdAt))
+          )
+          .map((s: any, i: any) => (
+            <div
+              key={s?.id}
+              className={`grid w-full grid-cols-2 border-b-2 border-x-2`}
+            >
+              <div className="px-3 py-2">
+                <h5 className="text-sm">
+                  {new Date(s?.createdAt).toUTCString().slice(0, -4)}
+                </h5>
+              </div>
+              <div className="px-3 py-2">
+                <h5 className="text-sm">
+                  {s?.status === "" || s?.status == null ? "--" : s?.status}
+                </h5>
+              </div>
             </div>
+          ))}
+        {user?.symptom?.filter(
+          (s: any) => new Date(s.createdAt) < new Date(patient.start)
+        ).length === 0 && (
+          <div className={`grid w-full grid-cols-3 border-b-2 border-x-2`}>
             <div className="px-3 py-2">
-              <h5 className="text-sm">{s?.response ?? "--"}</h5>
-            </div>
-            <div className="px-3 py-2">
-              <h5 className="text-sm">
-                {s?.status === "" || s?.status == null ? "--" : s?.status}
-              </h5>
+              <h5 className="text-sm">No symptom history yet</h5>
             </div>
           </div>
-        ))}
+        )}
         <h4 className="mt-10 mb-3 font-bold">Dengue Diagnose History</h4>
-        <div className="grid w-full grid-cols-3 border-2 rounded-t-sm">
+        <div className="grid w-full grid-cols-3 bg-gray-100 border-2 rounded-t-sm">
           <div className="px-3 py-2">
             <h5 className="text-sm font-medium">Created</h5>
           </div>
@@ -415,9 +478,21 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
       };
     }
 
+    const patient = await prisma.patient.findMany({
+      where: {
+        // @ts-ignore
+        user_id: params?.id,
+      },
+      orderBy: {
+        start: "desc",
+      },
+      take: 1,
+    });
+
     return {
       props: {
         user: JSON.parse(JSON.stringify(user)),
+        patient: JSON.parse(JSON.stringify(patient[0])),
       },
     };
   } catch (error) {
