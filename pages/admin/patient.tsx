@@ -62,9 +62,20 @@ const User: NextPage = () => {
     <Container title="Admin - Patient">
       <div className="layout">
         <h2 className="mb-5">Patient</h2>
-        <h5 className="mb-8 text-sm text-gray-500">
-          All admins are able to view this page.
-        </h5>
+        <div className="grid w-full grid-cols-2 gap-10 mb-10">
+          <GradientCard className="p-5">
+            <h4 className="mb-2">
+              Number of patients with warning signs who seek help
+            </h4>
+            <h2>{"--"}</h2>
+          </GradientCard>
+          <GradientCard className="p-5">
+            <h4 className="mb-2">
+              Number of patients with warning signs who were admitted
+            </h4>
+            <h2>{"--"}</h2>
+          </GradientCard>
+        </div>
         <div className="flex items-center w-full gap-5 mb-10">
           <div className="relative w-full group">
             <div className="absolute transition duration-500 rounded-md -inset-0.5 bg-gradient-to-r from-blue-500 to-green-400 opacity-20 group-hover:duration-200 group-hover:opacity-100 blur" />
@@ -351,6 +362,13 @@ const User: NextPage = () => {
                       } rounded-md`}
                     >
                       {d?.user && d?.user_id ? "registered" : "unregistered"}
+                    </div>
+                    <div
+                      className={`text-xs mx-1 py-1 px-4 whitespace-nowrap ${
+                        d?.status === "active" ? "bg-red-200" : "bg-green-200"
+                      } rounded-md`}
+                    >
+                      {d?.status}
                     </div>
                     <button
                       disabled={!d?.user}

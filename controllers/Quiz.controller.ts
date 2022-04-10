@@ -215,7 +215,6 @@ export const update = async (req: NextApiRequest, res: NextApiResponse) => {
     const latest = await prisma.answer.findMany({
       where: {
         module: Number(module),
-        no_correct: Number(no_correct),
         user: {
           email,
         },
@@ -242,10 +241,11 @@ export const update = async (req: NextApiRequest, res: NextApiResponse) => {
       },
       data: {
         answer,
+        no_correct,
       },
     });
     return res.status(200).json({ data, message: "ok" });
   } catch (e) {
-    return res.status(400).json({ message: "Unable to update news" });
+    return res.status(400).json({ message: "Unable to update answer" });
   }
 };
