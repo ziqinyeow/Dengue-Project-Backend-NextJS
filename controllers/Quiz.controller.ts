@@ -226,13 +226,16 @@ export const update = async (req: NextApiRequest, res: NextApiResponse) => {
     });
 
     const completed = latest[0]?.module
-      ? latest[0]?.answer?.length === module_question[latest[0]?.module - 1]
+      ? latest[0]?.answer?.split(" ").length ===
+        module_question[latest[0]?.module - 1]
       : false;
 
     if (completed) {
-      return res
-        .status(200)
-        .json({ data: latest, message: "Already completed" });
+      return res.status(200).json({
+        data: latest,
+        completed,
+        message: "Already completed this module. Please POST a new request",
+      });
     }
 
     const data = await prisma.answer.update({
@@ -246,6 +249,8 @@ export const update = async (req: NextApiRequest, res: NextApiResponse) => {
     });
     return res.status(200).json({ data, message: "ok" });
   } catch (e) {
+    console.log(e);
+
     return res.status(400).json({ message: "Unable to update answer" });
   }
 };
