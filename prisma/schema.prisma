@@ -34,6 +34,7 @@ model User {
   postcode       String?
   state          String?
   gender         String?
+  age            Int?
   status         String?
   fp_token       String?
   group          String?          @default("user") //  user, patient

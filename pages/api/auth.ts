@@ -25,6 +25,8 @@ export default async function handler(
     phone_no,
     address,
     postcode,
+    age,
+    gender,
     state,
   } = req.body;
 
@@ -76,6 +78,8 @@ export default async function handler(
               address,
               postcode,
               state,
+              gender,
+              age,
             },
           });
           return res
