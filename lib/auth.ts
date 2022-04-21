@@ -69,6 +69,9 @@ export const verifyUser = async (auth: string | undefined) => {
         address: true,
         postcode: true,
         state: true,
+        age: true,
+        gender: true,
+        status: true,
       },
     });
 
