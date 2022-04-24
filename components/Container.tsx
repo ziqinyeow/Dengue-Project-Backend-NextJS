@@ -54,7 +54,7 @@ const Container = (props: any) => {
       </Head>
       <div className="h-[100vh] grid sidebar">
         <div className="w-[80px]" />
-        <nav className="fixed z-50 w-[80px] border-r h-[100vh] flex flex-col items-center justify-between py-5">
+        <nav className="fixed z-50 !bg-white w-[80px] border-r h-[100vh] flex flex-col items-center justify-between py-5">
           <div>
             <div className="pb-5 mb-5 border-b">
               <NavItem href="/admin" logo={true}>

@@ -49,14 +49,15 @@ model User {
 
 // to allow unregistered user to be record as a patient
 model Patient {
-  id      String    @id @default(cuid())
-  ic      String    @unique
-  email   String    @unique
-  status  String    @default("active") // active, completed monitoring, admitted
-  start   DateTime  @default(now())
-  end     DateTime? @updatedAt
-  user    User?     @relation(fields: [user_id], references: [id], onDelete: SetNull)
-  user_id String?   @unique
+  id        String    @id @default(cuid())
+  ic        String    @unique
+  email     String    @unique
+  status    String    @default("active") // active, completed monitoring, admitted
+  seek_help Boolean   @default(false)
+  start     DateTime  @default(now())
+  end       DateTime? @updatedAt
+  user      User?     @relation(fields: [user_id], references: [id], onDelete: SetNull)
+  user_id   String?   @unique
 }
 
 model Symptom {
@@ -134,17 +135,4 @@ model Seek_help_form {
   user_id   String
 
   @@index([user_id])
-}
-
-model Task {
-  id          String  @id @default(cuid())
-  name        String
-  description String? @db.LongText
-  priority    Int     @default(0)
-}
-
-model News {
-  id    String  @id @default(cuid())
-  title String
-  text  String? @db.LongText
 }

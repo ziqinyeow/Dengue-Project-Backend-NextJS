@@ -60,6 +60,17 @@ export default async function handler(
             },
             data: {
               status: "admitted",
+              seek_help: true,
+            },
+          });
+        } else {
+          await prisma.patient.update({
+            where: {
+              // @ts-ignore
+              email: user?.email,
+            },
+            data: {
+              seek_help: true,
             },
           });
         }

@@ -288,22 +288,24 @@ const User: NextPage = () => {
                       }
                     />
                     <div className="flex items-center">
-                      {d?.email}{" "}
+                      <Link href={`/admin/user/${d?.id}`}>
+                        <a className="hover:underline">{d?.email}</a>
+                      </Link>{" "}
                       {d?.username && (
                         <div
-                          className={`text-xs mx-2 py-1 px-4 whitespace-nowrap bg-pink-100 rounded-md`}
+                          className={`text-xs mx-1 py-1 px-4 whitespace-nowrap bg-pink-100 rounded-md`}
                         >
                           name: {d?.username}
                         </div>
                       )}
                       <div
-                        className={`text-xs mx-2 py-1 px-4 whitespace-nowrap bg-blue-100 rounded-md`}
+                        className={`text-xs mx-1 py-1 px-4 whitespace-nowrap bg-blue-100 rounded-md`}
                       >
                         ic: {d?.ic}
                       </div>
                       {d?.state && (
                         <div
-                          className={`text-xs mx-2 py-1 px-4 whitespace-nowrap bg-lime-100 rounded-md`}
+                          className={`text-xs mx-1 py-1 px-4 whitespace-nowrap bg-lime-100 rounded-md`}
                         >
                           {d?.state.toUpperCase()}
                         </div>
@@ -322,7 +324,7 @@ const User: NextPage = () => {
 
                         setUpdateUserCardVisible(1);
                       }}
-                      className={`text-xs cursor-pointer mx-2 py-1 px-4 ${
+                      className={`text-xs cursor-pointer mx-1 py-1 px-4 ${
                         d?.group === "user"
                           ? "bg-green-200 hover:bg-green-300"
                           : "bg-red-200 hover:bg-red-300"

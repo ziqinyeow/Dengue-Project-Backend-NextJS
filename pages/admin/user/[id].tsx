@@ -33,14 +33,47 @@ ChartJS.register(
   Legend
 );
 
+function time_diff(dateFuture: Date) {
+  const now = new Date();
+  // @ts-ignore
+  let diffInMilliSeconds = Math.abs(dateFuture - now) / 1000;
+
+  // calculate days
+  const days = Math.floor(diffInMilliSeconds / 86400);
+  diffInMilliSeconds -= days * 86400;
+  // console.log("calculated days", days);
+
+  // calculate hours
+  const hours = Math.floor(diffInMilliSeconds / 3600) % 24;
+  diffInMilliSeconds -= hours * 3600;
+  // console.log("calculated hours", hours);
+
+  // calculate minutes
+  const minutes = Math.floor(diffInMilliSeconds / 60) % 60;
+  diffInMilliSeconds -= minutes * 60;
+  // console.log("minutes", minutes);
+
+  let difference = "";
+  if (days > 0) {
+    difference += `${days} `;
+  }
+
+  difference += `${hours} ${minutes}`;
+
+  return difference;
+}
+
 const User: NextPage = ({
   user,
   patient,
+  module_progress,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
   const [more, setMore] = useState(false);
-  console.log(user, patient);
+  // console.log(user, patient, module_progress);
+
+  const diff = time_diff(patient?.start);
 
   const latest_symptom = user?.symptom[user?.symptom?.length - 1];
 
@@ -118,11 +151,33 @@ const User: NextPage = ({
     ],
   };
 
+  const desca_quiz_completeness = {
+    labels: [
+      "Module 1",
+      "Module 2",
+      "Module 3",
+      "Module 4",
+      "Module 5",
+      "Module 6",
+      "Module 7",
+    ],
+    datasets: [
+      {
+        label: "Progress",
+        data: Object.values(module_progress),
+        borderColor: "rgb(255, 99, 132)",
+        backgroundColor: "rgba(255, 99, 132, 0.5)",
+      },
+    ],
+  };
+
   const headers = [
     { label: "email", key: "email" },
     { label: "name", key: "name" },
     { label: "ic", key: "ic" },
     { label: "phone_no", key: "phone_no" },
+    { label: "diagnose_start_date", key: "diagnose_start_date" },
+    { label: "day_illness", key: "day_illness" },
     { label: "address", key: "address" },
     { label: "postcode", key: "postcode" },
     { label: "state", key: "state" },
@@ -138,6 +193,11 @@ const User: NextPage = ({
         email: user?.email,
         ic: user?.ic,
         phone_no: user?.phone_no,
+        diagnose_start_date: new Date(patient?.start).toLocaleDateString(),
+        day_illness: Math.round(
+          (new Date().getTime() - new Date(patient.start).getTime()) /
+            (1000 * 3600 * 24)
+        ),
         address: user?.address,
         postcode: user?.postcode,
         state: user?.state,
@@ -257,11 +317,33 @@ const User: NextPage = ({
               <div className="w-full">
                 <UserInfo title="Name" content={user?.username} />
                 <UserInfo title="Email" content={user?.email} />
+                <UserInfo
+                  title="Diagnose Start Date"
+                  content={new Date(patient?.start).toLocaleDateString()}
+                />
+                <UserInfo
+                  title="Day of Illness"
+                  content={Math.round(
+                    (new Date().getTime() - new Date(patient.start).getTime()) /
+                      (1000 * 3600 * 24)
+                  )}
+                />
                 {more && (
                   <div className="w-full">
                     <UserInfo
                       title="Identity Card No (IC)"
                       content={user?.ic}
+                    />
+                    <UserInfo title="Age" content={user?.age} />
+                    <UserInfo
+                      title="Sex"
+                      content={
+                        user?.gender != null
+                          ? user?.gender === "0"
+                            ? "male"
+                            : "female"
+                          : "--"
+                      }
                     />
                     <UserInfo title="Phone No" content={user?.phone_no} />
                     <UserInfo title="Address" content={user?.address} />
@@ -449,6 +531,22 @@ const User: NextPage = ({
             </div>
           </div>
         </div>
+        <div className="w-full mt-10">
+          <h4 className="mb-5 font-bold">Desca Quiz Completeness</h4>
+          <div className="p-5 border-2 rounded">
+            <Line
+              options={{
+                responsive: true,
+                plugins: {
+                  legend: {
+                    position: "top" as const,
+                  },
+                },
+              }}
+              data={desca_quiz_completeness}
+            />
+          </div>
+        </div>
       </div>
     </Container>
   );
@@ -478,6 +576,82 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
       };
     }
 
+    let module_1 = Math.max.apply(
+      Math,
+      // @ts-ignore
+      user?.answer
+        .filter((d: any) => d.module === 1)
+        .map(function (m: any) {
+          return m?.answer?.split(" ").length;
+        })
+    );
+
+    let module_2 = Math.max.apply(
+      Math,
+      // @ts-ignore
+      user?.answer
+        .filter((d: any) => d.module === 2)
+        .map(function (m: any) {
+          return m?.answer?.split(" ").length;
+        })
+    );
+    let module_3 = Math.max.apply(
+      Math,
+      // @ts-ignore
+      user?.answer
+        .filter((d: any) => d.module === 3)
+        .map(function (m: any) {
+          return m?.answer?.split(" ").length;
+        })
+    );
+    let module_4 = Math.max.apply(
+      Math,
+      // @ts-ignore
+      user?.answer
+        .filter((d: any) => d.module === 4)
+        .map(function (m: any) {
+          return m?.answer?.split(" ").length;
+        })
+    );
+    let module_5 = Math.max.apply(
+      Math,
+      // @ts-ignore
+      user?.answer
+        .filter((d: any) => d.module === 5)
+        .map(function (m: any) {
+          return m?.answer?.split(" ").length;
+        })
+    );
+    let module_6 = Math.max.apply(
+      Math,
+      // @ts-ignore
+      user?.answer
+        .filter((d: any) => d.module === 6)
+        .map(function (m: any) {
+          return m?.answer?.split(" ").length;
+        })
+    );
+    let module_7 = Math.max.apply(
+      Math,
+      // @ts-ignore
+      user?.answer
+        .filter((d: any) => d.module === 7)
+        .map(function (m: any) {
+          return m?.answer?.split(" ").length;
+        })
+    );
+
+    const module_question = [15, 6, 6, 7, 7, 5, 4];
+    let module_progress = {
+      module_1: module_1 == null ? 0 : (module_1 / module_question[0]) * 100,
+      module_2: module_2 == null ? 0 : (module_2 / module_question[1]) * 100,
+      module_3: module_3 == null ? 0 : (module_3 / module_question[2]) * 100,
+      module_4: module_4 == null ? 0 : (module_4 / module_question[3]) * 100,
+      module_5: module_5 == null ? 0 : (module_5 / module_question[4]) * 100,
+      module_6: module_6 == null ? 0 : (module_6 / module_question[5]) * 100,
+      module_7: module_7 == null ? 0 : (module_7 / module_question[6]) * 100,
+    };
+
     const patient = await prisma.patient.findMany({
       where: {
         // @ts-ignore
@@ -493,6 +667,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
       props: {
         user: JSON.parse(JSON.stringify(user)),
         patient: JSON.parse(JSON.stringify(patient[0])),
+        module_progress,
       },
     };
   } catch (error) {

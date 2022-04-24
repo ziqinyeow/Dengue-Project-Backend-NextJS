@@ -14,9 +14,15 @@ import { CSVLink } from "react-csv";
 import UpdateUserCard from "components/UpdateUserCard";
 import Link from "next/link";
 import CreatePatientCard from "components/CreatePatientCard";
+import useSWR from "swr";
+import fetcher from "lib/fetcher";
 
 const User: NextPage = () => {
   const router = useRouter();
+  const { data: metrics }: any = useSWR(
+    "/api/admin/private/patient_metrics",
+    fetcher
+  );
   const { data } = useData();
 
   const [searchValue, setSearchValue] = useState("");
@@ -56,7 +62,7 @@ const User: NextPage = () => {
       d?.status?.toLowerCase().includes(searchValue.toLowerCase())
   );
 
-  console.log(data);
+  // console.log(data);
 
   return (
     <Container title="Admin - Patient">
@@ -67,13 +73,13 @@ const User: NextPage = () => {
             <h4 className="mb-2">
               Number of patients with warning signs who seek help
             </h4>
-            <h2>{"--"}</h2>
+            <h2>{metrics?.patient_who_seek_help ?? "--"}</h2>
           </GradientCard>
           <GradientCard className="p-5">
             <h4 className="mb-2">
               Number of patients with warning signs who were admitted
             </h4>
-            <h2>{"--"}</h2>
+            <h2>{metrics?.patient_who_admitted ?? "--"}</h2>
           </GradientCard>
         </div>
         <div className="flex items-center w-full gap-5 mb-10">
@@ -315,16 +321,22 @@ const User: NextPage = () => {
                       }
                     />
                     <div className="flex items-center">
-                      {d?.email}{" "}
+                      {d?.user ? (
+                        <Link href={`/admin/user/${d?.user?.id}`}>
+                          <a className="hover:underline">{d?.email}</a>
+                        </Link>
+                      ) : (
+                        <div>{d?.email}</div>
+                      )}{" "}
                       {d?.user?.username && (
                         <div
-                          className={`text-xs mx-2 py-1 px-4 whitespace-nowrap bg-pink-100 rounded-md`}
+                          className={`text-xs mx-1 py-1 px-4 whitespace-nowrap bg-pink-100 rounded-md`}
                         >
                           name: {d?.user?.username}
                         </div>
                       )}
                       <div
-                        className={`text-xs mx-2 py-1 px-4 whitespace-nowrap bg-blue-100 rounded-md`}
+                        className={`text-xs mx-1 py-1 px-4 whitespace-nowrap bg-blue-100 rounded-md`}
                       >
                         ic: {d?.ic}
                       </div>
@@ -339,8 +351,11 @@ const User: NextPage = () => {
                   </div>
                   <div className="flex items-center gap-3">
                     <div
-                      className={`text-xs mx-1 py-1 px-4 whitespace-nowrap ${
-                        d?.user && d?.user_id ? "bg-green-200" : "bg-gray-200"
+                      className={`text-xs mx-[0.1rem] py-1 px-4 whitespace-nowrap ${
+                        d?.diff?.split(" ").length !== 2 &&
+                        Number(d?.diff?.split(" ")[0]) >= 14
+                          ? "bg-red-200"
+                          : "bg-green-200"
                       } rounded-md`}
                     >
                       {d?.diff?.split(" ").length == 2
@@ -357,14 +372,14 @@ const User: NextPage = () => {
                           ? "This patient already registered the account"
                           : "This patient hasn't register the account"
                       }
-                      className={`text-xs mx-1 py-1 px-4 ${
+                      className={`text-xs mx-[0.1rem] py-1 px-4 ${
                         d?.user && d?.user_id ? "bg-green-200" : "bg-gray-200"
                       } rounded-md`}
                     >
                       {d?.user && d?.user_id ? "registered" : "unregistered"}
                     </div>
                     <div
-                      className={`text-xs mx-1 py-1 px-4 whitespace-nowrap ${
+                      className={`text-xs mx-[0.1rem] py-1 px-4 whitespace-nowrap ${
                         d?.status === "active" ? "bg-red-200" : "bg-green-200"
                       } rounded-md`}
                     >
@@ -381,7 +396,7 @@ const User: NextPage = () => {
                         });
                         setUpdatePatientCardVisible(1);
                       }}
-                      className={`text-xs mx-1 py-1 px-4 bg-red-200 hover:bg-red-300 disabled:hover:bg-red-200 rounded-md`}
+                      className={`text-xs mx-[0.1rem] py-1 px-4 bg-red-200 hover:bg-red-300 disabled:hover:bg-red-200 rounded-md`}
                     >
                       patient
                     </button>
