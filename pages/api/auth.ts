@@ -143,6 +143,8 @@ export default async function handler(
           tls: {
             rejectUnauthorized: false,
           },
+          port: 465,
+          host: "smtp.gmail.com",
         });
 
         var mailOptions = {
