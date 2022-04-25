@@ -135,6 +135,8 @@ export default async function handler(
             .json({ verified: false, message: "User not found" });
         }
         let transporter = nodemailer.createTransport({
+          port: 465,
+          host: "smtp.gmail.com",
           service: "gmail",
           auth: {
             user: DESMOS_EMAIL,
@@ -143,8 +145,9 @@ export default async function handler(
           tls: {
             rejectUnauthorized: false,
           },
-          port: 465,
-          host: "smtp.gmail.com",
+          secure: false,
+          ignoreTLS: false,
+          debug: false,
         });
 
         var mailOptions = {
