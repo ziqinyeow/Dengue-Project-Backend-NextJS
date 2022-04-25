@@ -118,6 +118,7 @@ export default async function handler(
         upperCaseAlphabets: false,
         specialChars: false,
       });
+
       let detail = null;
       try {
         const user = await prisma.user.update({
