@@ -43,14 +43,14 @@ export default async function handler(
           },
           take: 1,
         });
-        const update = await prisma.symptom.update({
-          where: {
-            id: symptom[0]?.id,
-          },
-          data: {
-            status: "normal",
-          },
-        });
+        // const update = await prisma.symptom.update({
+        //   where: {
+        //     id: symptom[0]?.id,
+        //   },
+        //   data: {
+        //     status: "normal",
+        //   },
+        // });
 
         if (iii === "I am admitted to ward") {
           await prisma.patient.update({
@@ -74,9 +74,7 @@ export default async function handler(
             },
           });
         }
-        return res
-          .status(200)
-          .json({ form: seek_help, symptom: update, message: "ok" });
+        return res.status(200).json({ form: seek_help, message: "ok" });
       } catch (error) {
         return res.status(404).json({ message: "error" });
       }
