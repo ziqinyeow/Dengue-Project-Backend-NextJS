@@ -53,9 +53,11 @@ export default async function handler(
         const patient = await prisma.patient.findUnique({
           where: {
             // @ts-ignore
-            ic: payload?.ic,
+            email: payload?.email,
           },
         });
+        // console.log(patient);
+
         if (!patient) {
           return res.status(404).json({ message: "Patient not found" });
         }
@@ -74,7 +76,7 @@ export default async function handler(
           where: {
             user: {
               // @ts-ignore
-              ic: payload?.ic,
+              email: payload?.email,
             },
             createdAt: {
               gte: patient?.start,
@@ -85,6 +87,10 @@ export default async function handler(
           },
           take: 1,
         });
+        // if (!symptom) {
+        //   return res.status(200).json({ message: "no symptom" });
+        // }
+
         return res.status(200).json({
           symptom: symptom[0]?.status === "dangerous" ? true : false ?? null,
           last_date: symptom[0].createdAt,
@@ -92,7 +98,9 @@ export default async function handler(
           message: "ok",
         });
       } catch (error) {
-        return res.status(404).json({ message: "error", error });
+        return res
+          .status(404)
+          .json({ message: "error or there's no symptom yet", error });
       }
 
     default:
