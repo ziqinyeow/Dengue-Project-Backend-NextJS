@@ -33,7 +33,7 @@ model User {
   postcode       String?
   state          String?
   gender         String?
-  year_of_birth  Int?
+  year_of_birth  String?
   status         String?
   fp_token       String?
   group          String?          @default("user") //  user, patient
