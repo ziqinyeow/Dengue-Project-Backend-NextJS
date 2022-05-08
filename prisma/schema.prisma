@@ -89,6 +89,8 @@ model Vital_sign {
   createdAt         DateTime @default(now())
   temperature       Decimal?
   blood_pressure    Decimal?
+  systolic          Decimal?
+  diastolic         Decimal?
   pulse_rate        Decimal?
   respiratory_rate  Decimal?
   oxygen_saturation Decimal?

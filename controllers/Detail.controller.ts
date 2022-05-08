@@ -79,6 +79,8 @@ export const create = async (
       type, // vital_sign || blood_profile
       temperature,
       blood_pressure,
+      systolic,
+      diastolic,
       pulse_rate,
       respiratory_rate,
       oxygen_saturation,
@@ -122,6 +124,8 @@ export const create = async (
         data: {
           temperature,
           blood_pressure,
+          systolic,
+          diastolic,
           pulse_rate,
           respiratory_rate,
           oxygen_saturation,
@@ -181,6 +185,8 @@ export const update = async (req: NextApiRequest, res: NextApiResponse) => {
       type,
       temperature,
       blood_pressure,
+      systolic,
+      diastolic,
       pulse_rate,
       respiratory_rate,
       oxygen_saturation,
@@ -201,6 +207,8 @@ export const update = async (req: NextApiRequest, res: NextApiResponse) => {
         data: {
           temperature,
           blood_pressure,
+          systolic,
+          diastolic,
           pulse_rate,
           respiratory_rate,
           oxygen_saturation,

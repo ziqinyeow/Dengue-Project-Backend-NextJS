@@ -90,6 +90,8 @@ body: - all type optional decimal
 "type": "vital_sign"
 temperature:
 blood_pressure:
+systolic:
+diastolic:
 pulse_rate: 
 respiratory_rate: 
 oxygen_saturation: 
@@ -111,6 +113,8 @@ body:
 id: "medical detail id"
 "temperature": 12432.423
 "blood_pressure": 12432.423
+"systolic":
+"diastolic":
 "pulse_rate": 12432.423
 "hemoglobin": 12432.423
 "hematocrit": 12432.423
