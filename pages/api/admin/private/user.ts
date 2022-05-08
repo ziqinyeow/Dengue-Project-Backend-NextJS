@@ -10,7 +10,7 @@ export default async function handler(
     // update user group
     case "PUT":
       try {
-        const { id, group, email, ic } = req.body;
+        const { id, group, email, phone_no } = req.body;
 
         if (!group || !(group === "user" || group === "patient")) {
           throw new Error("");
@@ -35,7 +35,7 @@ export default async function handler(
           });
           const history = await prisma.history.create({
             data: {
-              ic: patient?.ic,
+              phone_no: patient?.phone_no,
               email: patient?.email,
               start: patient?.start,
               end: new Date(),
@@ -53,7 +53,7 @@ export default async function handler(
           const patient = await prisma.patient.create({
             data: {
               email,
-              ic,
+              phone_no,
               user: {
                 connect: {
                   id,

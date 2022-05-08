@@ -39,7 +39,7 @@ const UpdateUserCard = ({ show, setShow, data, setData }: any) => {
           id: data?.id,
           group: userType,
           email: data?.email,
-          ic: data?.ic,
+          phone_no: data?.phone_no,
         }),
         headers: {
           "Content-Type": "application/json",

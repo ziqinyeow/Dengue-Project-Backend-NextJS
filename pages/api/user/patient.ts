@@ -87,6 +87,7 @@ export default async function handler(
         });
         return res.status(200).json({
           symptom: symptom[0]?.status === "dangerous" ? true : false ?? null,
+          last_date: symptom[0].createdAt,
           day,
           message: "ok",
         });

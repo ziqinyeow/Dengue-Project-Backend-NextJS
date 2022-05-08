@@ -28,7 +28,7 @@ const CreatePatientCard = ({ show, setShow }: any) => {
         method: "POST",
         body: JSON.stringify({
           email: form?.email,
-          ic: form?.ic,
+          phone_no: form?.phone_no,
         }),
         headers: {
           "Content-Type": "application/json",
@@ -89,19 +89,20 @@ const CreatePatientCard = ({ show, setShow }: any) => {
                 onChange={change}
                 required
               />
-              <h5 className="mb-2 font-semibold">Identity No (IC)</h5>
+              <h5 className="mb-2 font-semibold">Phone No</h5>
               <input
-                type="number"
+                type="text"
                 placeholder="920325102340"
                 className="w-full px-4 py-2 mb-8 bg-white border rounded-md appearance-none focus:outline-none focus:border-gray-400"
-                name="ic"
+                name="phone_no"
                 onChange={change}
                 required
                 autoComplete="off"
               />
               <h5 className="mb-2 text-sm text-gray-400">
-                Note: This will automatically link patient ic and email to their
-                account.
+                Note: This will automatically link patient phone no and email to
+                their account. Please ensure that they register with the same
+                input value
               </h5>
 
               <div className="flex justify-end w-full gap-5 mt-8">

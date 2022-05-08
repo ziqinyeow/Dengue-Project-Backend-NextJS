@@ -3,9 +3,9 @@ import { nanoid } from "nanoid";
 import { TOKEN_SECRET } from "./constant";
 import { prisma } from "./prisma";
 
-export const generateToken = async (ic: string, email: string) => {
+export const generateToken = async (phone_no: string, email: string) => {
   const token = await new SignJWT({
-    ic,
+    phone_no,
     email,
   })
     .setProtectedHeader({ alg: "HS256" })
@@ -65,11 +65,10 @@ export const verifyUser = async (auth: string | undefined) => {
         fullname: true,
         phone_no: true,
         group: true,
-        ic: true,
         address: true,
         postcode: true,
         state: true,
-        age: true,
+        year_of_birth: true,
         gender: true,
         status: true,
       },

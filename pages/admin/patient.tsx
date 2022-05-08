@@ -58,7 +58,7 @@ const User: NextPage = () => {
   const filterData = data?.patient?.filter(
     (d: Patient) =>
       d?.email?.toLowerCase().includes(searchValue.toLowerCase()) ||
-      d?.ic?.toLowerCase().includes(searchValue.toLowerCase()) ||
+      d?.phone_no?.toLowerCase().includes(searchValue.toLowerCase()) ||
       d?.status?.toLowerCase().includes(searchValue.toLowerCase())
   );
 

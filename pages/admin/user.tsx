@@ -25,7 +25,7 @@ const User: NextPage = () => {
     id: "",
     email: "",
     type: "",
-    ic: "",
+    phone_no: "",
   });
 
   const headers = [
@@ -301,7 +301,7 @@ const User: NextPage = () => {
                       <div
                         className={`text-xs mx-1 py-1 px-4 whitespace-nowrap bg-blue-100 rounded-md`}
                       >
-                        ic: {d?.ic}
+                        phone: {d?.phone_no}
                       </div>
                       {d?.state && (
                         <div
@@ -319,7 +319,7 @@ const User: NextPage = () => {
                           id: d?.id,
                           email: d?.email,
                           type: String(d?.group),
-                          ic: d?.ic,
+                          phone_no: d?.phone_no,
                         });
 
                         setUpdateUserCardVisible(1);

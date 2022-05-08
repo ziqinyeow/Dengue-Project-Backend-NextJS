@@ -11,15 +11,15 @@ export default async function handler(
     // if patient no account, kiv for patient to signup
     case "POST":
       try {
-        const { email, ic } = req.body;
+        const { email, phone_no } = req.body;
 
-        if (!email || !ic) {
+        if (!email || !phone_no) {
           throw new Error("");
         }
 
         const user = await prisma.user.findUnique({
           where: {
-            ic,
+            phone_no,
           },
         });
 
@@ -27,17 +27,17 @@ export default async function handler(
           await prisma.patient.create({
             data: {
               email,
-              ic,
+              phone_no,
               user: {
                 connect: {
-                  ic,
+                  phone_no,
                 },
               },
             },
           });
           await prisma.user.update({
             where: {
-              ic,
+              phone_no,
             },
             data: {
               group: "patient",
@@ -47,7 +47,7 @@ export default async function handler(
           await prisma.patient.create({
             data: {
               email,
-              ic,
+              phone_no,
             },
           });
         }

@@ -21,24 +21,24 @@ export default async function handler(
     password,
     fullname,
     username,
-    ic,
+    year_of_birth,
     phone_no,
     address,
     postcode,
-    age,
     gender,
     state,
   } = req.body;
 
   switch (type) {
     case "signup":
-      const token = await generateToken(ic, email);
+      const token = await generateToken(phone_no, email);
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(password, salt);
       try {
         const patient = await prisma.patient.findUnique({
           where: {
-            ic,
+            // @ts-ignore
+            phone_no,
           },
         });
         if (patient) {
@@ -49,15 +49,15 @@ export default async function handler(
               token,
               fullname,
               username,
-              ic,
               phone_no,
+              year_of_birth,
               address,
               postcode,
               state,
               group: "patient",
               patient: {
                 connect: {
-                  ic,
+                  phone_no,
                 },
               },
             },
@@ -73,13 +73,12 @@ export default async function handler(
               token,
               fullname,
               username,
-              ic,
+              year_of_birth,
               phone_no,
               address,
               postcode,
               state,
               gender,
-              age,
             },
           });
           return res

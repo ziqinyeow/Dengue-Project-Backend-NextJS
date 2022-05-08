@@ -68,11 +68,11 @@ export default async function handler(
         fullname: true,
         phone_no: true,
         group: true,
-        ic: true,
         address: true,
         postcode: true,
         state: true,
         symptom: true,
+        // year_of_birth: true,
       },
       orderBy: {
         group: "asc",

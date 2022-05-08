@@ -28,13 +28,12 @@ model User {
   token          String?          @db.Text
   fullname       String?
   username       String?
-  ic             String           @unique
-  phone_no       String?
+  phone_no       String           @unique
   address        String?          @db.LongText
   postcode       String?
   state          String?
   gender         String?
-  age            Int?
+  year_of_birth  Int?
   status         String?
   fp_token       String?
   group          String?          @default("user") //  user, patient
@@ -50,7 +49,7 @@ model User {
 // to allow unregistered user to be record as a patient
 model Patient {
   id        String    @id @default(cuid())
-  ic        String    @unique
+  phone_no  String    @unique
   email     String    @unique
   status    String    @default("active") // active, completed monitoring, admitted
   seek_help Boolean   @default(false)
@@ -73,14 +72,14 @@ model Symptom {
 
 // diagnose history (KIV)
 model History {
-  id      String    @id @default(cuid())
-  ic      String
-  email   String
-  status  String? // active, completed monitoring, admitted
-  start   DateTime  @default(now())
-  end     DateTime?
-  user    User?     @relation(fields: [user_id], references: [id])
-  user_id String
+  id       String    @id @default(cuid())
+  phone_no String
+  email    String
+  status   String? // active, completed monitoring, admitted
+  start    DateTime  @default(now())
+  end      DateTime?
+  user     User?     @relation(fields: [user_id], references: [id], onDelete: SetNull)
+  user_id  String
 
   @@index([user_id])
 }

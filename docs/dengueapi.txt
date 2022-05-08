@@ -8,14 +8,13 @@ body:
 type: "signup"
 email: ""
 password: ""
-ic: ""
 fullname: ""?
 username: ""?
 phone_no: ""?
 address: ""?
 postcode: ""?
 state: ""?
-age: 0?
+year_of_birth: 0?
 gender: ""
 
 login
