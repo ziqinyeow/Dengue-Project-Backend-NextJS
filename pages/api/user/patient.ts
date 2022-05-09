@@ -49,67 +49,63 @@ export default async function handler(
 
   switch (method) {
     case "GET":
-      try {
-        const patient = await prisma.patient.findUnique({
-          where: {
-            // @ts-ignore
-            email: payload?.email,
-          },
-        });
-
-        if (!patient) {
-          return res.status(404).json({ message: "Patient not found" });
-        }
-
-        const day = time_diff(new Date(patient?.start));
-
-        try {
-          // console.log(patient);
-
-          // const dbNow = (): Date => dayjs().add(8, "hour").toDate();
-          // const today = new Date(dbNow().setUTCHours(0, 0, 0, 0));
-          // const tomorrow = new Date(dbNow().setUTCHours(24, 0, 0, 0));
-          // const start = new Date(patient?.start);
-          // const today = new Date();
-
-          // const difference = today.getTime() - start.getTime();
-          // const day = Math.ceil(difference / (1000 * 3600 * 24)) + 1;
-
-          const symptom = await prisma.symptom.findMany({
-            where: {
-              user: {
-                // @ts-ignore
-                email: payload?.email,
-              },
-              createdAt: {
-                gte: patient?.start,
-              },
-            },
-            orderBy: {
-              createdAt: "desc",
-            },
-            take: 1,
-          });
-          // if (!symptom) {
-          //   return res.status(200).json({ message: "no symptom" });
-          // }
-
-          return res.status(200).json({
-            symptom: symptom[0]?.status === "dangerous" ? true : false ?? null,
-            last_date: symptom[0].createdAt,
-            day,
-            message: "ok",
-          });
-        } catch (error) {
+      const patient = await prisma.patient.findUnique({
+        where: {
           // @ts-ignore
-          if (Object.keys(error).length === 0) {
-            return res
-              .status(404)
-              .json({ message: "there's no symptom yet", day });
-          }
-          return res.status(404).json({ message: "error", error });
-        }
+          email: payload?.email,
+        },
+      });
+
+      if (!patient) {
+        return res.status(404).json({ message: "Patient not found" });
+      }
+
+      const day = time_diff(new Date(patient?.start));
+
+      try {
+        // console.log(patient);
+
+        // const dbNow = (): Date => dayjs().add(8, "hour").toDate();
+        // const today = new Date(dbNow().setUTCHours(0, 0, 0, 0));
+        // const tomorrow = new Date(dbNow().setUTCHours(24, 0, 0, 0));
+        // const start = new Date(patient?.start);
+        // const today = new Date();
+
+        // const difference = today.getTime() - start.getTime();
+        // const day = Math.ceil(difference / (1000 * 3600 * 24)) + 1;
+
+        const symptom = await prisma.symptom.findMany({
+          where: {
+            user: {
+              // @ts-ignore
+              email: payload?.email,
+            },
+            createdAt: {
+              gte: patient?.start,
+            },
+          },
+          orderBy: {
+            createdAt: "desc",
+          },
+          take: 1,
+        });
+        // if (!symptom) {
+        //   return res.status(200).json({ message: "no symptom" });
+        // }
+
+        return res.status(200).json({
+          symptom: symptom[0]?.status === "dangerous" ? true : false ?? null,
+          last_date: symptom[0].createdAt,
+          day,
+          message: "ok",
+        });
       } catch (error) {
+        // @ts-ignore
+        if (Object.keys(error).length === 0) {
+          return res
+            .status(404)
+            .json({ message: "there's no symptom yet", day });
+        }
         return res.status(404).json({ message: "error", error });
       }
 
