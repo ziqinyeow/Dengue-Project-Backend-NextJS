@@ -10,7 +10,7 @@ export default async function handler(
   const auth = req.headers["authorization"];
   const user = await verifyAPI(auth);
 
-  if (!user || !user?.email || !user?.ic) {
+  if (!user || !user?.email) {
     return res.status(401).json({ message: "User not found" });
   }
 
@@ -35,7 +35,7 @@ export default async function handler(
           where: {
             user: {
               // @ts-ignore
-              ic: user?.ic,
+              email: user?.email,
             },
           },
           orderBy: {

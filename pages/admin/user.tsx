@@ -32,7 +32,6 @@ const User: NextPage = () => {
     { label: "email", key: "email" },
     { label: "username", key: "username" },
     { label: "fullname", key: "fullname" },
-    { label: "ic", key: "ic" },
     { label: "group", key: "group" },
     { label: "phone_no", key: "phone_no" },
     { label: "address", key: "address" },

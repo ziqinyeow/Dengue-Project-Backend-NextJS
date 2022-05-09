@@ -34,14 +34,13 @@ const User: NextPage = () => {
     id: "",
     email: "",
     type: "",
-    ic: "",
+    phone_no: "",
   });
 
   const headers = [
     { label: "email", key: "email" },
     { label: "username", key: "username" },
     { label: "fullname", key: "fullname" },
-    { label: "ic", key: "ic" },
     { label: "group", key: "group" },
     { label: "phone_no", key: "phone_no" },
     { label: "address", key: "address" },
@@ -335,11 +334,6 @@ const User: NextPage = () => {
                           name: {d?.user?.username}
                         </div>
                       )}
-                      <div
-                        className={`text-xs mx-1 py-1 px-4 whitespace-nowrap bg-blue-100 rounded-md`}
-                      >
-                        ic: {d?.ic}
-                      </div>
                       {/* {d?.user?.state && (
                         <div
                           className={`text-xs mx-2 py-1 px-4 whitespace-nowrap bg-lime-100 rounded-md`}
@@ -392,7 +386,7 @@ const User: NextPage = () => {
                           id: d?.user.id,
                           email: d?.user.email,
                           type: String(d?.user.group),
-                          ic: d?.user.ic,
+                          phone_no: d?.user.phone_no,
                         });
                         setUpdatePatientCardVisible(1);
                       }}

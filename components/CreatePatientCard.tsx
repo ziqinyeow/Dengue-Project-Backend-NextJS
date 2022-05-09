@@ -7,7 +7,7 @@ const CreatePatientCard = ({ show, setShow }: any) => {
   const router = useRouter();
   const [form, setForm] = useState<any>({
     email: "",
-    ic: "",
+    phone_no: "",
   });
   const [uploading, setUploading] = useState(false);
 
@@ -16,7 +16,7 @@ const CreatePatientCard = ({ show, setShow }: any) => {
     // @ts-ignore
     setForm({
       ...form,
-      [name]: name === "ic" ? String(value) : value,
+      [name]: name === "phone_no" ? String(value) : value,
     });
   };
 

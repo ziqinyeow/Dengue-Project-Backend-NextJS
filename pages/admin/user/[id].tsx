@@ -175,7 +175,6 @@ const User: NextPage = ({
   const headers = [
     { label: "email", key: "email" },
     { label: "name", key: "name" },
-    { label: "ic", key: "ic" },
     { label: "phone_no", key: "phone_no" },
     { label: "diagnose_start_date", key: "diagnose_start_date" },
     { label: "day_illness", key: "day_illness" },
@@ -192,7 +191,6 @@ const User: NextPage = ({
       {
         name: user?.username,
         email: user?.email,
-        ic: user?.ic,
         phone_no: user?.phone_no,
         diagnose_start_date: new Date(patient?.start).toLocaleDateString(),
         day_illness: Math.round(
@@ -331,10 +329,6 @@ const User: NextPage = ({
                 />
                 {more && (
                   <div className="w-full">
-                    <UserInfo
-                      title="Identity Card No (IC)"
-                      content={user?.ic}
-                    />
                     <UserInfo title="Age" content={user?.age} />
                     <UserInfo
                       title="Sex"

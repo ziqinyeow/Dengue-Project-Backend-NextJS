@@ -43,7 +43,8 @@ export default async function handler(
   const method = req.method;
   const auth = req.headers.authorization;
   const payload = await verifyAPI(auth);
-  if (!payload?.ic || !payload.email) {
+  // @ts-ignore
+  if (!payload.email) {
     return res.status(400).json({ message: "User not found" });
   }
 
