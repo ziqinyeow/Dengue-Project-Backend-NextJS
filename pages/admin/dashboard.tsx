@@ -23,7 +23,6 @@ const Superuser: NextPage = ({
   email,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter();
-  const { data } = useData();
   const [searchValue, setSearchValue] = useState("");
   const [select, setSelect] = useState<Admin[]>([]);
   const [createAdminCardVisible, setCreateAdminCardVisible] = useState(0);

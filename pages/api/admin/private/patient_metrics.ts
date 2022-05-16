@@ -22,9 +22,22 @@ export default async function handler(
           },
         });
 
-        return res
-          .status(200)
-          .json({ patient_who_seek_help, patient_who_admitted });
+        const patient_who_developed_warning_sign = await prisma.patient.count({
+          where: {
+            status: {
+              contains: "warning",
+            },
+          },
+        });
+
+        const patient_who_did_not_complete_symptom = 0;
+
+        return res.status(200).json({
+          patient_who_seek_help,
+          patient_who_admitted,
+          patient_who_developed_warning_sign,
+          patient_who_did_not_complete_symptom,
+        });
       } catch (error) {
         return res.status(400).json({ message: "Unable to get data" });
       }

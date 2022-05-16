@@ -71,6 +71,7 @@ const User: NextPage = ({
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
   const [more, setMore] = useState(false);
+  const [symptomMore, setSymptomMore] = useState(false);
   // console.log(user, patient, module_progress);
 
   const diff = time_diff(patient?.start);
@@ -184,7 +185,7 @@ const User: NextPage = ({
     { label: "group", key: "group" },
   ];
 
-  const csv_report = {
+  const csv_report_1 = {
     filename: "user.csv",
     headers: headers,
     data: [
@@ -203,6 +204,43 @@ const User: NextPage = ({
         group: user?.group,
       },
     ],
+  };
+
+  // console.log(user);
+
+  const headers_2 = [
+    { label: "createdAt", key: "createdAt" },
+    { label: "haemoglobin", key: "haemoglobin" },
+    { label: "haematocrit", key: "haematocrit" },
+    { label: "platelet", key: "platelet" },
+    { label: "white_cell", key: "white_cell" },
+    { label: "user_id", key: "user_id" },
+  ];
+
+  const csv_report_2 = {
+    filename: `vital_sign_${user?.email}.csv`,
+    headers: headers_2,
+    data: user?.vital_sign,
+  };
+
+  const headers_3 = [
+    { label: "createdAt", key: "createdAt" },
+    { label: "blood_profile", key: "blood_profile" },
+    { label: "systolic", key: "systolic" },
+    { label: "diastolic", key: "diastolic" },
+    { label: "oxygen_saturation", key: "oxygen_saturation" },
+    { label: "pulse_rate", key: "pulse_rate" },
+    { label: "respiratory_rate", key: "respiratory_rate" },
+    { label: "temperature", key: "temperature" },
+    { label: "user_id", key: "user_id" },
+  ];
+
+  // console.log(user?.blood_profile);
+
+  const csv_report_3 = {
+    filename: `blood_profile_${user?.email}.csv`,
+    headers: headers_3,
+    data: user?.blood_profile,
   };
 
   useEffect(() => {
@@ -247,7 +285,7 @@ const User: NextPage = ({
                   </div>
                   {more && (
                     <GradientCard>
-                      <CSVLink {...csv_report}>
+                      <CSVLink {...csv_report_1}>
                         <button className="flex items-center gap-2 px-3 py-1 text-sm rounded-md">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -419,11 +457,13 @@ const User: NextPage = ({
           </div>
         </div>
         {user?.symptom
-          .filter((s: any) => new Date(s.createdAt) < new Date(patient.start))
+          ?.filter((s: any) => new Date(s.createdAt) < new Date(patient.start))
+
           ?.sort(
             (a: any, b: any) =>
               Number(new Date(b.createdAt)) - Number(new Date(a.createdAt))
           )
+          .slice(0, 3)
           .map((s: any, i: any) => (
             <div
               key={s?.id}
@@ -441,6 +481,45 @@ const User: NextPage = ({
               </div>
             </div>
           ))}
+
+        {symptomMore &&
+          user?.symptom
+            ?.filter(
+              (s: any) => new Date(s.createdAt) < new Date(patient.start)
+            )
+
+            ?.sort(
+              (a: any, b: any) =>
+                Number(new Date(b.createdAt)) - Number(new Date(a.createdAt))
+            )
+            .slice(3, user?.symptom?.length)
+            .map((s: any, i: any) => (
+              <div
+                key={s?.id}
+                className={`grid w-full grid-cols-2 border-b-2 border-x-2`}
+              >
+                <div className="px-3 py-2">
+                  <h5 className="text-sm">
+                    {new Date(s?.createdAt).toUTCString().slice(0, -4)}
+                  </h5>
+                </div>
+                <div className="px-3 py-2">
+                  <h5 className="text-sm">
+                    {s?.status === "" || s?.status == null ? "--" : s?.status}
+                  </h5>
+                </div>
+              </div>
+            ))}
+        {
+          <button
+            onClick={() => {
+              setSymptomMore(!symptomMore);
+            }}
+            className="flex items-center justify-center w-full py-3 mt-5 text-white bg-blue-600 border-2 border-blue-600 rounded-sm hover:bg-white hover:text-blue-600"
+          >
+            Show {symptomMore ? "Less" : "More"}
+          </button>
+        }
         {user?.symptom?.filter(
           (s: any) => new Date(s.createdAt) < new Date(patient.start)
         ).length === 0 && (
@@ -493,7 +572,26 @@ const User: NextPage = ({
         <div className="w-full mt-10">
           <div className="grid gap-5 lg:grid-cols-2">
             <div>
-              <h4 className="mb-5 font-bold">Vital Sign</h4>
+              <div className="flex items-center justify-between mb-5">
+                <h4 className="font-bold">Vital Sign</h4>
+                <CSVLink {...csv_report_2}>
+                  <button className="flex items-center gap-2 px-3 py-1 text-sm border rounded-md disabled:text-gray-400 hover:bg-gray-200 hover:text-gray-700 disabled:bg-gray-50">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      width="18"
+                      height="18"
+                    >
+                      <path fill="none" d="M0 0h24v24H0z" />
+                      <path
+                        fill="currentColor"
+                        d="M2.859 2.877l12.57-1.795a.5.5 0 0 1 .571.495v20.846a.5.5 0 0 1-.57.495L2.858 21.123a1 1 0 0 1-.859-.99V3.867a1 1 0 0 1 .859-.99zM4 4.735v14.53l10 1.429V3.306L4 4.735zM17 19h3V5h-3V3h4a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1h-4v-2zm-6.8-7l2.8 4h-2.4L9 13.714 7.4 16H5l2.8-4L5 8h2.4L9 10.286 10.6 8H13l-2.8 4z"
+                      />
+                    </svg>
+                    <div>csv</div>
+                  </button>
+                </CSVLink>
+              </div>
               <div className="p-5 border-2 rounded">
                 <Line
                   options={{
@@ -509,7 +607,26 @@ const User: NextPage = ({
               </div>
             </div>
             <div>
-              <h4 className="mb-5 font-bold">Blood Profile</h4>
+              <div className="flex items-center justify-between mb-5">
+                <h4 className="font-bold">Blood Profile</h4>
+                <CSVLink {...csv_report_3}>
+                  <button className="flex items-center gap-2 px-3 py-1 text-sm border rounded-md disabled:text-gray-400 hover:bg-gray-200 hover:text-gray-700 disabled:bg-gray-50">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      width="18"
+                      height="18"
+                    >
+                      <path fill="none" d="M0 0h24v24H0z" />
+                      <path
+                        fill="currentColor"
+                        d="M2.859 2.877l12.57-1.795a.5.5 0 0 1 .571.495v20.846a.5.5 0 0 1-.57.495L2.858 21.123a1 1 0 0 1-.859-.99V3.867a1 1 0 0 1 .859-.99zM4 4.735v14.53l10 1.429V3.306L4 4.735zM17 19h3V5h-3V3h4a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1h-4v-2zm-6.8-7l2.8 4h-2.4L9 13.714 7.4 16H5l2.8-4L5 8h2.4L9 10.286 10.6 8H13l-2.8 4z"
+                      />
+                    </svg>
+                    <div>csv</div>
+                  </button>
+                </CSVLink>
+              </div>
               <div className="p-5 border-2 rounded">
                 <Line
                   options={{
@@ -532,6 +649,12 @@ const User: NextPage = ({
             <Line
               options={{
                 responsive: true,
+                scales: {
+                  y: {
+                    min: 0,
+                    max: 100,
+                  },
+                },
                 plugins: {
                   legend: {
                     position: "top" as const,

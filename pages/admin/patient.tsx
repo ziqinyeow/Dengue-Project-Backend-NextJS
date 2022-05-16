@@ -24,7 +24,7 @@ const User: NextPage = () => {
     fetcher
   );
   const { data } = useData();
-
+  const [showAnalytics, setShowAnalytics] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [select, setSelect] = useState<User[] | any[]>([]);
   const [selectData, setSelectData] = useState<User[] | any[]>([]);
@@ -66,21 +66,59 @@ const User: NextPage = () => {
   return (
     <Container title="Admin - Patient">
       <div className="layout">
-        <h2 className="mb-5">Patient</h2>
-        <div className="grid w-full grid-cols-2 gap-10 mb-10">
-          <GradientCard className="p-5">
-            <h4 className="mb-2">
-              Number of patients with warning signs who seek help
-            </h4>
-            <h2>{metrics?.patient_who_seek_help ?? "--"}</h2>
-          </GradientCard>
-          <GradientCard className="p-5">
-            <h4 className="mb-2">
-              Number of patients with warning signs who were admitted
-            </h4>
-            <h2>{metrics?.patient_who_admitted ?? "--"}</h2>
+        <div className="flex items-center justify-between w-full mb-5">
+          <h2 className="">Patient</h2>
+          <GradientCard>
+            <button
+              className="p-3"
+              onClick={() => setShowAnalytics(!showAnalytics)}
+              title="Show some metrics"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                width="24"
+                height="24"
+              >
+                <path fill="none" d="M0 0L24 0 24 24 0 24z" />
+                <path
+                  fill="currentColor"
+                  d="M16 16c1.657 0 3 1.343 3 3s-1.343 3-3 3-3-1.343-3-3 1.343-3 3-3zM6 12c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4zm8.5-10C17.538 2 20 4.462 20 7.5S17.538 13 14.5 13 9 10.538 9 7.5 11.462 2 14.5 2z"
+                />
+              </svg>
+            </button>
           </GradientCard>
         </div>
+        {showAnalytics && (
+          <div className="grid w-full gap-5 mb-10 lg:grid-cols-2">
+            <GradientCard className="p-5">
+              <h4 className="mb-2">
+                Number of patients with warning signs who seek help
+              </h4>
+              <h2>{metrics?.patient_who_seek_help ?? "--"}</h2>
+            </GradientCard>
+            <GradientCard className="p-5">
+              <h4 className="mb-2">
+                Number of patients with warning signs who were admitted
+              </h4>
+              <h2>{metrics?.patient_who_admitted ?? "--"}</h2>
+            </GradientCard>
+            <GradientCard className="p-5">
+              <h4 className="mb-2">
+                Number of patients who developed warning signs at any point in
+                illness
+              </h4>
+              <h2>{metrics?.patient_who_developed_warning_sign ?? "--"}</h2>
+            </GradientCard>
+            <GradientCard className="p-5">
+              <h4 className="mb-2">
+                Number of patients who did not complete keying in symptoms for
+                daily monitoring (3 times daily)
+              </h4>
+              <h2>{metrics?.patient_who_did_not_complete_symptom ?? "--"}</h2>
+            </GradientCard>
+          </div>
+        )}
         <div className="flex items-center w-full gap-5 mb-10">
           <div className="relative w-full group">
             <div className="absolute transition duration-500 rounded-md -inset-0.5 bg-gradient-to-r from-blue-500 to-green-400 opacity-20 group-hover:duration-200 group-hover:opacity-100 blur" />

@@ -47,6 +47,13 @@ export const create = async (
   email: string
 ) => {
   try {
+    const auth = req.headers.authorization;
+    const { module } = req.query;
+    // @ts-ignore
+    const { email } = await verifyAPI(auth);
+    if (!email) {
+      throw new Error();
+    }
     const { response } = req.body;
     const dbNow = (): Date => dayjs().add(8, "hour").toDate();
 
@@ -82,6 +89,23 @@ export const create = async (
         },
       },
     });
+
+    const patient = await prisma.patient.findUnique({
+      where: {
+        email,
+      },
+    });
+
+    if (patient?.status && patient?.status?.split(", ")?.length > 1) {
+      await prisma.patient.update({
+        where: {
+          id: patient?.id,
+        },
+        data: {
+          status: patient?.status + ", warning",
+        },
+      });
+    }
 
     return res
       .status(200)
