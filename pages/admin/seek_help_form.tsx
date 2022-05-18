@@ -14,9 +14,12 @@ const Home: NextPage = ({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const headers = [
     { label: "createdAt", key: "createdAt" },
-    { label: "i", key: "Where have you gone to seek help?" },
-    { label: "ii", key: "At what time did you go to seek help?" },
-    { label: "iii", key: "What happened after you have gone to seek help?" },
+    { key: "i", label: "Where have you gone to seek help?" },
+    { key: "ii", label: "At what time did you go to seek help?" },
+    { key: "iii", label: "What happened after you have gone to seek help?" },
+    // { label: "i", key: "Where have you gone to seek help?" },
+    // { label: "ii", key: "At what time did you go to seek help?" },
+    // { label: "iii", key: "What happened after you have gone to seek help?" },
     // { label: "i", key: "i" },
     // { label: "ii", key: "ii" },
     // { label: "iii", key: "iii" },

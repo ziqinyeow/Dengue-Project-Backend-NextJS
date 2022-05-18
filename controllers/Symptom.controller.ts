@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "lib/prisma";
 import dayjs from "dayjs";
+import { verifyAPI } from "lib/auth";
 
 export const get = async (
   _req: NextApiRequest,
@@ -48,7 +49,6 @@ export const create = async (
 ) => {
   try {
     const auth = req.headers.authorization;
-    const { module } = req.query;
     // @ts-ignore
     const { email } = await verifyAPI(auth);
     if (!email) {
@@ -111,6 +111,6 @@ export const create = async (
       .status(200)
       .json({ risk_value, risk_status, data, message: "ok" });
   } catch (error) {
-    return res.status(400).json({ messsage: "Unable to create task" });
+    return res.status(400).json({ messsage: "Unable to create symptom" });
   }
 };

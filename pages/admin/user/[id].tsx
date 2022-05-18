@@ -235,7 +235,7 @@ const User: NextPage = ({
     { label: "user_id", key: "user_id" },
   ];
 
-  // console.log(user?.blood_profile);
+  console.log(user?.vital_sign, user?.blood_profile);
 
   const csv_report_3 = {
     filename: `blood_profile_${user?.email}.csv`,
