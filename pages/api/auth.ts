@@ -197,32 +197,28 @@ export default async function handler(
           text: `Your tac no to reset password: ${id}`,
         };
 
-        transporter.sendMail(mailOptions, function (error, info) {
-          if (error) {
-            return res
-              .status(400)
-              .json({ error, verified: false, message: "Email not sent" });
-          } else {
-            return res
-              .status(200)
-              .json({
+        await new Promise((resolve, reject) => {
+          transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+              return res
+                .status(400)
+                .json({ error, verified: false, message: "Email not sent" });
+            } else {
+              return res.status(200).json({
                 error,
                 info,
                 verified: true,
                 message: "Check your email",
               });
-          }
+            }
+          });
         });
-        // await new Promise((resolve, reject) => {
-        // });
 
         return res.status(200).json({
           verified: true,
           message: "Check your email",
         });
       } catch (error) {
-        console.log(error);
-
         return res
           .status(400)
           .json({ error, verified: false, message: "Email not sent" });
