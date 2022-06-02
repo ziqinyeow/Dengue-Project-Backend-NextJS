@@ -205,7 +205,12 @@ export default async function handler(
           } else {
             return res
               .status(200)
-              .json({ verified: true, message: "Check your email" });
+              .json({
+                error,
+                info,
+                verified: true,
+                message: "Check your email",
+              });
           }
         });
         // await new Promise((resolve, reject) => {
