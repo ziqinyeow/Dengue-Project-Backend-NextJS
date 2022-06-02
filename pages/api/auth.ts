@@ -3,15 +3,13 @@ import { generateToken } from "lib/auth";
 import { prisma } from "lib/prisma";
 import bcrypt from "bcryptjs";
 import nodemailer from "nodemailer";
-// import xoauth2 from "xoauth2";
-import { nanoid } from "nanoid";
 import {
   DESMOS_EMAIL,
   DESMOS_PASSWORD,
-  GOOGLE_ACT,
-  GOOGLE_CID,
-  GOOGLE_CSE,
-  GOOGLE_RTK,
+  // GOOGLE_ACT,
+  // GOOGLE_CID,
+  // GOOGLE_CSE,
+  // GOOGLE_RTK,
 } from "lib/constant";
 import otpGenerator from "otp-generator";
 
@@ -143,7 +141,6 @@ export default async function handler(
         }
 
         let transporter = nodemailer.createTransport({
-          name: "any",
           port: 465,
           host: "smtp.gmail.com",
           service: "gmail",
