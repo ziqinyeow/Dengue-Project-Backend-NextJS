@@ -124,7 +124,6 @@ export default async function handler(
         specialChars: false,
       });
 
-      let detail = null;
       try {
         const user = await prisma.user.update({
           where: {
@@ -156,6 +155,19 @@ export default async function handler(
           debug: false,
         });
 
+        // await new Promise((resolve, reject) => {
+        //   // verify connection configuration
+        //   transporter.verify(function (error, success) {
+        //     if (error) {
+        //       // console.log(error);
+        //       reject(error);
+        //     } else {
+        //       // console.log("Server is ready to take our messages");
+        //       resolve(success);
+        //     }
+        //   });
+        // });
+
         // var generator = xoauth2.createXOAuth2Generator({
         //   user: DESMOS_EMAIL,
         //   clientId: GOOGLE_CID,
@@ -185,25 +197,21 @@ export default async function handler(
           text: `Your tac no to reset password: ${id}`,
         };
 
-        await new Promise((resolve, reject) => {
-          transporter.sendMail(mailOptions, function (error, info) {
-            if (error) {
-              detail = error;
-
-              return res
-                .status(400)
-                .json({ error, verified: false, message: "Email not sent" });
-            } else {
-              detail = info;
-              return res
-                .status(200)
-                .json({ verified: true, message: "Check your email" });
-            }
-          });
+        transporter.sendMail(mailOptions, function (error, info) {
+          if (error) {
+            return res
+              .status(400)
+              .json({ error, verified: false, message: "Email not sent" });
+          } else {
+            return res
+              .status(200)
+              .json({ verified: true, message: "Check your email" });
+          }
         });
+        // await new Promise((resolve, reject) => {
+        // });
 
         return res.status(200).json({
-          detail,
           verified: true,
           message: "Check your email",
         });
