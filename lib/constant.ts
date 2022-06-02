@@ -3,3 +3,7 @@ export const ADMIN = process.env.ADMIN;
 export const ADMIN_PWD = process.env.ADMIN_PWD;
 export const DESMOS_EMAIL = process.env.DESMOS_EMAIL;
 export const DESMOS_PASSWORD = process.env.DESMOS_PASSWORD;
+export const GOOGLE_CID = process.env.GOOGLE_CID;
+export const GOOGLE_CSE = process.env.GOOGLE_CSE;
+export const GOOGLE_RTK = process.env.GOOGLE_RTK;
+export const GOOGLE_ACT = process.env.GOOGLE_ACT;

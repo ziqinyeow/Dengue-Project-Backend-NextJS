@@ -3,8 +3,16 @@ import { generateToken } from "lib/auth";
 import { prisma } from "lib/prisma";
 import bcrypt from "bcryptjs";
 import nodemailer from "nodemailer";
+// import xoauth2 from "xoauth2";
 import { nanoid } from "nanoid";
-import { DESMOS_EMAIL, DESMOS_PASSWORD } from "lib/constant";
+import {
+  DESMOS_EMAIL,
+  DESMOS_PASSWORD,
+  GOOGLE_ACT,
+  GOOGLE_CID,
+  GOOGLE_CSE,
+  GOOGLE_RTK,
+} from "lib/constant";
 import otpGenerator from "otp-generator";
 
 export default async function handler(
@@ -133,7 +141,9 @@ export default async function handler(
             .status(404)
             .json({ verified: false, message: "User not found" });
         }
+
         let transporter = nodemailer.createTransport({
+          name: "any",
           port: 465,
           host: "smtp.gmail.com",
           service: "gmail",
@@ -148,6 +158,28 @@ export default async function handler(
           ignoreTLS: false,
           debug: false,
         });
+
+        // var generator = xoauth2.createXOAuth2Generator({
+        //   user: DESMOS_EMAIL,
+        //   clientId: GOOGLE_CID,
+        //   clientSecret: GOOGLE_CSE,
+        //   refreshToken: GOOGLE_RTK,
+        //   accessToken: GOOGLE_ACT,
+        // });
+        // let transporter = nodemailer.createTransport({
+        //   // @ts-ignore
+        //   port: 587,
+        //   // host: "smtp.gmail.com",
+        //   service: "gmail",
+        //   auth: { xoauth2: generator },
+        //   tls: {
+        //     rejectUnauthorized: false,
+        //   },
+        //   secure: false,
+        //   ignoreTLS: false,
+        //   debug: false,
+        // });
+        // console.log(transporter);
 
         var mailOptions = {
           from: DESMOS_EMAIL,
@@ -179,6 +211,8 @@ export default async function handler(
           message: "Check your email",
         });
       } catch (error) {
+        console.log(error);
+
         return res
           .status(400)
           .json({ error, verified: false, message: "Email not sent" });
