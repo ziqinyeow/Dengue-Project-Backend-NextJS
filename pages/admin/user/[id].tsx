@@ -73,6 +73,7 @@ const User: NextPage = ({
   const [more, setMore] = useState(false);
   const [symptomMore, setSymptomMore] = useState(false);
   // console.log(user, patient, module_progress);
+  // console.log(module_progress);
 
   const diff = time_diff(patient?.start);
 
@@ -110,10 +111,22 @@ const User: NextPage = ({
         backgroundColor: "rgba(75, 192, 192, 0.5)",
       },
       {
-        label: "Blood Pressure",
-        data: user?.vital_sign?.map((v: any) => Number(v?.blood_pressure)),
+        label: "Systolic",
+        data: user?.vital_sign?.map((v: any) => Number(v?.systolic)),
         borderColor: "rgba(153, 102, 255)",
         backgroundColor: "rgba(153, 102, 255, 0.5)",
+      },
+      {
+        label: "Diastolic",
+        data: user?.vital_sign?.map((v: any) => Number(v?.diastolic)),
+        borderColor: "rgba(255, 159, 64)",
+        backgroundColor: "rgba(255, 159, 64, 0.5)",
+      },
+      {
+        label: "Blood Pressure",
+        data: user?.vital_sign?.map((v: any) => Number(v?.blood_pressure)),
+        borderColor: "rgba(255, 159, 250)",
+        backgroundColor: "rgba(255, 159, 250, 0.5)",
       },
     ],
   };
@@ -165,8 +178,8 @@ const User: NextPage = ({
     datasets: [
       {
         label: "Progress",
-        // data: Object.values(module_progress),
-        data: [100, 100, 100, 100],
+        data: Object.values(module_progress),
+        // data: module_progress.values(),
         borderColor: "rgb(255, 99, 132)",
         backgroundColor: "rgba(255, 99, 132, 0.5)",
       },
@@ -210,6 +223,18 @@ const User: NextPage = ({
 
   const headers_2 = [
     { label: "createdAt", key: "createdAt" },
+    { label: "blood_pressure", key: "blood_pressure" },
+    { label: "systolic", key: "systolic" },
+    { label: "diastolic", key: "diastolic" },
+    { label: "oxygen_saturation", key: "oxygen_saturation" },
+    { label: "pulse_rate", key: "pulse_rate" },
+    { label: "respiratory_rate", key: "respiratory_rate" },
+    { label: "temperature", key: "temperature" },
+    { label: "user_id", key: "user_id" },
+  ];
+
+  const headers_3 = [
+    { label: "createdAt", key: "createdAt" },
     { label: "haemoglobin", key: "haemoglobin" },
     { label: "haematocrit", key: "haematocrit" },
     { label: "platelet", key: "platelet" },
@@ -222,20 +247,6 @@ const User: NextPage = ({
     headers: headers_2,
     data: user?.vital_sign,
   };
-
-  const headers_3 = [
-    { label: "createdAt", key: "createdAt" },
-    { label: "blood_profile", key: "blood_profile" },
-    { label: "systolic", key: "systolic" },
-    { label: "diastolic", key: "diastolic" },
-    { label: "oxygen_saturation", key: "oxygen_saturation" },
-    { label: "pulse_rate", key: "pulse_rate" },
-    { label: "respiratory_rate", key: "respiratory_rate" },
-    { label: "temperature", key: "temperature" },
-    { label: "user_id", key: "user_id" },
-  ];
-
-  console.log(user?.vital_sign, user?.blood_profile);
 
   const csv_report_3 = {
     filename: `blood_profile_${user?.email}.csv`,
@@ -510,7 +521,9 @@ const User: NextPage = ({
                 </div>
               </div>
             ))}
-        {
+        {user?.symptom?.filter(
+          (s: any) => new Date(s.createdAt) < new Date(patient.start)
+        ).length > 3 ?? (
           <button
             onClick={() => {
               setSymptomMore(!symptomMore);
@@ -519,7 +532,7 @@ const User: NextPage = ({
           >
             Show {symptomMore ? "Less" : "More"}
           </button>
-        }
+        )}
         {user?.symptom?.filter(
           (s: any) => new Date(s.createdAt) < new Date(patient.start)
         ).length === 0 && (
@@ -652,7 +665,7 @@ const User: NextPage = ({
                 scales: {
                   y: {
                     min: 0,
-                    max: 100,
+                    max: 110,
                   },
                 },
                 plugins: {
@@ -769,6 +782,14 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
       module_6: module_6 == null ? 0 : (module_6 / module_question[5]) * 100,
       module_7: module_7 == null ? 0 : (module_7 / module_question[6]) * 100,
     };
+
+    Object.keys(module_progress).map((k, i) => {
+      // @ts-ignore
+      if (module_progress[k] > 100) {
+        // @ts-ignore
+        module_progress[k] = 100;
+      }
+    });
 
     const patient = await prisma.patient.findMany({
       where: {

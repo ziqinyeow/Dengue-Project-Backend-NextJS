@@ -150,8 +150,8 @@ export default async function handler(
           tls: {
             rejectUnauthorized: false,
           },
+          requireTLS: false,
           secure: false,
-          ignoreTLS: false,
           debug: false,
         });
 
@@ -200,9 +200,11 @@ export default async function handler(
         await new Promise((resolve, reject) => {
           transporter.sendMail(mailOptions, function (error, info) {
             if (error) {
-              return res
-                .status(400)
-                .json({ error, verified: false, message: "Email not sent" });
+              return res.status(400).json({
+                error,
+                verified: false,
+                message: "Email not sent",
+              });
             } else {
               return res.status(200).json({
                 error,
