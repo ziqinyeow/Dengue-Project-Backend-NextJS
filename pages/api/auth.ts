@@ -172,8 +172,20 @@ export default async function handler(
               role: "frontend",
             },
           })
-          .then(console.log)
-          .catch(console.log);
+          .then(() => {
+            return res
+              .status(200)
+              .json({ verified: true, message: "Check your email" });
+          })
+          .catch((error: any) => {
+            return res
+              .status(404)
+              .json({
+                error,
+                verified: false,
+                message: "Unable to send the email",
+              });
+          });
 
         // let transporter = nodemailer.createTransport({
         //   port: 465,
