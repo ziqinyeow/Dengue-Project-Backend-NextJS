@@ -141,67 +141,67 @@ export default async function handler(
             .status(404)
             .json({ verified: false, message: "User not found" });
         }
-        const client = Sib.ApiClient.instance;
+        // const client = Sib.ApiClient.instance;
 
-        const apiKey = client.authentications["api-key"];
-        apiKey.apiKey = SENDGRID_API_KEY;
+        // const apiKey = client.authentications["api-key"];
+        // apiKey.apiKey = SENDGRID_API_KEY;
 
-        const sender = {
-          email: DESMOS_EMAIL,
-        };
+        // const sender = {
+        //   email: DESMOS_EMAIL,
+        // };
 
-        const receiver = [
-          {
-            email,
+        // const receiver = [
+        //   {
+        //     email,
+        //   },
+        // ];
+
+        // const transactionalEmailApi = new Sib.TransactionalEmailsApi();
+
+        // transactionalEmailApi
+        //   .sendTransacEmail({
+        //     subject: "Your TAC NO.",
+        //     sender,
+        //     to: receiver,
+        //     textContent: `Your tac no to reset password: ${id}`,
+        //     //         htmlContent: `
+        //     // 	<h1>Become a {{params.role}} developer</h1>
+        //     // 	<a href='https://cules-coding.vercel.app/'>Cules Coding</a>
+        //     // `,
+        //     params: {
+        //       role: "frontend",
+        //     },
+        //   })
+        //   .then(() => {
+        //     return res
+        //       .status(200)
+        //       .json({ verified: true, message: "Check your email" });
+        //   })
+        //   .catch((error: any) => {
+        //     return res
+        //       .status(404)
+        //       .json({
+        //         error,
+        //         verified: false,
+        //         message: "Unable to send the email",
+        //       });
+        //   });
+
+        let transporter = nodemailer.createTransport({
+          port: 465,
+          host: "smtp.gmail.com",
+          service: "gmail",
+          auth: {
+            user: DESMOS_EMAIL,
+            pass: DESMOS_PASSWORD,
           },
-        ];
-
-        const transactionalEmailApi = new Sib.TransactionalEmailsApi();
-
-        transactionalEmailApi
-          .sendTransacEmail({
-            subject: "Your TAC NO.",
-            sender,
-            to: receiver,
-            textContent: `Your tac no to reset password: ${id}`,
-            //         htmlContent: `
-            // 	<h1>Become a {{params.role}} developer</h1>
-            // 	<a href='https://cules-coding.vercel.app/'>Cules Coding</a>
-            // `,
-            params: {
-              role: "frontend",
-            },
-          })
-          .then(() => {
-            return res
-              .status(200)
-              .json({ verified: true, message: "Check your email" });
-          })
-          .catch((error: any) => {
-            return res
-              .status(404)
-              .json({
-                error,
-                verified: false,
-                message: "Unable to send the email",
-              });
-          });
-
-        // let transporter = nodemailer.createTransport({
-        //   port: 465,
-        //   host: "smtp.gmail.com",
-        //   service: "gmail",
-        //   auth: {
-        //     user: DESMOS_EMAIL,
-        //     pass: DESMOS_PASSWORD,
-        //   },
-        //   tls: {
-        //     rejectUnauthorized: false,
-        //   },
-        //   requireTLS: false,
-        //   secure: false,
-        //   debug: false,
-        // });
+          tls: {
+            rejectUnauthorized: false,
+          },
+          requireTLS: false,
+          secure: false,
+          debug: false,
+        });
 
         // await new Promise((resolve, reject) => {
         //   // verify connection configuration
@@ -238,31 +238,31 @@ export default async function handler(
         // });
         // console.log(transporter);
 
-        // var mailOptions = {
-        //   from: DESMOS_EMAIL,
-        //   to: email,
-        //   subject: "YOUR TAC NO.",
-        //   text: `Your tac no to reset password: ${id}`,
-        // };
+        var mailOptions = {
+          from: DESMOS_EMAIL,
+          to: email,
+          subject: "YOUR TAC NO.",
+          text: `Your tac no to reset password: ${id}`,
+        };
 
-        // await new Promise((resolve, reject) => {
-        //   transporter.sendMail(mailOptions, function (error, info) {
-        //     if (error) {
-        //       return res.status(400).json({
-        //         error,
-        //         verified: false,
-        //         message: "Email not sent",
-        //       });
-        //     } else {
-        //       return res.status(200).json({
-        //         error,
-        //         info,
-        //         verified: true,
-        //         message: "Check your email",
-        //       });
-        //     }
-        //   });
-        // });
+        await new Promise((resolve, reject) => {
+          transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+              return res.status(400).json({
+                error,
+                verified: false,
+                message: "Email not sent",
+              });
+            } else {
+              return res.status(200).json({
+                error,
+                info,
+                verified: true,
+                message: "Check your email",
+              });
+            }
+          });
+        });
 
         return res.status(200).json({
           verified: true,
