@@ -16,6 +16,7 @@ import Link from "next/link";
 import CreatePatientCard from "components/CreatePatientCard";
 import useSWR from "swr";
 import fetcher from "lib/fetcher";
+import ChangeDateCard from "components/ChangeDateCard";
 
 const User: NextPage = () => {
   const router = useRouter();
@@ -24,12 +25,20 @@ const User: NextPage = () => {
     fetcher
   );
   const { data } = useData();
+  // console.log(data);
+
   const [showAnalytics, setShowAnalytics] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [select, setSelect] = useState<User[] | any[]>([]);
   const [selectData, setSelectData] = useState<User[] | any[]>([]);
   const [createPatientCardVisible, setCreatePatientCardVisible] = useState(0);
   const [updatePatientCardVisible, setUpdatePatientCardVisible] = useState(0);
+  const [changeDateCardVisible, setChangeDateCardVisible] = useState(0);
+  const [changeDateData, setChangeDateData] = useState({
+    patient_id: "",
+    date: "",
+    diff: 0,
+  });
   const [updatePatientData, setUpdatePatientData] = useState({
     id: "",
     email: "",
@@ -165,6 +174,12 @@ const User: NextPage = () => {
               setShow={setUpdatePatientCardVisible}
               data={updatePatientData}
               setData={setUpdatePatientData}
+            />
+            <ChangeDateCard
+              show={changeDateCardVisible}
+              setShow={setChangeDateCardVisible}
+              data={changeDateData}
+              setData={setChangeDateData}
             />
             <div className="flex items-center justify-between w-full gap-3 py-1 mb-5">
               <div className="flex items-center w-full gap-3 px-2">
@@ -382,22 +397,29 @@ const User: NextPage = () => {
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
-                    <div
+                    <button
+                      // disabled={!d?.user}
+                      onClick={() => {
+                        setChangeDateData({
+                          patient_id: d?.id,
+                          date: d?.start,
+                          diff: d?.diff,
+                        });
+                        setChangeDateCardVisible(1);
+                      }}
                       className={`text-xs mx-[0.1rem] py-1 px-4 whitespace-nowrap ${
-                        d?.diff?.split(" ").length !== 2 &&
-                        Number(d?.diff?.split(" ")[0]) >= 14
-                          ? "bg-red-200"
-                          : "bg-green-200"
+                        Number(d?.diff) >= 14 ? "bg-red-200" : "bg-green-200"
                       } rounded-md`}
                     >
-                      {d?.diff?.split(" ").length == 2
+                      {/* {d?.diff?.split(" ").length == 2
                         ? `${d?.diff?.split(" ")[0]} hour ${
                             d?.diff?.split(" ")[1]
                           } min`
                         : `${d?.diff?.split(" ")[0]} day ${
                             d?.diff?.split(" ")[1]
-                          } hour`}
-                    </div>
+                          } hour`} */}
+                      {Number(d?.diff)} {Number(d?.diff) > 1 ? "days" : "day"}
+                    </button>
                     <div
                       title={
                         d?.user && d?.user_id

@@ -61,7 +61,7 @@ export default async function handler(
         return res.status(404).json({ message: "Patient not found" });
       }
 
-      const day = time_diff(new Date(patient?.start));
+      const day = time_diff(new Date(patient?.start)) + 1;
 
       try {
         // console.log(patient);

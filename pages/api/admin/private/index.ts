@@ -25,10 +25,10 @@ function time_diff(dateFuture: Date) {
 
   let difference = "";
   if (days > 0) {
-    difference += `${days} `;
+    difference += `${days + 1} `;
   }
 
-  difference += `${hours} ${minutes}`;
+  // difference += `${hours} ${minutes}`;
 
   return difference;
 }
