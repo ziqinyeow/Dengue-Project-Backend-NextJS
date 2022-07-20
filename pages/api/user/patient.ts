@@ -24,12 +24,12 @@ function time_diff(dateFuture: Date) {
 
   let difference = "";
   if (days > 0) {
-    difference += `${days} ${days > 1 ? "days" : "day"} `;
+    difference += `${days + 1} ${days > 1 ? "days" : "day"} `;
   } else {
-    difference += `0 day `;
+    difference += `1 day `;
   }
 
-  difference += `${hours + 1} ${hours > 1 ? "hours" : "hour"} ${minutes} ${
+  difference += `${hours} ${hours > 1 ? "hours" : "hour"} ${minutes} ${
     minutes > 1 ? "minutes" : "minute"
   }`;
 
