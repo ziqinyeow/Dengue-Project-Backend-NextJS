@@ -29,7 +29,7 @@ function time_diff(dateFuture: Date) {
     difference += `0 day `;
   }
 
-  difference += `${hours} ${hours > 1 ? "hours" : "hour"} ${minutes} ${
+  difference += `${hours + 1} ${hours > 1 ? "hours" : "hour"} ${minutes} ${
     minutes > 1 ? "minutes" : "minute"
   }`;
 
@@ -61,7 +61,7 @@ export default async function handler(
         return res.status(404).json({ message: "Patient not found" });
       }
 
-      const day = time_diff(new Date(patient?.start)) + 1;
+      const day = time_diff(new Date(patient?.start));
 
       try {
         // console.log(patient);
