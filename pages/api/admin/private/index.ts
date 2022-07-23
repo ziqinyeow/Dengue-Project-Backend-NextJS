@@ -24,9 +24,9 @@ function time_diff(dateFuture: Date) {
   // console.log("minutes", minutes);
 
   let difference = "";
-  if (days > 0) {
-    difference += `${days + 1} `;
-  }
+  difference += `${days + 1}`;
+  // if (days > 0) {
+  // }
 
   // difference += `${hours} ${minutes}`;
 

@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "lib/prisma";
+import dayjs from "dayjs";
 
 function time_diff(dateFuture: Date) {
   const now = new Date();
@@ -52,12 +53,15 @@ export default async function handler(
             phone_no,
           },
         });
-
+        const dbNow = (): Date => dayjs().add(8, "hour").toDate();
+        const today = new Date(dbNow().setUTCHours(0, 0, 0, 0));
+        // const tomorrow = new Date(dbNow().setUTCHours(24, 0, 0, 0));
         if (user) {
           await prisma.patient.create({
             data: {
               email,
               phone_no,
+              start: today,
               user: {
                 connect: {
                   phone_no,
@@ -78,6 +82,7 @@ export default async function handler(
             data: {
               email,
               phone_no,
+              start: today,
             },
           });
         }
@@ -94,8 +99,10 @@ export default async function handler(
           throw new Error("");
         }
 
-        let newDate = new Date(start);
-        newDate.setDate(newDate.getDate() - -diff);
+        let startDate = new Date(start);
+        startDate.setDate(startDate.getDate() - -diff);
+        const db = (): Date => dayjs(startDate).add(8, "hour").toDate();
+        const newDate = new Date(db().setUTCHours(0, 0, 0, 0));
 
         const patient = await prisma.patient.update({
           where: {

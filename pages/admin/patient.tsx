@@ -25,7 +25,7 @@ const User: NextPage = () => {
     fetcher
   );
   const { data } = useData();
-  // console.log(data);
+  console.log(data);
 
   const [showAnalytics, setShowAnalytics] = useState(false);
   const [searchValue, setSearchValue] = useState("");
